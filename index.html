@@ -16,48 +16,21 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip" href="#board">דילוג לתוכן</a>
-
-  <header class="topbar" id="top">
-    <div class="topbar__inner">
-      <a class="brand" href="#top" aria-label="כח התערבות – לראש העמוד">
-        <img src="assets/logo-light.png" alt="כח התערבות – לובי ציוני לאומי" width="312" height="285">
-      </a>
-      <nav class="nav" id="nav" aria-label="ניווט ראשי">
-        <a href="#top">ראשי</a>
-        <a href="#board">הדירקטוריון</a>
-        <a href="#how">איך זה עובד</a>
-        <a href="#contact">צור קשר</a>
-      </nav>
-      <a class="btn btn--gold topbar__cta" href="#board">לתוכנית</a>
-      <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="nav">
-        <span></span><span></span><span></span>
+  <main class="page">
+    <header class="masthead">
+      <img class="masthead__logo" src="assets/logo-light.png" alt="כח התערבות – לובי ציוני לאומי" width="312" height="285">
+      <p class="eyebrow" id="siteKnesset"></p>
+      <h1 id="siteTitle"></h1>
+      <p class="masthead__sub" id="siteSubtitle"></p>
+      <button class="edit-tool edit-tool--inline" data-act="site-edit" aria-label="עריכת הכותרת">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></svg>
       </button>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero__glow" aria-hidden="true"></div>
-      <div class="hero__inner">
-        <p class="eyebrow" id="heroEyebrow"></p>
-        <h1 id="heroTitle"></h1>
-        <p class="hero__text" id="heroText"></p>
-        <div class="hero__stats" id="heroStats"></div>
-        <a class="btn btn--gold btn--lg" href="#board">הכירו את הדירקטוריון
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-        </a>
-      </div>
-    </section>
-
-    <section class="board" id="board" aria-labelledby="boardTitle">
-      <div class="section-head">
-        <p class="eyebrow">הדירקטוריון</p>
-        <h2 id="boardTitle">בחרו חבר דירקטוריון כדי לראות את התוכנית</h2>
-      </div>
-
+    <section class="board" id="board" aria-label="חברי הדירקטוריון">
       <div class="coverflow" id="coverflow" role="region" aria-roledescription="קרוסלה" aria-label="חברי הדירקטוריון">
         <div class="coverflow__stage" id="stage"></div>
+        <p class="empty" id="boardEmpty" hidden>התוכן נטען…</p>
         <button class="arrow arrow--prev" id="prev" aria-label="הקודם">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </button>
@@ -67,27 +40,7 @@
       </div>
       <div class="dots" id="dots" role="tablist" aria-label="מעבר בין חברי הדירקטוריון"></div>
     </section>
-
-    <section class="how" id="how" aria-labelledby="howTitle">
-      <div class="section-head">
-        <p class="eyebrow">איך זה עובד</p>
-        <h2 id="howTitle">מהבחירות – ועד לחוק</h2>
-      </div>
-      <ol class="how__grid">
-        <li><span class="how__n">1</span><h3>יעד ברור</h3><p>כל חבר דירקטוריון מציב מטרות מדידות לתחום שלו.</p></li>
-        <li><span class="how__n">2</span><h3>שלבים מוגדרים</h3><p>לכל מטרה – מפת דרכים מהגיבוש ועד ההצבעה.</p></li>
-        <li><span class="how__n">3</span><h3>לוח זמנים</h3><p>כל שלב מעוגן במועד: לפני הבחירות, תחילת המושב ואילך.</p></li>
-        <li><span class="how__n">4</span><h3>שקיפות</h3><p>הסטטוס של כל שלב מתעדכן כאן לאורך המושב.</p></li>
-      </ol>
-    </section>
   </main>
-
-  <footer class="footer" id="contact">
-    <img src="assets/logo-light.png" alt="" width="156" height="142">
-    <p>כח התערבות – לובי ציוני לאומי</p>
-    <a class="btn btn--ghost" id="contactLink" href="#">צרו קשר</a>
-    <small>© <span id="year"></span> כח התערבות. כל הזכויות שמורות.</small>
-  </footer>
 
   <!-- Director plan panel -->
   <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelName" hidden>
@@ -121,7 +74,21 @@
     </div>
   </div>
 
-  <script src="data.js"></script>
+  <!-- Editing (low-key entry point) -->
+  <button class="edit-fab" id="editFab" aria-label="מצב עריכה" title="עריכה">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></svg>
+  </button>
+  <div class="edit-bar" id="editBar" hidden>
+    <span class="edit-bar__label">מצב עריכה</span>
+    <button class="btn btn--gold btn--sm" id="editSave" disabled>שמירה</button>
+    <button class="btn btn--ghost btn--sm" id="editUndo" disabled>ביטול שינויים</button>
+    <button class="btn btn--ghost btn--sm" id="editSettings">הגדרות</button>
+    <button class="btn btn--ghost btn--sm" id="editExit">יציאה</button>
+  </div>
+  <dialog class="dlg" id="dlg"><form class="dlg__form" id="dlgForm" method="dialog"></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script src="app.js"></script>
+  <script src="editor.js"></script>
 </body>
 </html>
