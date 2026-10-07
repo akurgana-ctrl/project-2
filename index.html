@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>כח התערבות | התוכנית לכנסת</title>
+  <meta name="description" content="התוכנית של כח התערבות – לובי ציוני לאומי – לכנסת הקרובה: מטרות, שלבים ולוחות זמנים של חברי הדירקטוריון.">
+  <meta name="theme-color" content="#071433">
+  <meta property="og:title" content="כח התערבות | התוכנית לכנסת">
+  <meta property="og:description" content="מטרות, שלבים ולוחות זמנים לכנסת הקרובה.">
+  <meta property="og:image" content="assets/logo.png">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <img class="masthead__logo" src="assets/logo-light.png" alt="כח התערבות – לובי ציוני לאומי" width="312" height="285">
+      <p class="eyebrow" id="siteKnesset"></p>
+      <h1 id="siteTitle"></h1>
+      <p class="masthead__sub" id="siteSubtitle"></p>
+      <button class="edit-tool edit-tool--inline" data-act="site-edit" aria-label="עריכת הכותרת">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></svg>
+      </button>
+    </header>
+
+    <section class="board" id="board" aria-label="חברי הדירקטוריון">
+      <div class="coverflow" id="coverflow" role="region" aria-roledescription="קרוסלה" aria-label="חברי הדירקטוריון">
+        <div class="coverflow__stage" id="stage"></div>
+        <p class="empty" id="boardEmpty" hidden>התוכן נטען…</p>
+        <button class="arrow arrow--prev" id="prev" aria-label="הקודם">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <button class="arrow arrow--next" id="next" aria-label="הבא">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+      </div>
+      <div class="dots" id="dots" role="tablist" aria-label="מעבר בין חברי הדירקטוריון"></div>
+    </section>
+  </main>
+
+  <!-- Director plan panel -->
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelName" hidden>
+    <div class="panel__backdrop" data-close></div>
+    <div class="panel__sheet">
+      <header class="panel__head">
+        <div class="panel__who">
+          <div class="avatar avatar--sm" id="panelAvatar"></div>
+          <div>
+            <h2 id="panelName"></h2>
+            <p id="panelRole"></p>
+          </div>
+        </div>
+        <button class="close" data-close aria-label="סגירה">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </header>
+
+      <div class="goals" role="region" aria-roledescription="קרוסלה" aria-label="מטרות">
+        <div class="goals__track" id="goalsTrack"></div>
+      </div>
+      <div class="goals__nav">
+        <button class="arrow arrow--inline" id="gPrev" aria-label="המטרה הקודמת">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="dots dots--sm" id="gDots"></div>
+        <button class="arrow arrow--inline" id="gNext" aria-label="המטרה הבאה">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editing (low-key entry point) -->
+  <button class="edit-fab" id="editFab" aria-label="מצב עריכה" title="עריכה">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></svg>
+  </button>
+  <div class="edit-bar" id="editBar" hidden>
+    <span class="edit-bar__label">מצב עריכה</span>
+    <button class="btn btn--gold btn--sm" id="editSave" disabled>שמירה</button>
+    <button class="btn btn--ghost btn--sm" id="editUndo" disabled>ביטול שינויים</button>
+    <button class="btn btn--ghost btn--sm" id="editSettings">הגדרות</button>
+    <button class="btn btn--ghost btn--sm" id="editExit">יציאה</button>
+  </div>
+  <dialog class="dlg" id="dlg"><form class="dlg__form" id="dlgForm" method="dialog"></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
