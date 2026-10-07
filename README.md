@@ -24,6 +24,7 @@ python3 -m http.server 8000
 ```
 ואז לפתוח http://localhost:8000 (פתיחה ישירה של הקובץ לא תטען את התוכן).
 
-## פרסום ב-GitHub Pages
-Settings → Pages → Source: *Deploy from a branch* → `main` / `(root)` → Save.
-העורך שומר לענף `main` כברירת מחדל (ניתן לשנות בהגדרות העריכה).
+## פרסום
+האתר החי: https://akurgana-ctrl.github.io/project-2/
+GitHub Pages מפרסם מהענף **`gh-pages`** – זה הענף החי, והעורך שומר אליו.
+כל שמירה מהעורך מתפרסמת לכולם תוך כדקה.

@@ -23,7 +23,7 @@
     return {
       owner: m ? m[1] : "akurgana-ctrl",
       repo: m && seg && !seg.includes(".") ? seg : "project-2",
-      branch: "main",
+      branch: "gh-pages",
       token: ""
     };
   }
