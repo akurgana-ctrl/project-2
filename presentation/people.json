@@ -60,7 +60,7 @@
           "availability": "medium"
         },
         {
-          "name": "יואב",
+          "name": "יואב קוסטינר",
           "availability": "low"
         },
         {
@@ -105,11 +105,11 @@
         },
         {
           "name": "ישראל ציג",
-          "availability": "low"
+          "availability": "medium"
         },
         {
           "name": "אסתר הורוביץ",
-          "availability": "medium"
+          "availability": "low"
         },
         {
           "name": "מנחם ברעם",
@@ -164,6 +164,57 @@
         },
         {
           "name": "דובי ג'ייקובס",
+          "availability": "medium"
+        }
+      ]
+    },
+    {
+      "id": "digital",
+      "title": "צוות דיגיטל",
+      "head": {
+        "name": "איתמר כהן",
+        "role": "ראש צוות (טוויטר)",
+        "availability": "medium"
+      },
+      "members": [
+        {
+          "name": "אלתר כהן",
+          "availability": "medium",
+          "note": "אינסטגרם"
+        },
+        {
+          "name": "ישראל ציג",
+          "availability": "medium",
+          "note": "פייסבוק"
+        },
+        {
+          "name": "מנחם זיבוטפסקי",
+          "availability": "medium",
+          "note": "יוטיוב"
+        },
+        {
+          "name": "יהודה חדאד",
+          "availability": "medium",
+          "note": "אתר"
+        },
+        {
+          "name": "יוסף",
+          "availability": "medium"
+        },
+        {
+          "name": "יהודה הנדלר",
+          "availability": "medium"
+        },
+        {
+          "name": "יואב קוסטינר",
+          "availability": "medium"
+        },
+        {
+          "name": "יוסף גוטויליג",
+          "availability": "medium"
+        },
+        {
+          "name": "משה הלר",
           "availability": "medium"
         }
       ]

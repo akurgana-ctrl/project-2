@@ -82,7 +82,7 @@ def rect(slide, x, y, w, h, fill, line=None, radius=0.18, dashed=False):
     return shp
 
 
-def card(slide, x, y, w, h, name, role, avail, colored, size=12):
+def card(slide, x, y, w, h, name, role, avail, colored, size=12, note=None):
     """A person card. colored=False -> brand look; True -> availability color."""
     empty = not name
     if colored:
@@ -107,7 +107,11 @@ def card(slide, x, y, w, h, name, role, avail, colored, size=12):
         text(slide, x, y + Inches(0.06), w, h * 0.52, label, size, fg, bold=True, anchor=MSO_ANCHOR.BOTTOM)
         text(slide, x, y + h * 0.55, w, h * 0.4, role, 9, sub, anchor=MSO_ANCHOR.TOP)
     else:
-        text(slide, x, y, w, h, label, size, fg, bold=True)
+        if note:  # short responsibility on a small second line
+            text(slide, x, y, w, h * 0.6, label, size - 1, fg, bold=True, anchor=MSO_ANCHOR.BOTTOM)
+            text(slide, x, y + h * 0.58, w, h * 0.4, f"({note})", 8, sub, anchor=MSO_ANCHOR.TOP)
+        else:
+            text(slide, x, y, w, h, label, size, fg, bold=True)
 
 
 def connector(slide, x1, y1, x2, y2):
@@ -230,7 +234,7 @@ def org_slide(prs, data, colored):
             r, c = divmod(i, sc)
             x = tx + Inches(0.1) + iw - (c + 1) * mw - c * mgap
             y = top + r * (mh + mgap)
-            card(s, x, y, mw, mh, m["name"], None, m["availability"], colored, size=11)
+            card(s, x, y, mw, mh, m["name"], None, m["availability"], colored, size=11, note=m.get("note"))
         x_right = tx - tgap
 
     # connectors: board -> bus -> each team head
