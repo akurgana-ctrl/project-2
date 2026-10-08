@@ -40,6 +40,11 @@
       }
     ]
   },
+  "ceo": {
+    "name": "אדם קורגן",
+    "role": "מנכ״ל",
+    "availability": null
+  },
   "teams": [
     {
       "id": "research",

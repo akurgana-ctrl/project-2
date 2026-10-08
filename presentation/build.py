@@ -187,8 +187,16 @@ def org_slide(prs, data, colored):
 
     # Teams: one column each, width proportional to how many card columns it needs
     teams = data["teams"]
-    head_y, head_h = Inches(2.62), Inches(0.62)
-    top = head_y + head_h + Inches(0.32)
+    # CEO between board and teams
+    ceo = data.get("ceo")
+    anchor_y = by + ch
+    if ceo:
+        ceo_w, ceo_h, ceo_y = Inches(2.6), Inches(0.56), Inches(2.3)
+        connector(s, W // 2, anchor_y, W // 2, ceo_y)
+        card(s, (W - ceo_w) // 2, ceo_y, ceo_w, ceo_h, ceo["name"], ceo["role"], ceo["availability"], colored)
+        anchor_y = ceo_y + ceo_h
+    head_y, head_h = (Inches(3.2), Inches(0.56)) if ceo else (Inches(2.62), Inches(0.62))
+    top = head_y + head_h + Inches(0.26)
     bottom = Inches(6.85)
     mh, mgap = Inches(0.36), Inches(0.08)
     max_rows = max(1, int((bottom - top + mgap) / (mh + mgap)))
@@ -197,7 +205,7 @@ def org_slide(prs, data, colored):
     unit = min(int((usable - tgap * (len(teams) - 1)) / sum(subcols)), Inches(1.9))
     total = unit * sum(subcols) + tgap * (len(teams) - 1)
 
-    bus_y = Inches(2.36)
+    bus_y = (anchor_y + head_y) // 2
     centers = []
     x_right = (W + total) // 2
     for t, sc in zip(teams, subcols):
@@ -226,7 +234,7 @@ def org_slide(prs, data, colored):
         x_right = tx - tgap
 
     # connectors: board -> bus -> each team head
-    connector(s, W // 2, by + ch, W // 2, bus_y)
+    connector(s, W // 2, anchor_y, W // 2, bus_y)
     if len(centers) > 1:
         connector(s, min(centers), bus_y, max(centers), bus_y)
     for cx in centers:
