@@ -1,0 +1,128 @@
+{
+  "_note": "availability: high / medium / low / null (טרם הוזן). זמינות צוות המחקר – חלוקה זמנית לפי בקשה (שליש נמוכה), לעדכן לפי המציאות.",
+  "board": {
+    "title": "דירקטוריון",
+    "members": [
+      {
+        "name": "אודליה קדמי",
+        "role": "ראש תחום ביטחון אישי",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום חינוך וזהות",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום התיישבות",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום משפט וחוקה",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום כלכלה ויוקר מחיה",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום עלייה וקליטה",
+        "availability": null
+      },
+      {
+        "name": "",
+        "role": "ראש תחום ביטחון לאומי",
+        "availability": null
+      }
+    ]
+  },
+  "teams": [
+    {
+      "id": "research",
+      "title": "צוות מחקר",
+      "head": {
+        "name": "טמיר שרגא",
+        "role": "ראש צוות",
+        "availability": "medium"
+      },
+      "members": [
+        {
+          "name": "אלתר כהן",
+          "availability": "medium"
+        },
+        {
+          "name": "יואב",
+          "availability": "low"
+        },
+        {
+          "name": "מרדכי קמלמן",
+          "availability": "medium"
+        },
+        {
+          "name": "יפית בירון",
+          "availability": "medium"
+        },
+        {
+          "name": "נתנאל מאמו",
+          "availability": "low"
+        },
+        {
+          "name": "ישי זנגן",
+          "availability": "medium"
+        },
+        {
+          "name": "אלון",
+          "availability": "medium"
+        },
+        {
+          "name": "ליאור טלמור",
+          "availability": "low"
+        },
+        {
+          "name": "עידן ליפשיץ",
+          "availability": "medium"
+        },
+        {
+          "name": "יהודה ליבנר",
+          "availability": "medium"
+        },
+        {
+          "name": "מיכאל פסין",
+          "availability": "medium"
+        },
+        {
+          "name": "הדר שטרול",
+          "availability": "low"
+        },
+        {
+          "name": "ישראל ציג",
+          "availability": "low"
+        },
+        {
+          "name": "אסתר הורוביץ",
+          "availability": "medium"
+        },
+        {
+          "name": "מנחם ברעם",
+          "availability": "medium"
+        },
+        {
+          "name": "משה לנגלב",
+          "availability": "medium"
+        },
+        {
+          "name": "בנימין רוזנסקי",
+          "availability": "low"
+        },
+        {
+          "name": "חגי כהן קלונימוס",
+          "availability": "medium"
+        }
+      ]
+    }
+  ]
+}
