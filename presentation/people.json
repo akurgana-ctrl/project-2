@@ -4,39 +4,39 @@
     "title": "דירקטוריון",
     "members": [
       {
-        "name": "אודליה קדמי",
+        "name": "תמיר דורטל",
+        "role": "מייסד · ראש תחום כלכלה",
+        "availability": "high"
+      },
+      {
+        "name": "עו״ד אודליה קדמי",
         "role": "ראש תחום ביטחון אישי",
+        "availability": "medium"
+      },
+      {
+        "name": "ד״ר אמיר רובין",
+        "role": "ראש תחום רפואה",
+        "availability": "medium"
+      },
+      {
+        "name": "נגה ארבל",
+        "role": "ראש תחום חקיקה",
+        "availability": "medium"
+      },
+      {
+        "name": "טל קופל",
+        "role": "ראש תחום חינוך ואתיקה",
         "availability": null
       },
       {
-        "name": "",
-        "role": "ראש תחום חינוך וזהות",
-        "availability": null
+        "name": "עו״ד תמר ארבל",
+        "role": "ראש תחום משפט",
+        "availability": "low"
       },
       {
-        "name": "",
-        "role": "ראש תחום התיישבות",
-        "availability": null
-      },
-      {
-        "name": "",
-        "role": "ראש תחום משפט וחוקה",
-        "availability": null
-      },
-      {
-        "name": "",
-        "role": "ראש תחום כלכלה ויוקר מחיה",
-        "availability": null
-      },
-      {
-        "name": "",
-        "role": "ראש תחום עלייה וקליטה",
-        "availability": null
-      },
-      {
-        "name": "",
-        "role": "ראש תחום ביטחון לאומי",
-        "availability": null
+        "name": "שלומית לביא",
+        "role": "ראש תחום רווחה",
+        "availability": "medium"
       }
     ]
   },
