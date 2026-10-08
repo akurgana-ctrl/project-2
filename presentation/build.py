@@ -82,7 +82,7 @@ def rect(slide, x, y, w, h, fill, line=None, radius=0.18, dashed=False):
     return shp
 
 
-def card(slide, x, y, w, h, name, role, avail, colored):
+def card(slide, x, y, w, h, name, role, avail, colored, size=12):
     """A person card. colored=False -> brand look; True -> availability color."""
     empty = not name
     if colored:
@@ -90,7 +90,7 @@ def card(slide, x, y, w, h, name, role, avail, colored):
         rect(slide, x, y, w, h, fill)
         fg, sub = WHITE, WHITE
     elif empty:
-        rect(slide, x, y, w, h, None, line=MUTED, dashed=True)
+        rect(slide, x, y, w, h, BG, line=MUTED, dashed=True)
         fg, sub = MUTED, MUTED
     else:
         rect(slide, x, y, w, h, WHITE, line=LINE)
@@ -104,10 +104,10 @@ def card(slide, x, y, w, h, name, role, avail, colored):
         fg, sub = INK, MUTED
     label = name or "שם יעודכן"
     if role:
-        text(slide, x, y + Inches(0.06), w, h * 0.52, label, 12, fg, bold=True, anchor=MSO_ANCHOR.BOTTOM)
+        text(slide, x, y + Inches(0.06), w, h * 0.52, label, size, fg, bold=True, anchor=MSO_ANCHOR.BOTTOM)
         text(slide, x, y + h * 0.55, w, h * 0.4, role, 9, sub, anchor=MSO_ANCHOR.TOP)
     else:
-        text(slide, x, y, w, h, label, 12, fg, bold=True)
+        text(slide, x, y, w, h, label, size, fg, bold=True)
 
 
 def connector(slide, x1, y1, x2, y2):
@@ -162,6 +162,7 @@ def legend(slide):
 
 
 def org_slide(prs, data, colored):
+    """Whole organisation on one slide: board on top, every team as a column below."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
     if colored:
         header(s, "זמינות במבנה הארגוני הקיים", "כל אדם צבוע לפי רמת הזמינות שלו")
@@ -173,44 +174,63 @@ def org_slide(prs, data, colored):
 
     # Board row
     board = data["board"]["members"]
-    text(s, margin, Inches(1.2), usable, Inches(0.3), data["board"]["title"], 13, NAVY, bold=True,
+    text(s, margin, Inches(1.12), usable, Inches(0.28), data["board"]["title"], 13, NAVY, bold=True,
          align=PP_ALIGN.RIGHT)
-    gap = Inches(0.14)
+    gap = Inches(0.12)
     n = len(board)
     cw = int((usable - gap * (n - 1)) / n)
-    ch = Inches(0.78)
-    by = Inches(1.55)
+    ch = Inches(0.66)
+    by = Inches(1.42)
     for i, m in enumerate(board):  # RTL: first item on the right
         x = W - margin - (i + 1) * cw - i * gap
         card(s, x, by, cw, ch, m["name"], m["role"], m["availability"], colored)
 
-    # Research team
-    team = data["teams"][0]
-    hx_w, hx_h = Inches(2.6), Inches(0.8)
-    hx = int((W - hx_w) / 2)
-    hy = Inches(2.75)
-    connector(s, W // 2, by + ch, W // 2, hy)
-    head = team["head"]
-    card(s, hx, hy, hx_w, hx_h, head["name"], f'{head["role"]} · {team["title"]}', head["availability"],
-         colored)
+    # Teams: one column each, width proportional to how many card columns it needs
+    teams = data["teams"]
+    head_y, head_h = Inches(2.62), Inches(0.62)
+    top = head_y + head_h + Inches(0.32)
+    bottom = Inches(6.85)
+    mh, mgap = Inches(0.36), Inches(0.08)
+    max_rows = max(1, int((bottom - top + mgap) / (mh + mgap)))
+    subcols = [max(1, -(-len(t["members"]) // max_rows)) for t in teams]
+    tgap = Inches(0.3)
+    unit = min(int((usable - tgap * (len(teams) - 1)) / sum(subcols)), Inches(1.9))
+    total = unit * sum(subcols) + tgap * (len(teams) - 1)
 
-    members = team["members"]
-    cols = 6
-    rows = -(-len(members) // cols)
-    mgap = Inches(0.14)
-    mw = int((usable - mgap * (cols - 1)) / cols)
-    mh = Inches(0.6)
-    top = Inches(3.95)
-    # team frame
-    frame_h = rows * mh + (rows - 1) * mgap + Inches(0.35)
-    rect(s, margin - Inches(0.12), top - Inches(0.2), usable + Inches(0.24), frame_h + Inches(0.05),
-         None, line=LINE, radius=0.06)
-    connector(s, W // 2, hy + hx_h, W // 2, top - Inches(0.2))
-    for i, m in enumerate(members):
-        r, c = divmod(i, cols)
-        x = W - margin - (c + 1) * mw - c * mgap
-        y = top + r * (mh + mgap)
-        card(s, x, y, mw, mh, m["name"], None, m["availability"], colored)
+    bus_y = Inches(2.36)
+    centers = []
+    x_right = (W + total) // 2
+    for t, sc in zip(teams, subcols):
+        tw = sc * unit
+        tx = x_right - tw
+        cx = tx + tw // 2
+        centers.append(cx)
+        # team frame
+        rows = max(1, -(-len(t["members"]) // sc))
+        frame_top = head_y + head_h / 2
+        frame_h = top + rows * mh + (rows - 1) * mgap + Inches(0.14) - frame_top
+        rect(s, tx, frame_top, tw, frame_h, None, line=LINE, radius=0.04)
+        # head
+        hw = min(tw - Inches(0.2), Inches(2.6))
+        head = t.get("head") or {}
+        card(s, cx - hw // 2, head_y, hw, head_h, head.get("name", ""),
+             f'{head.get("role", "ראש צוות")} · {t["title"]}', head.get("availability"), colored)
+        # members, RTL inside the team
+        iw = tw - Inches(0.2)
+        mw = int((iw - mgap * (sc - 1)) / sc)
+        for i, m in enumerate(t["members"]):
+            r, c = divmod(i, sc)
+            x = tx + Inches(0.1) + iw - (c + 1) * mw - c * mgap
+            y = top + r * (mh + mgap)
+            card(s, x, y, mw, mh, m["name"], None, m["availability"], colored, size=11)
+        x_right = tx - tgap
+
+    # connectors: board -> bus -> each team head
+    connector(s, W // 2, by + ch, W // 2, bus_y)
+    if len(centers) > 1:
+        connector(s, min(centers), bus_y, max(centers), bus_y)
+    for cx in centers:
+        connector(s, cx, bus_y, cx, head_y)
 
     if colored:
         legend(s)
@@ -218,14 +238,17 @@ def org_slide(prs, data, colored):
 
 
 def main():
-    data = json.loads((HERE / "people.json").read_text(encoding="utf-8"))
+    import sys
+    src = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "people.json"
+    out = Path(sys.argv[2]) if len(sys.argv) > 2 else OUT
+    data = json.loads(src.read_text(encoding="utf-8"))
     prs = Presentation()
     prs.slide_width, prs.slide_height = W, H
     org_slide(prs, data, colored=False)
     org_slide(prs, data, colored=True)
-    OUT.parent.mkdir(exist_ok=True)
-    prs.save(OUT)
-    print(OUT)
+    out.parent.mkdir(exist_ok=True)
+    prs.save(out)
+    print(out)
 
 
 if __name__ == "__main__":
