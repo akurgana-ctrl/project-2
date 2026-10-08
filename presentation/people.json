@@ -123,6 +123,45 @@
           "availability": "medium"
         }
       ]
+    },
+    {
+      "id": "activists",
+      "title": "צוות אקטיביסטים",
+      "head": {
+        "name": "יהונתן יחזקאל",
+        "role": "ראש צוות",
+        "availability": "low"
+      },
+      "members": [
+        {
+          "name": "רוני מרטין",
+          "availability": "medium"
+        },
+        {
+          "name": "בנימין שיפרין",
+          "availability": "medium"
+        },
+        {
+          "name": "משה הלר",
+          "availability": "medium"
+        },
+        {
+          "name": "יהודה שוורצמן",
+          "availability": "medium"
+        },
+        {
+          "name": "צופיה צדוק",
+          "availability": "medium"
+        },
+        {
+          "name": "יצחק פינק",
+          "availability": "medium"
+        },
+        {
+          "name": "דובי ג'ייקובס",
+          "availability": "medium"
+        }
+      ]
     }
   ]
 }
