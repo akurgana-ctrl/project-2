@@ -43,7 +43,7 @@
   "ceo": {
     "name": "אדם קורגן",
     "role": "מנכ״ל",
-    "availability": null
+    "availability": "high"
   },
   "teams": [
     {
