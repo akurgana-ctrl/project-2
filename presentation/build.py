@@ -38,20 +38,20 @@ W, H = Inches(13.333), Inches(7.5)
 
 
 def text(slide, x, y, w, h, s, size, color=INK, bold=False, align=PP_ALIGN.CENTER,
-         anchor=MSO_ANCHOR.MIDDLE):
+         anchor=MSO_ANCHOR.MIDDLE, rtl=True):
     box = slide.shapes.add_textbox(x, y, w, h)
     tf = box.text_frame
     tf.word_wrap = True
     tf.vertical_anchor = anchor
     tf.margin_left = tf.margin_right = Inches(0.04)
     tf.margin_top = tf.margin_bottom = 0
-    style_para(tf.paragraphs[0], s, size, color, bold, align)
+    style_para(tf.paragraphs[0], s, size, color, bold, align, rtl)
     return box
 
 
-def style_para(p, s, size, color, bold, align):
+def style_para(p, s, size, color, bold, align, rtl=True):
     p.alignment = align
-    p._p.get_or_add_pPr().set("rtl", "1")
+    p._p.get_or_add_pPr().set("rtl", "1" if rtl else "0")
     r = p.add_run()
     r.text = s
     r.font.size = Pt(size)
@@ -191,6 +191,101 @@ def info_box(slide, x, y, w, h, block, accent=NAVY):
         text(slide, x + Inches(0.15), ty, w - Inches(0.3), Inches(0.3), "• " + line, 11, INK,
              align=PP_ALIGN.RIGHT)
         ty += Inches(0.3)
+
+
+def num_dot(slide, x, y, d, label, fill=NAVY, color=WHITE):
+    dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, x, y, d, d)
+    dot.fill.solid()
+    dot.fill.fore_color.rgb = fill
+    dot.line.fill.background()
+    dot.shadow.inherit = False
+    text(slide, x - Inches(0.1), y, d + Inches(0.2), d, label, 12 if len(label) < 3 else 10, color, bold=True,
+         rtl=False)
+
+
+def appendix_stages(prs, block):
+    """One row per program, its stages flowing right-to-left as steps."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, block["title"], block["subtitle"])
+    margin = Inches(0.45)
+    progs = block["programs"]
+    top, bottom = Inches(1.25), Inches(7.2)
+    gap = Inches(0.14)
+    rh = int((bottom - top - gap * (len(progs) - 1)) / len(progs))
+    tw = Inches(2.9)
+    for i, pg in enumerate(progs):
+        y = top + i * (rh + gap)
+        rect(s, margin, y, W - 2 * margin, rh, WHITE, line=LINE, radius=0.06)
+        tx = W - margin - tw
+        num_dot(s, W - margin - Inches(0.5), y + (rh - Inches(0.38)) // 2, Inches(0.38), pg["num"])
+        text(s, tx, y, tw - Inches(0.6), rh, pg["title"], 13, NAVY, bold=True, align=PP_ALIGN.RIGHT)
+        st = pg["stages"]
+        area_r = tx - Inches(0.1)
+        area_l = margin + Inches(0.12)
+        sgap = Inches(0.22)
+        n = 5  # fixed grid so stage k lines up across programs
+        sw = int((area_r - area_l - sgap * (n - 1)) / n)
+        sh = rh - Inches(0.24)
+        sy = y + Inches(0.12)
+        for k, (what, who, when) in enumerate(st):
+            x = area_r - (k + 1) * sw - k * sgap
+            rect(s, x, sy, sw, sh, BG, line=None, radius=0.1)
+            text(s, x + Inches(0.06), sy + Inches(0.04), sw - Inches(0.12), sh * 0.58, what, 11, INK,
+                 bold=True, anchor=MSO_ANCHOR.MIDDLE)
+            text(s, x + Inches(0.06), sy + sh * 0.6, sw - Inches(0.12), sh * 0.2, who, 9, NAVY)
+            text(s, x + Inches(0.06), sy + sh * 0.78, sw - Inches(0.12), sh * 0.2, when, 9, MUTED)
+            if k:
+                arrow(s, x + sw + sgap - Inches(0.03), sy + sh // 2, x + sw + Inches(0.03), sy + sh // 2, GOLD)
+    return s
+
+
+def appendix_table(prs, block):
+    """Grouped rows: # | program | track | committee | first step. Gold strip marks flagship items."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, block["title"], block["subtitle"])
+    margin = Inches(0.45)
+    cols = [("", 0.5), ("תוכנית", 5.0), ("מסלול פעולה", 2.2), ("ועדה", 2.0), ("צעד ראשון", 2.73)]
+    xs, x = [], W - margin
+    for _, wi in cols:
+        x -= Inches(wi)
+        xs.append(x)
+    y = Inches(1.2)
+    hh = Inches(0.36)
+    rect(s, margin, y, W - 2 * margin, hh, NAVY, radius=0.15)
+    for (label, wi), cx in zip(cols, xs):
+        text(s, cx + Inches(0.08), y, Inches(wi) - Inches(0.16), hh, label, 11, WHITE, bold=True,
+             align=PP_ALIGN.RIGHT)
+    y += hh + Inches(0.08)
+    nrows = sum(len(sec["rows"]) for sec in block["sections"])
+    avail = Inches(6.95) - y - len(block["sections"]) * Inches(0.38)
+    rh = min(Inches(0.6), int(avail / nrows))
+    for sec in block["sections"]:
+        text(s, margin, y, W - 2 * margin, Inches(0.34), sec["title"], 13, NAVY, bold=True,
+             align=PP_ALIGN.RIGHT)
+        y += Inches(0.38)
+        for num, prog, track, com, step, flag in sec["rows"]:
+            rect(s, margin, y, W - 2 * margin, rh - Inches(0.06), WHITE, line=LINE, radius=0.12)
+            if flag:
+                strip = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, W - margin - Inches(0.07), y + Inches(0.06),
+                                           Inches(0.06), rh - Inches(0.18))
+                strip.fill.solid()
+                strip.fill.fore_color.rgb = GOLD
+                strip.line.fill.background()
+                strip.shadow.inherit = False
+            cells = [num, prog, track, com, step]
+            for (label, wi), cx, val, ci in zip(cols, xs, cells, range(5)):
+                if ci == 0:
+                    num_dot(s, cx + (Inches(wi) - Inches(0.32)) // 2, y + (rh - Inches(0.06) - Inches(0.32)) // 2,
+                            Inches(0.32), val, fill=GOLD if flag else NAVY, color=NAVY_DARK if flag else WHITE)
+                    continue
+                text(s, cx + Inches(0.08), y, Inches(wi) - Inches(0.16), rh - Inches(0.06), val,
+                     11 if ci == 1 else 10, INK if ci in (1, 4) else NAVY, bold=(ci == 1), align=PP_ALIGN.RIGHT)
+            y += rh
+    # legend for flagship marker
+    num_dot(s, margin, Inches(7.08), Inches(0.24), "", fill=GOLD)
+    text(s, margin + Inches(0.3), Inches(7.04), Inches(3), Inches(0.32), "תוכנית דגל מומלצת", 10, INK,
+         align=PP_ALIGN.LEFT)
+    return s
 
 
 def proposal_slide(prs, data):
@@ -383,6 +478,13 @@ def main():
     org_slide(prs, data, colored=True)
     if "proposal" in data:
         proposal_slide(prs, data)
+    plans_path = HERE / "plans.json"
+    if plans_path.exists():
+        plans = json.loads(plans_path.read_text(encoding="utf-8"))
+        for b in plans.get("stages", []):
+            appendix_stages(prs, b)
+        for b in plans.get("tables", []):
+            appendix_table(prs, b)
     out.parent.mkdir(exist_ok=True)
     prs.save(out)
     print(out)
