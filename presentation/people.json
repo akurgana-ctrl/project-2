@@ -195,15 +195,15 @@
           },
           {
             "name": "יובל גרינברגר",
-            "availability": "medium"
+            "availability": "low"
           },
           {
             "name": "יוסף גוטויליג",
-            "availability": "medium"
+            "availability": "low"
           },
           {
             "name": "משה הורוביץ",
-            "availability": "medium"
+            "availability": "low"
           },
           {
             "name": "שני קולברש",
@@ -255,7 +255,7 @@
         },
         {
           "name": "יוסף גוטויליג",
-          "availability": "medium"
+          "availability": "low"
         },
         {
           "name": "משה הלר",
