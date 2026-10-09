@@ -199,31 +199,35 @@ def proposal_slide(prs, data):
     header(s, pr["title"], pr["subtitle"])
     margin = Inches(0.45)
 
-    # Top: reduced board (right/centre) + advisors (left)
-    bx_l, bx_r = Inches(3.35), W - margin
-    text(s, bx_l, Inches(1.1), bx_r - bx_l, Inches(0.26), pr["board"]["title"], 13, NAVY, bold=True,
-         align=PP_ALIGN.RIGHT)
-    names = pr["board"]["names"]
-    g = Inches(0.12)
-    cw = int((bx_r - bx_l - g * (len(names) - 1)) / len(names))
-    by, bh = Inches(1.4), Inches(0.5)
-    for i, n in enumerate(names):
-        card(s, bx_r - (i + 1) * cw - i * g, by, cw, bh, n, None, None, False, size=12)
-    adv = pr["advisors"]
-    ax, aw = margin, Inches(2.65)
-    rect(s, ax, Inches(1.18), aw, Inches(0.74), None, line=GOLD, radius=0.1, dashed=True)
-    badge(s, ax + Inches(0.08), Inches(1.06))
-    text(s, ax, Inches(1.2), aw - Inches(0.12), Inches(0.26), adv["title"], 12, NAVY, bold=True,
-         align=PP_ALIGN.RIGHT)
-    text(s, ax, Inches(1.45), aw - Inches(0.12), Inches(0.24), " · ".join(adv["names"]), 11, INK,
-         align=PP_ALIGN.RIGHT)
-    text(s, ax, Inches(1.67), aw - Inches(0.12), Inches(0.22), adv["note"], 9, MUTED, align=PP_ALIGN.RIGHT)
+    # Top: everyone outside the core, split by how they take part
+    groups = pr["groups"]
+    gx_r, gx_l = W - margin, margin
+    ggap = Inches(0.35)
+    total_people = sum(len(gr["people"]) for gr in groups)
+    unit = (gx_r - gx_l - ggap * (len(groups) - 1)) / total_people
+    gy, gh = Inches(1.15), Inches(0.92)
+    by, bh = gy + Inches(0.36), Inches(0.5)
+    x_right = gx_r
+    for gr in groups:
+        gw = int(unit * len(gr["people"]))
+        gx = x_right - gw
+        rect(s, gx, gy, gw, gh, None, line=LINE, radius=0.08)
+        text(s, gx + Inches(0.1), gy + Inches(0.04), gw - Inches(0.2), Inches(0.3),
+             gr["title"], 13, NAVY, bold=True, align=PP_ALIGN.RIGHT)
+        text(s, gx + Inches(0.1), gy + Inches(0.06), gw - Inches(0.2), Inches(0.28),
+             gr["note"], 10, MUTED, align=PP_ALIGN.LEFT)
+        n = len(gr["people"])
+        g = Inches(0.1)
+        cw = int((gw - Inches(0.2) - g * (n - 1)) / n)
+        for i, (nm, role) in enumerate(gr["people"]):
+            card(s, gx + gw - Inches(0.1) - (i + 1) * cw - i * g, by, cw, bh, nm, role, None, False, size=12)
+        x_right = gx - ggap
 
     # Core: the paid Knesset team
     core = pr["core"]
     cx, cwid = Inches(3.75), Inches(5.83)
     cy, chh = Inches(2.3), Inches(2.25)
-    connector(s, W // 2 + Inches(1.0), by + bh, W // 2 + Inches(1.0), cy)
+    connector(s, W // 2, gy + gh, W // 2, cy)
     rect(s, cx, cy, cwid, chh, WHITE, line=GOLD, radius=0.05)
     s.shapes[-1].line.width = Pt(2.5)
     badge(s, cx + Inches(0.12), cy - Inches(0.12))
