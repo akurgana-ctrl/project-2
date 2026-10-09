@@ -198,7 +198,7 @@ def assemble(shot_files):
          "-i", f"{S}/mix.wav",
          "-loop", "1", "-framerate", str(FPS), "-i", f"{W}/bug.png",
          "-filter_complex", fc, "-map", "[vout]", "-map", "5:a", "-t", f"{TOTAL}",
-         "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-maxrate", "22M", "-bufsize", "44M", "-profile:v", "high",
+         "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-maxrate", "16M", "-bufsize", "32M", "-profile:v", "high",
          "-pix_fmt", "yuv420p", "-movflags", "+faststart",
          "-c:a", "aac", "-b:a", "320k", "-ar", "48000",
          f"{S}/out_{ASP}.mp4"])
