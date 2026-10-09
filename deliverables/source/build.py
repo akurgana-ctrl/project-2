@@ -3,7 +3,7 @@ import os, sys, subprocess, math
 from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from plan import timeline, crop
-from edl import FPS, TOTAL
+from edl import FPS, TOTAL, BLUR
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 S, ASP = sys.argv[1], sys.argv[2]
@@ -11,13 +11,14 @@ OW, OH = (1920, 1080) if ASP == "h" else (1080, 1920)
 W = f"{S}/work_{ASP}"; os.makedirs(W, exist_ok=True)
 TTF = f"{S}/ttf"
 GOLD = (239, 199, 62)  # sampled from the כח התערבות logo
-FLASHES = [1.48, 4.72, 5.68, 16.20, 18.60, 34.32]
+FLASHES = [1.48, 4.72, 5.68, 16.20, 18.60]  # + wake-up and end card, from the timeline
 
 def run(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode: raise SystemExit(" ".join(cmd) + "\n" + r.stderr[-3000:])
 
 shots, audio, caps, cards = timeline()
+FLASHES += [a for a, b, txt in caps if "התעוררנו" in txt] + [c["start"] for c in cards if c["kind"] == "end"]
 
 # ---------- 1. shots: crop from 4K, drift, monochrome grade ----------
 GRADE = ("hue=s=0,"
@@ -32,10 +33,23 @@ def render_shot(i):
     drift = (f"crop={OW}:{OH}:x='{dx}+{dx*0.6}*sin(2*PI*0.21*t+{ph})+2.5*sin(11*t+{ph})'"
              f":y='{dy}+{dy*0.6}*sin(2*PI*0.17*t+{ph*1.3})+2.5*sin(13*t+{ph})'")
     vf = f"crop={w}:{h}:{x}:{y},scale={bw}:{bh}:flags=lanczos,{drift},fps={FPS},{GRADE},format=yuv420p"
+    boxes = [bx for bx in BLUR if bx[0] == s["clip"] and bx[1] < s["src"] + s["dur"] and bx[2] > s["src"]]
+    if boxes:  # soft-edged blur over the election poster, applied on the 4K frame before the crop
+        pre, last = [], "0:v"
+        for k, (_, _, _, x0, y0, x1, y1) in enumerate(boxes):
+            X0, Y0 = int(x0 * 3840) // 2 * 2, int(y0 * 2160) // 2 * 2
+            BW, BH = int((x1 - x0) * 3840) // 2 * 2, int((y1 - y0) * 2160) // 2 * 2
+            F = 40
+            pre.append(f"[{last}]split[o{k}][c{k}];[c{k}]crop={BW}:{BH}:{X0}:{Y0},gblur=sigma=38,format=yuva444p,"
+                       f"geq=lum='lum(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='255*min(1,min(min(X,W-X),min(Y,H-Y))/{F})'[p{k}];"
+                       f"[o{k}][p{k}]overlay={X0}:{Y0}[m{k}]")
+            last = f"m{k}"
+        vf = ";".join(pre) + f";[{last}]" + vf + "[vo]"
     out = f"{W}/shot{i:02d}.mp4"
     if os.path.exists(out): return out
+    vflag = ["-filter_complex", vf, "-map", "[vo]"] if boxes else ["-vf", vf]
     run(["ffmpeg", "-v", "error", "-y", "-ss", f"{s['src']:.3f}", "-i", f"{S}/raw/{s['clip']}.mp4",
-         "-t", f"{s['dur']:.3f}", "-an", "-vf", vf, "-r", str(FPS),
+         "-t", f"{s['dur']:.3f}", "-an", *vflag, "-r", str(FPS),
          "-c:v", "libx264", "-preset", "medium", "-crf", "10", out])
     return out
 
