@@ -203,6 +203,37 @@ def num_dot(slide, x, y, d, label, fill=NAVY, color=WHITE):
          rtl=False)
 
 
+def programs_slide(prs, leader):
+    """Programs only: numbered cards, no work plan (that lives in the appendices)."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, f'תוכניות כנסת 26 · {leader["domain"]}', leader["name"])
+    margin = Inches(0.45)
+    items = leader["items"]
+    n = len(items)
+    cols = 1 if n <= 5 else 2
+    rows = -(-n // cols)
+    top, bottom = Inches(1.35), Inches(7.1)
+    gap = Inches(0.16)
+    ch = min(Inches(2.2) if n <= 2 else Inches(1.1), int((bottom - top - gap * (rows - 1)) / rows))
+    cw = int((W - 2 * margin - gap * (cols - 1)) / cols)
+    size = 24 if n <= 2 else 16 if n <= 5 else 12
+    d = Inches(0.5) if n <= 5 else Inches(0.36)
+    for i, (num, title) in enumerate(items):
+        c, r = divmod(i, rows)  # fill the right column first
+        x = W - margin - (c + 1) * cw - c * gap
+        y = top + r * (ch + gap)
+        rect(s, x, y, cw, ch, WHITE, line=LINE, radius=0.12 if n > 5 else 0.08)
+        strip = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, x + cw - Inches(0.08), y + Inches(0.1),
+                                   Inches(0.06), ch - Inches(0.2))
+        strip.fill.solid()
+        strip.fill.fore_color.rgb = GOLD
+        strip.line.fill.background()
+        strip.shadow.inherit = False
+        num_dot(s, x + cw - Inches(0.25) - d, y + (ch - d) // 2, d, num)
+        text(s, x + Inches(0.2), y, cw - d - Inches(0.6), ch, title, size, INK, bold=True, align=PP_ALIGN.RIGHT)
+    return s
+
+
 def appendix_stages(prs, block):
     """One row per program, its stages flowing right-to-left as steps."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -211,7 +242,7 @@ def appendix_stages(prs, block):
     progs = block["programs"]
     top, bottom = Inches(1.25), Inches(7.2)
     gap = Inches(0.14)
-    rh = int((bottom - top - gap * (len(progs) - 1)) / len(progs))
+    rh = min(Inches(1.7), int((bottom - top - gap * (len(progs) - 1)) / len(progs)))
     tw = Inches(2.9)
     for i, pg in enumerate(progs):
         y = top + i * (rh + gap)
@@ -481,6 +512,8 @@ def main():
     plans_path = HERE / "plans.json"
     if plans_path.exists():
         plans = json.loads(plans_path.read_text(encoding="utf-8"))
+        for leader in plans.get("programs", []):
+            programs_slide(prs, leader)
         for b in plans.get("stages", []):
             appendix_stages(prs, b)
         for b in plans.get("tables", []):
