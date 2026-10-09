@@ -10,7 +10,7 @@ S, ASP = sys.argv[1], sys.argv[2]
 OW, OH = (1920, 1080) if ASP == "h" else (1080, 1920)
 W = f"{S}/work_{ASP}"; os.makedirs(W, exist_ok=True)
 TTF = f"{S}/ttf"
-GOLD = (216, 190, 120)
+GOLD = (239, 199, 62)  # sampled from the כח התערבות logo
 FLASHES = [1.48, 4.72, 5.68, 16.20, 18.60, 34.32]
 
 def run(cmd):
@@ -58,38 +58,45 @@ def card_q():
     text_center(d, OW / 2, OH / 2 - (bb[3] - bb[1]) / 2, "ובסוף?", f, (245, 242, 235))
     im.save(f"{W}/card_q.png")
 
+LOGO = f"{S}/logos/logo_rev.png"  # reversed כח התערבות logo (see logo_rev.py)
+
+def logo_sized(h=None, w=None):
+    lg = Image.open(LOGO)
+    if h: return lg.resize((round(lg.width * h / lg.height), h), Image.LANCZOS)
+    return lg.resize((w, round(lg.height * w / lg.width)), Image.LANCZOS)
+
 def card_end():
-    """Two layers: A = name block, B = CTA (appears later)."""
+    """Two layers: A = logo, B = CTA (appears later)."""
     v = ASP == "v"
     a = Image.new("RGBA", (OW, OH), (0, 0, 0, 0)); d = ImageDraw.Draw(a)
     cx = OW / 2
-    top = OH * (0.30 if v else 0.20)
-    kick = font(KB, 64 if v else 58)
-    hkick = text_center(d, cx, top, "הלובי של  על המשמעות", kick, (170, 170, 165))
-    big = font(FR, 210 if v else 200)
-    y = top + hkick + (50 if v else 40)
-    if v:
-        h1 = text_center(d, cx, y, "כוח", big, (245, 242, 235))
-        h2 = text_center(d, cx, y + h1 + 40, "ההתערבות", big, (245, 242, 235))
-        y = y + h1 + 40 + h2
-    else:
-        y += text_center(d, cx, y, "כוח ההתערבות", big, (245, 242, 235))
-    y += 60 if v else 50
+    lg = logo_sized(w=760) if v else logo_sized(h=500)
+    top = 300 if v else 88
+    a.alpha_composite(lg, (int(cx - lg.width / 2), top))
+    y = top + lg.height + (55 if v else 36)
     d.rectangle([cx - 70, y, cx + 70, y + 5], fill=GOLD)
     a.save(f"{W}/end_a.png")
 
     b = Image.new("RGBA", (OW, OH), (0, 0, 0, 0)); d = ImageDraw.Draw(b)
-    y += 55 if v else 45
-    cta = font(KB, 150 if v else 130)
-    y += text_center(d, cx, y, "תמכו עכשיו", cta, GOLD) + (34 if v else 26)
-    sub = font(KR, 72 if v else 62)
-    y += text_center(d, cx, y, "הלינק מתחת לוידאו", sub, (225, 222, 215)) + 34
+    y += 50 if v else 34
+    cta = font(KB, 150 if v else 118)
+    y += text_center(d, cx, y, "תמכו עכשיו", cta, GOLD) + (34 if v else 22)
+    sub = font(KR, 72 if v else 58)
+    y += text_center(d, cx, y, "הלינק מתחת לוידאו", sub, (225, 222, 215)) + (34 if v else 24)
     # down arrow, hand-drawn geometry so it matches the type weight
-    aw = 26
-    d.line([cx, y, cx, y + 70], fill=GOLD, width=6)
-    d.line([cx - aw, y + 70 - aw, cx, y + 72], fill=GOLD, width=6)
-    d.line([cx + aw, y + 70 - aw, cx, y + 72], fill=GOLD, width=6)
+    aw, al = 24, 60 if v else 52
+    d.line([cx, y, cx, y + al], fill=GOLD, width=6)
+    d.line([cx - aw, y + al - aw, cx, y + al + 2], fill=GOLD, width=6)
+    d.line([cx + aw, y + al - aw, cx, y + al + 2], fill=GOLD, width=6)
     b.save(f"{W}/end_b.png")
+
+def bug():
+    """Small logo in the corner for the body of the spot."""
+    im = Image.new("RGBA", (OW, OH), (0, 0, 0, 0))
+    lg = logo_sized(h=150 if ASP == "v" else 112)
+    al = lg.getchannel("A").point(lambda x: int(x * 0.92)); lg.putalpha(al)
+    im.alpha_composite(lg, (52, 150) if ASP == "v" else (58, 50))
+    im.save(f"{W}/bug.png")
 
 def gate():
     """Rounded film-gate matte like the reference: black outside, soft edge."""
@@ -110,7 +117,7 @@ def captions():
     v = ASP == "v"
     size = 118 if v else 104
     margin_v = 560 if v else 120
-    gold = "&H0078BED8&"  # BGR of GOLD
+    gold = "&H003EC7EF&"  # BGR of GOLD
     hdr = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {OW}
@@ -166,7 +173,8 @@ def assemble(shot_files):
         f"[v3]noise=c0s=16:c0f=t+u,vignette=angle=PI/4.2,"
         # exposure flashes on the big cuts
         f"eq=brightness=0.55:enable='{flash}',format=yuv420p[v4];"
-        f"[v4][g]overlay,ass={W}/caps.ass:fontsdir={TTF},format=yuv420p[vout]"
+        f"[6:v]format=rgba[bg];[v4][bg]overlay=enable='between(t,{q['start']+q['dur']:.2f},{e['start']:.2f})'[v5];"
+        f"[v5][g]overlay,ass={W}/caps.ass:fontsdir={TTF},format=yuv420p[vout]"
     )
     run(["ffmpeg", "-v", "error", "-y", "-i", f"{W}/base.mp4",
          "-loop", "1", "-framerate", str(FPS), "-i", f"{W}/card_q.png",
@@ -174,6 +182,7 @@ def assemble(shot_files):
          "-loop", "1", "-framerate", str(FPS), "-i", f"{W}/end_b.png",
          "-loop", "1", "-framerate", str(FPS), "-i", f"{W}/gate.png",
          "-i", f"{S}/mix.wav",
+         "-loop", "1", "-framerate", str(FPS), "-i", f"{W}/bug.png",
          "-filter_complex", fc, "-map", "[vout]", "-map", "5:a", "-t", f"{TOTAL}",
          "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-maxrate", "22M", "-bufsize", "44M", "-profile:v", "high",
          "-pix_fmt", "yuv420p", "-movflags", "+faststart",
@@ -181,7 +190,7 @@ def assemble(shot_files):
          f"{S}/out_{ASP}.mp4"])
 
 if __name__ == "__main__":
-    card_q(); card_end(); gate(); captions()
+    card_q(); card_end(); bug(); gate(); captions()
     if "--cards-only" in sys.argv: raise SystemExit
     with ThreadPoolExecutor(2) as ex:
         files = list(ex.map(render_shot, range(len(shots))))
