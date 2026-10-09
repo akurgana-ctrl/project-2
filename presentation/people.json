@@ -170,7 +170,47 @@
           "name": "סתיו רוט",
           "availability": "medium"
         }
-      ]
+      ],
+      "cols": 3,
+      "sub": {
+        "id": "youth",
+        "title": "קבוצת נוער",
+        "head": {
+          "name": "יהונתן אמתי",
+          "role": "רכז נוער",
+          "availability": "medium"
+        },
+        "members": [
+          {
+            "name": "אביתר",
+            "availability": "medium"
+          },
+          {
+            "name": "אשל לוין",
+            "availability": "medium"
+          },
+          {
+            "name": "יהודה יאיר שיוביץ'",
+            "availability": "medium"
+          },
+          {
+            "name": "יובל גרינברגר",
+            "availability": "medium"
+          },
+          {
+            "name": "יוסף גוטויליג",
+            "availability": "medium"
+          },
+          {
+            "name": "משה הורוביץ",
+            "availability": "medium"
+          },
+          {
+            "name": "שני קולברש",
+            "availability": "medium"
+          }
+        ]
+      }
     },
     {
       "id": "digital",
@@ -215,7 +255,7 @@
         },
         {
           "name": "יוסף גוטויליג",
-          "availability": "low"
+          "availability": "medium"
         },
         {
           "name": "משה הלר",

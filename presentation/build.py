@@ -150,8 +150,9 @@ def header(slide, title, subtitle):
 
 def legend(slide):
     items = ["high", "medium", "low", None]
-    x = Inches(12.9)
-    y = Inches(7.02)
+    # sits in the navy header bar, between the logo and the title
+    x = Inches(7.4)
+    y = Inches(0.33)
     for k in items:
         label, color = AVAIL[k]
         w = Inches(1.45)
@@ -162,7 +163,7 @@ def legend(slide):
         dot.fill.fore_color.rgb = color
         dot.line.fill.background()
         dot.shadow.inherit = False
-        text(slide, x, y, w - Inches(0.28), Inches(0.32), label, 10, INK, align=PP_ALIGN.RIGHT)
+        text(slide, x, y, w - Inches(0.28), Inches(0.32), label, 10, WHITE, align=PP_ALIGN.RIGHT)
 
 
 def org_slide(prs, data, colored):
@@ -178,36 +179,57 @@ def org_slide(prs, data, colored):
 
     # Board row
     board = data["board"]["members"]
-    text(s, margin, Inches(1.12), usable, Inches(0.28), data["board"]["title"], 13, NAVY, bold=True,
+    text(s, margin, Inches(1.08), usable, Inches(0.26), data["board"]["title"], 13, NAVY, bold=True,
          align=PP_ALIGN.RIGHT)
     gap = Inches(0.12)
     n = len(board)
     cw = int((usable - gap * (n - 1)) / n)
-    ch = Inches(0.66)
-    by = Inches(1.42)
+    ch = Inches(0.6)
+    by = Inches(1.36)
     for i, m in enumerate(board):  # RTL: first item on the right
         x = W - margin - (i + 1) * cw - i * gap
         card(s, x, by, cw, ch, m["name"], m["role"], m["availability"], colored)
 
-    # Teams: one column each, width proportional to how many card columns it needs
-    teams = data["teams"]
     # CEO between board and teams
     ceo = data.get("ceo")
     anchor_y = by + ch
     if ceo:
-        ceo_w, ceo_h, ceo_y = Inches(2.6), Inches(0.56), Inches(2.3)
+        ceo_w, ceo_h, ceo_y = Inches(2.6), Inches(0.48), Inches(2.14)
         connector(s, W // 2, anchor_y, W // 2, ceo_y)
         card(s, (W - ceo_w) // 2, ceo_y, ceo_w, ceo_h, ceo["name"], ceo["role"], ceo["availability"], colored)
         anchor_y = ceo_y + ceo_h
-    head_y, head_h = (Inches(3.2), Inches(0.56)) if ceo else (Inches(2.62), Inches(0.62))
-    top = head_y + head_h + Inches(0.26)
-    bottom = Inches(6.85)
+
+    # Teams: one column each, width proportional to how many card columns it needs
+    teams = data["teams"]
+    head_y, head_h = (Inches(2.86), Inches(0.5)) if ceo else (Inches(2.62), Inches(0.6))
+    top = head_y + head_h + Inches(0.2)
+    bottom = Inches(6.95)
     mh, mgap = Inches(0.36), Inches(0.08)
     max_rows = max(1, int((bottom - top + mgap) / (mh + mgap)))
-    subcols = [max(1, -(-len(t["members"]) // max_rows)) for t in teams]
+    subcols = [t.get("cols") or max(1, -(-len(t["members"]) // max_rows)) for t in teams]
     tgap = Inches(0.3)
     unit = min(int((usable - tgap * (len(teams) - 1)) / sum(subcols)), Inches(1.9))
     total = unit * sum(subcols) + tgap * (len(teams) - 1)
+
+    def group(t, tx, tw, sc, gy, gh, gtop, default_role):
+        """Frame + head card + member grid. Returns the frame's bottom y."""
+        cx = tx + tw // 2
+        rows = max(1, -(-len(t["members"]) // sc))
+        frame_top = gy + gh // 2
+        frame_bottom = gtop + rows * mh + (rows - 1) * mgap + Inches(0.12)
+        rect(s, tx, frame_top, tw, frame_bottom - frame_top, None, line=LINE, radius=0.04)
+        hw = min(tw - Inches(0.2), Inches(2.6))
+        head = t.get("head") or {}
+        card(s, cx - hw // 2, gy, hw, gh, head.get("name", ""),
+             f'{head.get("role", default_role)} · {t["title"]}', head.get("availability"), colored)
+        iw = tw - Inches(0.2)
+        mw = int((iw - mgap * (sc - 1)) / sc)
+        for i, m in enumerate(t["members"]):  # RTL inside the group
+            r, c = divmod(i, sc)
+            x = tx + Inches(0.1) + iw - (c + 1) * mw - c * mgap
+            y = gtop + r * (mh + mgap)
+            card(s, x, y, mw, mh, m["name"], None, m["availability"], colored, size=11, note=m.get("note"))
+        return frame_bottom
 
     bus_y = (anchor_y + head_y) // 2
     centers = []
@@ -217,24 +239,12 @@ def org_slide(prs, data, colored):
         tx = x_right - tw
         cx = tx + tw // 2
         centers.append(cx)
-        # team frame
-        rows = max(1, -(-len(t["members"]) // sc))
-        frame_top = head_y + head_h / 2
-        frame_h = top + rows * mh + (rows - 1) * mgap + Inches(0.14) - frame_top
-        rect(s, tx, frame_top, tw, frame_h, None, line=LINE, radius=0.04)
-        # head
-        hw = min(tw - Inches(0.2), Inches(2.6))
-        head = t.get("head") or {}
-        card(s, cx - hw // 2, head_y, hw, head_h, head.get("name", ""),
-             f'{head.get("role", "ראש צוות")} · {t["title"]}', head.get("availability"), colored)
-        # members, RTL inside the team
-        iw = tw - Inches(0.2)
-        mw = int((iw - mgap * (sc - 1)) / sc)
-        for i, m in enumerate(t["members"]):
-            r, c = divmod(i, sc)
-            x = tx + Inches(0.1) + iw - (c + 1) * mw - c * mgap
-            y = top + r * (mh + mgap)
-            card(s, x, y, mw, mh, m["name"], None, m["availability"], colored, size=11, note=m.get("note"))
+        fb = group(t, tx, tw, sc, head_y, head_h, top, "ראש צוות")
+        sub = t.get("sub")  # a sub-group boxed under its parent team (e.g. youth under activists)
+        if sub:
+            sy, sh = fb + Inches(0.22), Inches(0.42)
+            connector(s, cx, fb, cx, sy)
+            group(sub, tx, tw, sc, sy, sh, sy + sh + Inches(0.14), "רכז")
         x_right = tx - tgap
 
     # connectors: board -> bus -> each team head
