@@ -230,7 +230,6 @@ def proposal_slide(prs, data):
     connector(s, W // 2, gy + gh, W // 2, cy)
     rect(s, cx, cy, cwid, chh, WHITE, line=GOLD, radius=0.05)
     s.shapes[-1].line.width = Pt(2.5)
-    badge(s, cx + Inches(0.12), cy - Inches(0.12))
     text(s, cx, cy + Inches(0.1), cwid, Inches(0.36), core["title"], 17, NAVY, bold=True)
     n = len(core["names"])
     g = Inches(0.12)
