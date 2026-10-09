@@ -226,7 +226,7 @@ def proposal_slide(prs, data):
     # Core: the paid Knesset team
     core = pr["core"]
     cx, cwid = Inches(3.75), Inches(5.83)
-    cy, chh = Inches(2.3), Inches(2.25)
+    cy, chh = Inches(2.3), Inches(2.85)
     connector(s, W // 2, gy + gh, W // 2, cy)
     rect(s, cx, cy, cwid, chh, WHITE, line=GOLD, radius=0.05)
     s.shapes[-1].line.width = Pt(2.5)
@@ -243,7 +243,15 @@ def proposal_slide(prs, data):
         else:  # the seat still to be filled
             rect(s, x, py, pw, Inches(0.62), None, line=GOLD, dashed=True)
             text(s, x, py, pw, Inches(0.62), "נציג רביעי", 12, NAVY, bold=True)
-    ky = cy + Inches(1.45)
+    # content person sits inside the core: part of the team, not an outside service
+    ct = pr["content"]
+    qy, qh = cy + Inches(1.35), Inches(0.62)
+    qx, qw = cx + Inches(0.15), cwid - Inches(0.3)
+    rect(s, qx, qy, qw, qh, WHITE, line=GOLD)
+    s.shapes[-1].line.width = Pt(2)
+    text(s, qx, qy + Inches(0.05), qw, Inches(0.3), ct["title"], 13, NAVY, bold=True)
+    text(s, qx, qy + Inches(0.34), qw, Inches(0.24), ct["line"], 10, MUTED)
+    ky = cy + Inches(2.1)
     kn = len(core["kpis"])
     kw = int((cwid - Inches(0.3) - g * (kn - 1)) / kn)
     for i, k in enumerate(core["kpis"]):
@@ -260,31 +268,15 @@ def proposal_slide(prs, data):
     info_box(s, margin, sy, lw, sh, pr["field"])
     arrow(s, margin + lw, sy + sh // 2, cx, sy + sh // 2)
 
-    # Target: the committees
-    ty = Inches(4.95)
-    arrow(s, cx + cwid // 2, cy + chh, cx + cwid // 2, ty)
-    rect(s, cx, ty, cwid, Inches(0.62), GOLD, radius=0.2)
-    text(s, cx, ty, cwid, Inches(0.62), pr["target"], 16, NAVY_DARK, bold=True)
-
-    # Digital takes it to the public: a paid content person + the volunteer team
-    dy, dh = Inches(5.85), Inches(1.1)
-    arrow(s, cx + cwid // 2, ty + Inches(0.62), cx + cwid // 2, dy)
+    # Volunteer digital team takes the content to the public
     dg = pr["digital"]
-    rect(s, cx, dy, cwid, dh, WHITE, line=LINE, radius=0.06)
-    text(s, cx + Inches(0.15), dy + Inches(0.06), cwid - Inches(0.3), Inches(0.28), dg["title"], 12, NAVY,
-         bold=True, align=PP_ALIGN.RIGHT)
-    hw = (cwid - Inches(0.42)) // 2
-    iy, ih = dy + Inches(0.38), Inches(0.62)
-    px = cx + cwid - Inches(0.15) - hw
-    rect(s, px, iy, hw, ih, WHITE, line=GOLD)
-    s.shapes[-1].line.width = Pt(2)
-    badge(s, px + Inches(0.08), iy - Inches(0.12))
-    text(s, px, iy + Inches(0.05), hw, Inches(0.3), dg["paid"]["title"], 12, NAVY, bold=True)
-    text(s, px, iy + Inches(0.33), hw, Inches(0.24), dg["paid"]["line"], 9, MUTED)
-    vx = cx + Inches(0.15)
-    rect(s, vx, iy, hw, ih, BG, line=LINE)
-    text(s, vx, iy + Inches(0.05), hw, Inches(0.3), dg["volunteers"]["title"], 12, INK, bold=True)
-    text(s, vx, iy + Inches(0.33), hw, Inches(0.24), dg["volunteers"]["line"], 9, MUTED)
+    dy, dh = cy + chh + Inches(0.35), Inches(0.8)
+    dw = Inches(4.2)
+    dx = cx + (cwid - dw) // 2
+    arrow(s, cx + cwid // 2, cy + chh, cx + cwid // 2, dy)
+    rect(s, dx, dy, dw, dh, WHITE, line=LINE, radius=0.08)
+    text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
+    text(s, dx, dy + Inches(0.44), dw, Inches(0.28), dg["line"], 11, INK)
     return s
 
 
