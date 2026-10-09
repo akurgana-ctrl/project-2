@@ -136,8 +136,9 @@ def header(slide, title, subtitle):
     gold.shadow.inherit = False
     text(slide, Inches(1.4), Inches(0.12), Inches(11.5), Inches(0.5), title, 26, WHITE, bold=True,
          align=PP_ALIGN.RIGHT)
-    text(slide, Inches(1.4), Inches(0.58), Inches(11.5), Inches(0.3), subtitle, 12, GOLD,
-         align=PP_ALIGN.RIGHT)
+    if subtitle:
+        text(slide, Inches(1.4), Inches(0.58), Inches(11.5), Inches(0.3), subtitle, 12, GOLD,
+             align=PP_ALIGN.RIGHT)
     slide.shapes.add_picture(str(ROOT / "assets" / "logo.png"), Inches(0.35), Inches(0.08),
                              height=Inches(0.8))
     # white plate behind logo so it reads on navy
@@ -172,7 +173,7 @@ def org_slide(prs, data, colored):
     if colored:
         header(s, "זמינות במבנה הארגוני הקיים", "כל אדם צבוע לפי רמת הזמינות שלו")
     else:
-        header(s, "מבנה ארגוני קיים", "כח התערבות · כנסת 26")
+        header(s, "מבנה ארגוני קיים", "")
 
     margin = Inches(0.45)
     usable = W - 2 * margin
