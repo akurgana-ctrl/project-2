@@ -266,15 +266,25 @@ def proposal_slide(prs, data):
     rect(s, cx, ty, cwid, Inches(0.62), GOLD, radius=0.2)
     text(s, cx, ty, cwid, Inches(0.62), pr["target"], 16, NAVY_DARK, bold=True)
 
-    # Digital takes it to the public
-    dy = Inches(5.85)
-    dw = Inches(3.4)
-    dx = cx + (cwid - dw) // 2
+    # Digital takes it to the public: a paid content person + the volunteer team
+    dy, dh = Inches(5.85), Inches(1.1)
     arrow(s, cx + cwid // 2, ty + Inches(0.62), cx + cwid // 2, dy)
-    rect(s, dx, dy, dw, Inches(0.95), WHITE, line=LINE, radius=0.08)
     dg = pr["digital"]
-    text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
-    text(s, dx, dy + Inches(0.45), dw, Inches(0.3), dg["lines"][0], 11, INK)
+    rect(s, cx, dy, cwid, dh, WHITE, line=LINE, radius=0.06)
+    text(s, cx + Inches(0.15), dy + Inches(0.06), cwid - Inches(0.3), Inches(0.28), dg["title"], 12, NAVY,
+         bold=True, align=PP_ALIGN.RIGHT)
+    hw = (cwid - Inches(0.42)) // 2
+    iy, ih = dy + Inches(0.38), Inches(0.62)
+    px = cx + cwid - Inches(0.15) - hw
+    rect(s, px, iy, hw, ih, WHITE, line=GOLD)
+    s.shapes[-1].line.width = Pt(2)
+    badge(s, px + Inches(0.08), iy - Inches(0.12))
+    text(s, px, iy + Inches(0.05), hw, Inches(0.3), dg["paid"]["title"], 12, NAVY, bold=True)
+    text(s, px, iy + Inches(0.33), hw, Inches(0.24), dg["paid"]["line"], 9, MUTED)
+    vx = cx + Inches(0.15)
+    rect(s, vx, iy, hw, ih, BG, line=LINE)
+    text(s, vx, iy + Inches(0.05), hw, Inches(0.3), dg["volunteers"]["title"], 12, INK, bold=True)
+    text(s, vx, iy + Inches(0.33), hw, Inches(0.24), dg["volunteers"]["line"], 9, MUTED)
     return s
 
 
