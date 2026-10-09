@@ -167,6 +167,115 @@ def legend(slide):
         text(slide, x, y, w - Inches(0.28), Inches(0.32), label, 10, WHITE, align=PP_ALIGN.RIGHT)
 
 
+def arrow(slide, x1, y1, x2, y2, color=NAVY):
+    c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, x1, y1, x2, y2)
+    c.line.color.rgb = color
+    c.line.width = Pt(2)
+    ln = c.line._get_or_add_ln()
+    ln.append(ln.makeelement(qn("a:tailEnd"), {"type": "triangle", "w": "med", "len": "med"}))
+
+
+def badge(slide, x, y, label="חדש"):
+    b = rect(slide, x, y, Inches(0.55), Inches(0.24), GOLD, radius=0.5)
+    text(slide, x, y, Inches(0.55), Inches(0.24), label, 9, NAVY_DARK, bold=True)
+
+
+def info_box(slide, x, y, w, h, block, accent=NAVY):
+    """Side unit: title bar, lead name, short bullet lines."""
+    rect(slide, x, y, w, h, WHITE, line=LINE, radius=0.06)
+    bar = rect(slide, x, y, w, Inches(0.42), accent, radius=0.2)
+    text(slide, x, y, w, Inches(0.42), block["title"], 14, WHITE, bold=True)
+    text(slide, x, y + Inches(0.5), w, Inches(0.3), block["lead"], 11, INK, bold=True)
+    ty = y + Inches(0.85)
+    for line in block["lines"]:
+        text(slide, x + Inches(0.15), ty, w - Inches(0.3), Inches(0.3), "• " + line, 11, INK,
+             align=PP_ALIGN.RIGHT)
+        ty += Inches(0.3)
+
+
+def proposal_slide(prs, data):
+    pr = data["proposal"]
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, pr["title"], pr["subtitle"])
+    margin = Inches(0.45)
+
+    # Top: reduced board (right/centre) + advisors (left)
+    bx_l, bx_r = Inches(3.35), W - margin
+    text(s, bx_l, Inches(1.1), bx_r - bx_l, Inches(0.26), pr["board"]["title"], 13, NAVY, bold=True,
+         align=PP_ALIGN.RIGHT)
+    names = pr["board"]["names"]
+    g = Inches(0.12)
+    cw = int((bx_r - bx_l - g * (len(names) - 1)) / len(names))
+    by, bh = Inches(1.4), Inches(0.5)
+    for i, n in enumerate(names):
+        card(s, bx_r - (i + 1) * cw - i * g, by, cw, bh, n, None, None, False, size=12)
+    adv = pr["advisors"]
+    ax, aw = margin, Inches(2.65)
+    rect(s, ax, Inches(1.18), aw, Inches(0.74), None, line=GOLD, radius=0.1, dashed=True)
+    badge(s, ax + Inches(0.08), Inches(1.06))
+    text(s, ax, Inches(1.2), aw - Inches(0.12), Inches(0.26), adv["title"], 12, NAVY, bold=True,
+         align=PP_ALIGN.RIGHT)
+    text(s, ax, Inches(1.45), aw - Inches(0.12), Inches(0.24), " · ".join(adv["names"]), 11, INK,
+         align=PP_ALIGN.RIGHT)
+    text(s, ax, Inches(1.67), aw - Inches(0.12), Inches(0.22), adv["note"], 9, MUTED, align=PP_ALIGN.RIGHT)
+
+    # Core: the paid Knesset team
+    core = pr["core"]
+    cx, cwid = Inches(3.75), Inches(5.83)
+    cy, chh = Inches(2.3), Inches(2.25)
+    connector(s, W // 2 + Inches(1.0), by + bh, W // 2 + Inches(1.0), cy)
+    rect(s, cx, cy, cwid, chh, WHITE, line=GOLD, radius=0.05)
+    s.shapes[-1].line.width = Pt(2.5)
+    badge(s, cx + Inches(0.12), cy - Inches(0.12))
+    text(s, cx, cy + Inches(0.1), cwid, Inches(0.36), core["title"], 17, NAVY, bold=True)
+    n = len(core["names"])
+    g = Inches(0.12)
+    pw = int((cwid - Inches(0.3) - g * (n - 1)) / n)
+    py = cy + Inches(0.6)
+    for i, nm in enumerate(core["names"]):
+        x = cx + cwid - Inches(0.15) - (i + 1) * pw - i * g
+        if nm:
+            card(s, x, py, pw, Inches(0.62), nm, "נציג קבוע", None, False, size=12)
+        else:  # the seat still to be filled
+            rect(s, x, py, pw, Inches(0.62), None, line=GOLD, dashed=True)
+            text(s, x, py + Inches(0.04), pw, Inches(0.32), "נציג רביעי", 12, NAVY, bold=True,
+                 anchor=MSO_ANCHOR.BOTTOM)
+            text(s, x, py + Inches(0.36), pw, Inches(0.24), "לגיוס", 9, MUTED, anchor=MSO_ANCHOR.TOP)
+    ky = cy + Inches(1.45)
+    kn = len(core["kpis"])
+    kw = int((cwid - Inches(0.3) - g * (kn - 1)) / kn)
+    for i, k in enumerate(core["kpis"]):
+        x = cx + cwid - Inches(0.15) - (i + 1) * kw - i * g
+        rect(s, x, ky, kw, Inches(0.6), NAVY, radius=0.2)
+        text(s, x, ky, kw, Inches(0.6), k, 13, WHITE, bold=True)
+
+    # Sides feed the core
+    sy, sh = Inches(2.3), Inches(1.75)
+    rx = cx + cwid + Inches(0.35)
+    info_box(s, rx, sy, W - margin - rx, sh, pr["research"])
+    arrow(s, rx, sy + sh // 2, cx + cwid, sy + sh // 2)
+    lw = cx - Inches(0.35) - margin
+    info_box(s, margin, sy, lw, sh, pr["field"])
+    arrow(s, margin + lw, sy + sh // 2, cx, sy + sh // 2)
+
+    # Target: the committees
+    ty = Inches(4.95)
+    arrow(s, cx + cwid // 2, cy + chh, cx + cwid // 2, ty)
+    rect(s, cx, ty, cwid, Inches(0.62), GOLD, radius=0.2)
+    text(s, cx, ty, cwid, Inches(0.62), pr["target"], 16, NAVY_DARK, bold=True)
+
+    # Digital takes it to the public
+    dy = Inches(5.85)
+    dw = Inches(3.4)
+    dx = cx + (cwid - dw) // 2
+    arrow(s, cx + cwid // 2, ty + Inches(0.62), cx + cwid // 2, dy)
+    rect(s, dx, dy, dw, Inches(0.95), WHITE, line=LINE, radius=0.08)
+    dg = pr["digital"]
+    text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
+    text(s, dx, dy + Inches(0.45), dw, Inches(0.3), dg["lines"][0], 11, INK)
+    return s
+
+
 def org_slide(prs, data, colored):
     """Whole organisation on one slide: board on top, every team as a column below."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -269,6 +378,8 @@ def main():
     prs.slide_width, prs.slide_height = W, H
     org_slide(prs, data, colored=False)
     org_slide(prs, data, colored=True)
+    if "proposal" in data:
+        proposal_slide(prs, data)
     out.parent.mkdir(exist_ok=True)
     prs.save(out)
     print(out)
