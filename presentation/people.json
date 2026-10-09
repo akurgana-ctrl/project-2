@@ -140,7 +140,7 @@
       "members": [
         {
           "name": "רוני מרטין",
-          "availability": "medium"
+          "availability": "low"
         },
         {
           "name": "בנימין שיפרין",
@@ -152,15 +152,15 @@
         },
         {
           "name": "יהודה שוורצמן",
-          "availability": "low"
-        },
-        {
-          "name": "צופיה צדוק",
           "availability": "medium"
         },
         {
-          "name": "יצחק פינק",
+          "name": "צופיה צדוק",
           "availability": "low"
+        },
+        {
+          "name": "יצחק פינק",
+          "availability": "medium"
         },
         {
           "name": "דובי ג'ייקובס",
