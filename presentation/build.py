@@ -242,9 +242,7 @@ def proposal_slide(prs, data):
             card(s, x, py, pw, Inches(0.62), nm, "נציג קבוע", None, False, size=12)
         else:  # the seat still to be filled
             rect(s, x, py, pw, Inches(0.62), None, line=GOLD, dashed=True)
-            text(s, x, py + Inches(0.04), pw, Inches(0.32), "נציג רביעי", 12, NAVY, bold=True,
-                 anchor=MSO_ANCHOR.BOTTOM)
-            text(s, x, py + Inches(0.36), pw, Inches(0.24), "לגיוס", 9, MUTED, anchor=MSO_ANCHOR.TOP)
+            text(s, x, py, pw, Inches(0.62), "נציג רביעי", 12, NAVY, bold=True)
     ky = cy + Inches(1.45)
     kn = len(core["kpis"])
     kw = int((cwid - Inches(0.3) - g * (kn - 1)) / kn)
