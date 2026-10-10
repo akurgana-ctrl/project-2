@@ -514,10 +514,7 @@ def main():
         plans = json.loads(plans_path.read_text(encoding="utf-8"))
         for leader in plans.get("programs", []):
             programs_slide(prs, leader)
-        for b in plans.get("stages", []):
-            appendix_stages(prs, b)
-        for b in plans.get("tables", []):
-            appendix_table(prs, b)
+        # Staged work plans live on the website (site/plans.json), not in the deck.
     out.parent.mkdir(exist_ok=True)
     prs.save(out)
     print(out)
