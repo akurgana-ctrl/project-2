@@ -26,6 +26,12 @@ WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 INK = RGBColor(0x1A, 0x22, 0x33)
 MUTED = RGBColor(0x8A, 0x94, 0xA8)
 LINE = RGBColor(0xC5, 0xCD, 0xDD)
+# muted "before" look for the existing-structure slides
+SLATE = RGBColor(0x4A, 0x55, 0x68)
+SLATE_LINE = RGBColor(0xA0, 0xAE, 0xC0)
+MUTED_CARD = RGBColor(0xE6, 0xE9, 0xEF)
+MUTED_TEXT = RGBColor(0x5B, 0x64, 0x75)
+STYLE = {"muted": False}
 
 AVAIL = {
     "high": ("זמינות גבוהה", RGBColor(0x2E, 0x9E, 0x6A)),
@@ -92,6 +98,9 @@ def card(slide, x, y, w, h, name, role, avail, colored, size=12, note=None):
     elif empty:
         rect(slide, x, y, w, h, BG, line=MUTED, dashed=True)
         fg, sub = MUTED, MUTED
+    elif STYLE["muted"]:
+        rect(slide, x, y, w, h, MUTED_CARD)
+        fg, sub = MUTED_TEXT, MUTED
     else:
         rect(slide, x, y, w, h, WHITE, line=LINE)
         # gold accent strip on the right (RTL start)
@@ -120,18 +129,18 @@ def connector(slide, x1, y1, x2, y2):
     c.line.width = Pt(1.5)
 
 
-def header(slide, title, subtitle):
+def header(slide, title, subtitle, bar_color=NAVY, accent=GOLD):
     bg = slide.background.fill
     bg.solid()
     bg.fore_color.rgb = BG
     bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, W, Inches(0.95))
     bar.fill.solid()
-    bar.fill.fore_color.rgb = NAVY
+    bar.fill.fore_color.rgb = bar_color
     bar.line.fill.background()
     bar.shadow.inherit = False
     gold = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, Inches(0.95), W, Inches(0.06))
     gold.fill.solid()
-    gold.fill.fore_color.rgb = GOLD
+    gold.fill.fore_color.rgb = accent
     gold.line.fill.background()
     gold.shadow.inherit = False
     text(slide, Inches(1.4), Inches(0.12), Inches(11.5), Inches(0.5), title, 26, WHITE, bold=True,
@@ -149,8 +158,9 @@ def header(slide, title, subtitle):
     slide.shapes._spTree.insert(slide.shapes._spTree.index(plate._element), pl._element)
 
 
-def legend(slide):
-    items = ["high", "medium", "low", None]
+def legend(slide, counts=None):
+    counts = counts or {}
+    items = ["high", "medium", "low"] + ([None] if counts.get(None) else [])
     # sits in the navy header bar, between the logo and the title
     x = Inches(7.4)
     y = Inches(0.33)
@@ -164,7 +174,10 @@ def legend(slide):
         dot.fill.fore_color.rgb = color
         dot.line.fill.background()
         dot.shadow.inherit = False
-        text(slide, x, y, w - Inches(0.28), Inches(0.32), label, 10, WHITE, align=PP_ALIGN.RIGHT)
+        if k in counts:
+            label = f"{counts[k]} · {label.replace('זמינות ', '')}"
+        text(slide, x, y, w - Inches(0.28), Inches(0.32), label, 11 if counts else 10, WHITE, bold=bool(counts),
+             align=PP_ALIGN.RIGHT)
 
 
 def arrow(slide, x1, y1, x2, y2, color=NAVY):
@@ -316,6 +329,82 @@ def appendix_table(prs, block):
     num_dot(s, margin, Inches(7.08), Inches(0.24), "", fill=GOLD)
     text(s, margin + Inches(0.3), Inches(7.04), Inches(3), Inches(0.32), "תוכנית דגל מומלצת", 10, INK,
          align=PP_ALIGN.LEFT)
+    return s
+
+
+def oval(slide, cx, cy, r, fill, line=None, width=1.5):
+    o = slide.shapes.add_shape(MSO_SHAPE.OVAL, int(cx - r), int(cy - r), int(2 * r), int(2 * r))
+    o.shadow.inherit = False
+    o.fill.solid()
+    o.fill.fore_color.rgb = fill
+    if line is None:
+        o.line.fill.background()
+    else:
+        o.line.color.rgb = line
+        o.line.width = Pt(width)
+    return o
+
+
+def pill(slide, cx, cy, w, h, title, lead, fill, fg, sub):
+    x, y = int(cx - w / 2), int(cy - h / 2)
+    rect(slide, x, y, int(w), int(h), fill, line=None if fill != WHITE else NAVY, radius=0.5)
+    text(slide, x, y + Inches(0.04), int(w), int(h * 0.5), title, 13, fg, bold=True, anchor=MSO_ANCHOR.BOTTOM)
+    text(slide, x, y + int(h * 0.52), int(w), int(h * 0.42), lead, 10, sub, anchor=MSO_ANCHOR.TOP)
+
+
+def proposal_rings(prs, data):
+    """Proposed structure as concentric circles: the paid Knesset team at the centre."""
+    pr = data["proposal"]
+    rg = pr["rings"]
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, pr["title"], "")
+    margin = Inches(0.45)
+
+    cx, cy = Inches(8.7), Inches(4.25)
+    r_out, r_mid, r_in = Inches(3.05), Inches(2.1), Inches(1.2)
+    oval(s, cx, cy, r_out, RGBColor(0xEE, 0xF1, 0xF7), LINE)
+    oval(s, cx, cy, r_mid, RGBColor(0xD9, 0xE1, 0xF0), LINE)
+    oval(s, cx, cy, r_in, GOLD, None)
+
+    core = rg["core"]
+    text(s, cx - r_in, cy - Inches(0.92), 2 * r_in, Inches(0.24), core["label"], 10, NAVY_DARK)
+    text(s, cx - r_in, cy - Inches(0.7), 2 * r_in, Inches(0.38), core["title"], 18, NAVY_DARK, bold=True)
+    ly = cy - Inches(0.28)
+    for i, line in enumerate(core["lines"]):
+        text(s, cx - r_in + Inches(0.1), ly, 2 * r_in - Inches(0.2), Inches(0.26), line, 11, NAVY_DARK,
+             bold=(i == len(core["lines"]) - 1))
+        ly += Inches(0.27)
+
+    # positions on each band (RTL: "right" is read first)
+    mid = {"top": (0, -Inches(1.63)), "right": (Inches(1.2), Inches(1.33)), "left": (-Inches(1.2), Inches(1.33))}
+    out = {"top": (0, -Inches(2.6)), "right": (Inches(1.95), Inches(2.18)), "left": (-Inches(1.95), Inches(2.18))}
+    for it in rg["middle"]:
+        dx, dy = mid[it["pos"]]
+        pill(s, cx + dx, cy + dy, Inches(1.95), Inches(0.62), it["title"], it["lead"], NAVY, WHITE, GOLD)
+    for it in rg["outer"]:
+        dx, dy = out[it["pos"]]
+        pill(s, cx + dx, cy + dy, Inches(2.5), Inches(0.62), it["title"], it["lead"], WHITE, NAVY, INK)
+
+    # Left column: the rhythm, then the two conditions in red
+    lw = Inches(4.3)
+    kpis = pr["core"]["kpis"]
+    ky = Inches(1.45)
+    for k in kpis:
+        rect(s, margin, ky, lw, Inches(0.62), NAVY, radius=0.25)
+        text(s, margin, ky, lw, Inches(0.62), k, 16, WHITE, bold=True)
+        ky += Inches(0.74)
+    RED = AVAIL["low"][1]
+    ny = ky + Inches(0.12)
+    for note in pr.get("notes", []):
+        nh = Inches(1.5)
+        rect(s, margin, ny, lw, nh, WHITE, line=RED, radius=0.08)
+        s.shapes[-1].line.width = Pt(2)
+        num_dot(s, margin + lw - Inches(0.5), ny + Inches(0.14), Inches(0.34), "!", fill=RED)
+        text(s, margin + Inches(0.15), ny + Inches(0.1), lw - Inches(0.72), Inches(0.42), note["title"], 12, RED,
+             bold=True, align=PP_ALIGN.RIGHT)
+        text(s, margin + Inches(0.15), ny + Inches(0.56), lw - Inches(0.3), nh - Inches(0.62), note["line"], 12, INK,
+             align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.TOP)
+        ny += nh + Inches(0.15)
     return s
 
 
@@ -519,17 +608,49 @@ def activity_slide(prs, act):
 def org_slide(prs, data, colored):
     """Whole organisation on one slide: board on top, every team as a column below."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
+    STYLE["muted"] = True
+    # one availability per person, even when they sit in two teams
+    seen = {m["name"]: m["availability"] for m in data["board"]["members"]}
+    if data.get("ceo"):
+        seen[data["ceo"]["name"]] = data["ceo"]["availability"]
+    n_groups = 0
+
+    def walk(g):
+        nonlocal n_groups
+        n_groups += 1
+        for x in [g.get("head") or {}] + g["members"]:
+            if x.get("name"):
+                seen[x["name"]] = x.get("availability")
+        if g.get("sub"):
+            walk(g["sub"])
+    for t in data["teams"]:
+        walk(t)
+    counts = {}
+    for v in seen.values():
+        counts[v] = counts.get(v, 0) + 1
     if colored:
-        header(s, "זמינות במבנה הארגוני הקיים", "כל אדם צבוע לפי רמת הזמינות שלו")
+        header(s, "זמינות במבנה הארגוני הקיים", "כל אדם צבוע לפי רמת הזמינות שלו", SLATE, SLATE_LINE)
     else:
-        header(s, "מבנה ארגוני קיים", "")
+        header(s, "מבנה ארגוני קיים", "", SLATE, SLATE_LINE)
+        # the problem in three numbers, between logo and title
+        stats = [(str(len(seen)), "אנשים"), (str(n_groups), "צוותים"), ("0", "נציגים קבועים בכנסת")]
+        x = Inches(7.6)
+        for num, label in stats:
+            w = Inches(2.35) if len(label) > 8 else Inches(1.45)
+            x -= w
+            box = text(s, x, Inches(0.22), w, Inches(0.5), num, 22, GOLD, bold=True, align=PP_ALIGN.RIGHT)
+            r = box.text_frame.paragraphs[0].add_run()
+            r.text = " " + label
+            r.font.size = Pt(13)
+            r.font.color.rgb = WHITE
+            r.font.name = FONT
 
     margin = Inches(0.45)
     usable = W - 2 * margin
 
     # Board row
     board = data["board"]["members"]
-    text(s, margin, Inches(1.08), usable, Inches(0.26), data["board"]["title"], 13, NAVY, bold=True,
+    text(s, margin, Inches(1.08), usable, Inches(0.26), data["board"]["title"], 13, SLATE, bold=True,
          align=PP_ALIGN.RIGHT)
     gap = Inches(0.12)
     n = len(board)
@@ -605,7 +726,8 @@ def org_slide(prs, data, colored):
         connector(s, cx, bus_y, cx, head_y)
 
     if colored:
-        legend(s)
+        legend(s, counts)
+    STYLE["muted"] = False
     return s
 
 
@@ -619,7 +741,7 @@ def main():
     org_slide(prs, data, colored=False)
     org_slide(prs, data, colored=True)
     if "proposal" in data:
-        proposal_slide(prs, data)
+        proposal_rings(prs, data)
     plans_path = HERE / "plans.json"
     if plans_path.exists():
         plans = json.loads(plans_path.read_text(encoding="utf-8"))
