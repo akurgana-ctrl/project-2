@@ -646,7 +646,7 @@ def stage_slide(prs, st):
     text(s, lx, top + Inches(0.15), lw, Inches(0.3), "עלות חודשית", 13, GOLD)
     text(s, lx, top + Inches(0.45), lw, Inches(0.8), st["monthly"], 44, WHITE, bold=True)
     text(s, lx, top + Inches(1.22), lw, Inches(0.3), st["yearly"], 13, WHITE)
-    kw = (lw - Inches(0.5)) // 2
+    kw = (lw - Inches(0.4) - Inches(0.1) * (len(st["kpis"]) - 1)) // len(st["kpis"])
     for k, (big, small) in enumerate(st["kpis"]):
         kx = lx + lw - Inches(0.2) - (k + 1) * kw - k * Inches(0.1)
         rect(s, kx, top + Inches(1.65), kw, Inches(0.72), RGBColor(0x2A, 0x4C, 0x8C), radius=0.15)
@@ -696,7 +696,7 @@ def costs_slide(prs, cs):
         text(s, x, top + Inches(1.05), cw, Inches(0.7), m["monthly"], 36, NAVY, bold=True)
         text(s, x, top + Inches(1.7), cw, Inches(0.3), "לחודש · " + m["yearly"], 12, MUTED)
         # two small KPIs
-        kw = (cw - Inches(0.5)) // 2
+        kw = (cw - Inches(0.4) - Inches(0.1) * (len(m["kpis"]) - 1)) // len(m["kpis"])
         for k, (big, small) in enumerate(m["kpis"]):
             kx = x + cw - Inches(0.2) - (k + 1) * kw - k * Inches(0.1)
             rect(s, kx, top + Inches(2.1), kw, Inches(0.72), BG, radius=0.15)
