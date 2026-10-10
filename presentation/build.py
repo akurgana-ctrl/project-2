@@ -219,7 +219,7 @@ def num_dot(slide, x, y, d, label, fill=NAVY, color=WHITE):
 def programs_slide(prs, leader):
     """Programs only: numbered cards, no work plan (that lives in the appendices)."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    header(s, f'תוכניות כנסת 26 · {leader["domain"]}', leader["name"])
+    header(s, f'תוכניות כנסת 26 · {leader["name"]}', leader.get("headline", leader["domain"]))
     margin = Inches(0.45)
     items = leader["items"]
     n = len(items)
@@ -231,7 +231,8 @@ def programs_slide(prs, leader):
     cw = int((W - 2 * margin - gap * (cols - 1)) / cols)
     size = 24 if n <= 2 else 16 if n <= 5 else 12
     d = Inches(0.5) if n <= 5 else Inches(0.36)
-    for i, (num, title) in enumerate(items):
+    for i, (num, title, *rest) in enumerate(items):
+        tag = rest[0] if rest else ""
         c, r = divmod(i, rows)  # fill the right column first
         x = W - margin - (c + 1) * cw - c * gap
         y = top + r * (ch + gap)
@@ -243,7 +244,13 @@ def programs_slide(prs, leader):
         strip.line.fill.background()
         strip.shadow.inherit = False
         num_dot(s, x + cw - Inches(0.25) - d, y + (ch - d) // 2, d, num)
-        text(s, x + Inches(0.2), y, cw - d - Inches(0.6), ch, title, size, INK, bold=True, align=PP_ALIGN.RIGHT)
+        tw = Inches(1.9) if cols == 1 else Inches(1.45)
+        if tag:  # the field this program belongs to, as a chip at the line's end
+            th = Inches(0.36) if n <= 5 else Inches(0.3)
+            rect(s, x + Inches(0.2), y + (ch - th) // 2, tw, th, BG, line=GOLD, radius=0.5)
+            text(s, x + Inches(0.2), y + (ch - th) // 2, tw, th, tag, 11 if n <= 5 else 9, NAVY, bold=True)
+        text(s, x + Inches(0.3) + (tw if tag else 0), y, cw - d - Inches(0.7) - (tw if tag else 0), ch, title, size, INK,
+             bold=True, align=PP_ALIGN.RIGHT)
     return s
 
 
