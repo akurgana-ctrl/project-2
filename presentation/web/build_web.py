@@ -128,7 +128,8 @@ def stage_html(s, cls, label):
         f'<td><span class="chg{"" if r[2].startswith("+") else " n"}">{e(r[2])}</span></td></tr>' for r in s["rows"])
     disc = s["kpis"][0][0]
     return (f'<div class="stage {cls}"><div class="lbl">{e(label)}</div><div class="big num">{e(s["monthly"])}</div>'
-            f'<div class="muted">לחודש · {e(s["yearly"])} · {e(disc)} דיונים בחודש</div><table>{rows}</table></div>')
+            f'<div class="muted">לחודש · {e(s["yearly"])} · {e(disc)} דיונים בחודש</div><table>{rows}</table>'
+            + (f'<div class="rate">{e(s["rate"])}</div>' if s.get("rate") else "") + '</div>')
 
 
 def money(s):

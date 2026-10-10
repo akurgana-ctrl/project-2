@@ -639,6 +639,9 @@ def stage_slide(prs, st):
         text(s, rx + Inches(0.15), ry + Inches(0.12), Inches(1.35), Inches(0.32), tag, 10,
              NAVY_DARK if up else MUTED, bold=up, rtl=not up)
         ry += Inches(0.64)
+    if st.get("rate"):  # daily Knesset pay belongs with the money, not with the weekly rhythm
+        rect(s, rx, ry + Inches(0.06), rw, Inches(0.5), GOLD, radius=0.3)
+        text(s, rx + Inches(0.2), ry + Inches(0.06), rw - Inches(0.4), Inches(0.5), st["rate"], 13, NAVY_DARK, bold=True)
 
     # Left: the number
     lx = margin
