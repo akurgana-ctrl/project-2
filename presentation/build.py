@@ -406,6 +406,18 @@ def proposal_slide(prs, data):
     rect(s, dx, dy, dw, dh, WHITE, line=LINE, radius=0.08)
     text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
     text(s, dx, dy + Inches(0.44), dw, Inches(0.28), dg["line"], 11, INK)
+
+    # Warning note: volunteers fill gaps, they are not the system
+    note = pr.get("note")
+    if note:
+        ny, nh = dy + dh + Inches(0.25), Inches(0.72)
+        rect(s, margin, ny, W - 2 * margin, nh, WHITE, line=NAVY, radius=0.14)
+        s.shapes[-1].line.width = Pt(1.75)
+        num_dot(s, W - margin - Inches(0.6), ny + (nh - Inches(0.4)) // 2, Inches(0.4), "!", fill=GOLD, color=NAVY_DARK)
+        text(s, margin + Inches(0.2), ny + Inches(0.06), W - 2 * margin - Inches(0.95), Inches(0.32), note["title"], 14,
+             NAVY, bold=True, align=PP_ALIGN.RIGHT)
+        text(s, margin + Inches(0.2), ny + Inches(0.38), W - 2 * margin - Inches(0.95), Inches(0.28), note["line"], 12,
+             INK, align=PP_ALIGN.RIGHT)
     return s
 
 
