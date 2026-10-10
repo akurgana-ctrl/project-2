@@ -605,6 +605,58 @@ def activity_slide(prs, act):
     return s
 
 
+def costs_slide(prs, cs):
+    """Three cost models side by side; the recommended one gets the gold frame."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, cs["title"], "")
+    margin = Inches(0.45)
+    g = Inches(0.25)
+    ms = cs["models"]
+    cw = int((W - 2 * margin - g * (len(ms) - 1)) / len(ms))
+    top, ch = Inches(1.3), Inches(5.6)
+    for i, m in enumerate(ms):
+        x = W - margin - (i + 1) * cw - i * g
+        rec = m.get("recommended")
+        rect(s, x, top, cw, ch, WHITE, line=GOLD if rec else LINE, radius=0.05)
+        if rec:
+            s.shapes[-1].line.width = Pt(3)
+        # head
+        rect(s, x, top, cw, Inches(0.95), NAVY if rec else SLATE, radius=0.12)
+        text(s, x, top + Inches(0.1), cw, Inches(0.42), m["name"], 20, WHITE, bold=True)
+        text(s, x + Inches(0.1), top + Inches(0.52), cw - Inches(0.2), Inches(0.36), m["tag"], 10, GOLD)
+        if rec:
+            rect(s, x + cw // 2 - Inches(0.7), top - Inches(0.17), Inches(1.4), Inches(0.34), GOLD, radius=0.5)
+            text(s, x + cw // 2 - Inches(0.7), top - Inches(0.17), Inches(1.4), Inches(0.34), "המלצה", 12, NAVY_DARK,
+                 bold=True)
+        # the number
+        text(s, x, top + Inches(1.05), cw, Inches(0.7), m["monthly"], 36, NAVY, bold=True)
+        text(s, x, top + Inches(1.7), cw, Inches(0.3), "לחודש · " + m["yearly"], 12, MUTED)
+        # two small KPIs
+        kw = (cw - Inches(0.5)) // 2
+        for k, (big, small) in enumerate(m["kpis"]):
+            kx = x + cw - Inches(0.2) - (k + 1) * kw - k * Inches(0.1)
+            rect(s, kx, top + Inches(2.1), kw, Inches(0.72), BG, radius=0.15)
+            text(s, kx, top + Inches(2.13), kw, Inches(0.38), big, 17, NAVY, bold=True)
+            text(s, kx, top + Inches(2.5), kw, Inches(0.28), small, 10, MUTED)
+        # composition
+        ry = top + Inches(3.0)
+        for label, amount in m["rows"]:
+            text(s, x + Inches(1.35), ry, cw - Inches(1.55), Inches(0.34), label, 11, INK, align=PP_ALIGN.RIGHT)
+            text(s, x + Inches(0.15), ry, Inches(1.2), Inches(0.34), amount, 11,
+                 MUTED if amount == "בהתנדבות" else NAVY, bold=amount != "בהתנדבות", align=PP_ALIGN.LEFT)
+            ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, x + Inches(0.2), ry + Inches(0.37),
+                                        x + cw - Inches(0.2), ry + Inches(0.37))
+            ln.line.color.rgb = LINE
+            ln.line.width = Pt(0.75)
+            ry += Inches(0.4)
+        text(s, x + Inches(0.2), ry + Inches(0.05), cw - Inches(0.4), Inches(0.28), "תעריף: " + m["rate"], 10, MUTED,
+             align=PP_ALIGN.RIGHT)
+        text(s, x + Inches(0.2), ry + Inches(0.35), cw - Inches(0.4), Inches(0.3), "מימון: " + m["partners"], 11,
+             NAVY, bold=True, align=PP_ALIGN.RIGHT)
+    text(s, margin, Inches(7.02), W - 2 * margin, Inches(0.3), cs["footnote"], 10, MUTED)
+    return s
+
+
 def org_slide(prs, data, colored):
     """Whole organisation on one slide: board on top, every team as a column below."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -750,6 +802,8 @@ def main():
         # Staged work plans live on the website (site/plans.json), not in the deck.
     if "activity" in data:
         activity_slide(prs, data["activity"])
+    if "costs" in data:
+        costs_slide(prs, data["costs"])
     out.parent.mkdir(exist_ok=True)
     prs.save(out)
     print(out)
