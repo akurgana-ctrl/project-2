@@ -605,6 +605,65 @@ def activity_slide(prs, act):
     return s
 
 
+def stage_slide(prs, st):
+    """One budget stage: the big number, the line items with what changed, and a box that argues for it."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, st["title"], "")
+    margin = Inches(0.45)
+    g = Inches(0.3)
+    lw = Inches(5.2)
+    rw = W - 2 * margin - lw - g
+    rx = W - margin - rw
+    top = Inches(1.3)
+
+    # Right: line items
+    rect(s, rx, top, rw, Inches(0.42), NAVY, radius=0.2)
+    text(s, rx + Inches(0.2), top, rw - Inches(3.2), Inches(0.42), "תפקיד", 12, WHITE, bold=True, align=PP_ALIGN.RIGHT)
+    text(s, rx + Inches(1.6), top, Inches(1.4), Inches(0.42), "לחודש", 12, WHITE, bold=True)
+    text(s, rx + Inches(0.1), top, Inches(1.5), Inches(0.42), "שינוי", 12, WHITE, bold=True)
+    ry = top + Inches(0.52)
+    for label, amount, tag in st["rows"]:
+        rect(s, rx, ry, rw, Inches(0.56), WHITE, line=LINE, radius=0.15)
+        text(s, rx + Inches(3.1), ry, rw - Inches(3.3), Inches(0.56), label, 13, INK, bold=True, align=PP_ALIGN.RIGHT)
+        text(s, rx + Inches(1.6), ry, Inches(1.4), Inches(0.56), amount, 14, NAVY, bold=True)
+        up = tag.startswith("+")
+        chip_fill = GOLD if up else BG
+        rect(s, rx + Inches(0.15), ry + Inches(0.12), Inches(1.35), Inches(0.32), chip_fill, radius=0.5)
+        text(s, rx + Inches(0.15), ry + Inches(0.12), Inches(1.35), Inches(0.32), tag, 10,
+             NAVY_DARK if up else MUTED, bold=up, rtl=not up)
+        ry += Inches(0.64)
+
+    # Left: the number
+    lx = margin
+    rect(s, lx, top, lw, Inches(2.55), NAVY, radius=0.06)
+    text(s, lx, top + Inches(0.15), lw, Inches(0.3), "עלות חודשית", 13, GOLD)
+    text(s, lx, top + Inches(0.45), lw, Inches(0.8), st["monthly"], 44, WHITE, bold=True)
+    text(s, lx, top + Inches(1.22), lw, Inches(0.3), st["yearly"], 13, WHITE)
+    kw = (lw - Inches(0.5)) // 2
+    for k, (big, small) in enumerate(st["kpis"]):
+        kx = lx + lw - Inches(0.2) - (k + 1) * kw - k * Inches(0.1)
+        rect(s, kx, top + Inches(1.65), kw, Inches(0.72), RGBColor(0x2A, 0x4C, 0x8C), radius=0.15)
+        text(s, kx, top + Inches(1.67), kw, Inches(0.38), big, 17, WHITE, bold=True)
+        text(s, kx, top + Inches(2.04), kw, Inches(0.28), small, 10, GOLD)
+
+    # Left below: what changes / why it pays
+    bx = st["box"]
+    by = top + Inches(2.75)
+    bh = Inches(7.25) - by
+    strong = bx.get("strong")
+    rect(s, lx, by, lw, bh, WHITE, line=GOLD if strong else LINE, radius=0.06)
+    if strong:
+        s.shapes[-1].line.width = Pt(3)
+    text(s, lx + Inches(0.2), by + Inches(0.12), lw - Inches(0.4), Inches(0.62), bx["title"], 15 if strong else 14,
+         NAVY, bold=True, align=PP_ALIGN.RIGHT)
+    ly = by + Inches(0.8)
+    for line in bx["lines"]:
+        text(s, lx + Inches(0.25), ly, lw - Inches(0.5), Inches(0.6), "• " + line, 12, INK, bold=strong,
+             align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.TOP)
+        ly += Inches(0.68)
+    return s
+
+
 def costs_slide(prs, cs):
     """Three cost models side by side; the recommended one gets the gold frame."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -802,6 +861,8 @@ def main():
         # Staged work plans live on the website (site/plans.json), not in the deck.
     if "activity" in data:
         activity_slide(prs, data["activity"])
+    for st in data.get("stages", []):
+        stage_slide(prs, st)
     if "costs" in data:
         costs_slide(prs, data["costs"])
     out.parent.mkdir(exist_ok=True)
