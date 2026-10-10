@@ -428,20 +428,32 @@ def activity_slide(prs, act):
 
     # Week strip
     days = act["days"]
-    dy, dh = Inches(2.45), Inches(1.6)
+    dy, dh = Inches(2.4), Inches(1.3)
     dg = Inches(0.14)
     dw = int((full - dg * (len(days) - 1)) / len(days))
     for i, (day, what, line, knesset) in enumerate(days):
         x = W - margin - (i + 1) * dw - i * dg
         rect(s, x, dy, dw, dh, GOLD if knesset else WHITE, line=None if knesset else LINE, radius=0.1)
         text(s, x, dy + Inches(0.1), dw, Inches(0.3), day, 12, NAVY_DARK if knesset else MUTED, bold=True)
-        text(s, x + Inches(0.1), dy + Inches(0.42), dw - Inches(0.2), Inches(0.5), what, 15, NAVY_DARK if knesset else NAVY,
+        text(s, x + Inches(0.1), dy + Inches(0.38), dw - Inches(0.2), Inches(0.45), what, 15, NAVY_DARK if knesset else NAVY,
              bold=True)
-        text(s, x + Inches(0.1), dy + Inches(0.95), dw - Inches(0.2), Inches(0.55), line, 11, NAVY_DARK if knesset else INK,
+        text(s, x + Inches(0.1), dy + Inches(0.82), dw - Inches(0.2), Inches(0.45), line, 11, NAVY_DARK if knesset else INK,
              anchor=MSO_ANCHOR.TOP)
 
+    # Planning bar under the days it happens on
+    pl = act.get("planning")
+    if pl:
+        c0, c1 = min(pl["cols"]), max(pl["cols"])
+        x_r = W - margin - c0 * (dw + dg)
+        x_l = W - margin - (c1 + 1) * dw - c1 * dg
+        py = dy + dh + Inches(0.1)
+        rect(s, x_l, py, x_r - x_l, Inches(0.62), NAVY, radius=0.18)
+        text(s, x_l + Inches(0.15), py + Inches(0.04), x_r - x_l - Inches(0.3), Inches(0.3), pl["title"], 13, WHITE,
+             bold=True)
+        text(s, x_l + Inches(0.15), py + Inches(0.32), x_r - x_l - Inches(0.3), Inches(0.26), pl["line"], 10, GOLD)
+
     # Who goes (right) + content person (left)
-    by, bh = Inches(4.3), Inches(2.75)
+    by, bh = Inches(4.55), Inches(2.55)
     bw = int((full - g) / 2)
     who = act["who"]
     wx = W - margin - bw
