@@ -1,0 +1,328 @@
+<title>כח התערבות · כנסת 26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Secular+One&family=Heebo:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: one long RTL scroll story, five acts (today → proposal → programs → week → budget), max 1120px column */
+:root {
+  --bg: #F3F5FA;
+  --surface: #FFFFFF;
+  --ink: #15203A;
+  --muted: #6B7590;
+  --line: #D5DBE8;
+  --navy: #1C3C7A;
+  --navy-ink: #FFFFFF;
+  --gold: #F0C000;
+  --gold-ink: #1A2440;
+  --slate: #4A5568;
+  --slate-chip: #E4E8EF;
+  --hi: #2E9E6A;
+  --mid: #E8892B;
+  --low: #D64545;
+  --ring-1: #E7ECF5;
+  --ring-2: #D3DCEE;
+  --display: "Secular One", "Heebo", "Arial Hebrew", sans-serif;
+  --body: "Heebo", "Arial Hebrew", "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1530; --surface: #15214A; --ink: #E9EDF7; --muted: #9AA6C4; --line: #2A3A6A;
+    --navy: #2C55A8; --navy-ink: #FFFFFF; --slate: #3A4560; --slate-chip: #233056;
+    --ring-1: #14204A; --ring-2: #1C2C5E; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1530; --surface: #15214A; --ink: #E9EDF7; --muted: #9AA6C4; --line: #2A3A6A;
+  --navy: #2C55A8; --navy-ink: #FFFFFF; --slate: #3A4560; --slate-chip: #233056;
+  --ring-1: #14204A; --ring-2: #1C2C5E; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(28px, 4.4vw, 44px); }
+.eyebrow { font-size: 13px; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+.lede { color: var(--muted); max-width: 60ch; margin: 10px 0 0; }
+section.act { padding-block: 72px; border-top: 1px solid var(--line); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* hero */
+.hero { background: var(--navy); color: var(--navy-ink); padding-block: 56px 48px; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 8px; background: var(--gold); }
+.hero .wrap { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 7vw, 84px); }
+.hero h1 b { color: var(--gold); font-weight: 400; }
+.hero p { margin: 14px 0 0; font-size: 18px; opacity: .9; max-width: 46ch; }
+.logo { width: clamp(96px, 14vw, 150px); background: #fff; border-radius: 18px; padding: 10px; }
+.chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.chapters a { color: var(--navy-ink); text-decoration: none; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+.chapters a:hover, .chapters a:focus-visible { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); outline: none; }
+
+/* act 1: today */
+.stats { display: flex; flex-wrap: wrap; gap: 28px; margin: 26px 0 8px; }
+.stat b { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 7vw, 72px); color: var(--navy); line-height: 1; display: block; }
+.stat span { color: var(--muted); font-weight: 500; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin: 22px 0 18px; }
+.seg { display: inline-flex; background: var(--slate-chip); border-radius: 999px; padding: 4px; }
+.seg button { border: 0; background: transparent; font: inherit; font-weight: 700; color: var(--muted); padding: 7px 16px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg button:focus-visible { outline: 2px solid var(--gold); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; font-weight: 700; transition: opacity .4s; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-inline-end: 6px; vertical-align: -1px; }
+.map:not(.avail) + .legend, .legend.off { opacity: .35; }
+.org { display: grid; gap: 14px; }
+.tier { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.team { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+.team h3 { font-family: var(--body); font-weight: 800; font-size: 15px; margin-bottom: 4px; }
+.team .lead { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.team .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sub { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.p { display: inline-block; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 8px; background: var(--slate-chip); color: var(--ink);
+     transition: background-color .5s ease, color .5s ease; transition-delay: calc(var(--i, 0) * 12ms); }
+.p.big { font-size: 14px; font-weight: 700; padding: 6px 12px; }
+.avail .p[data-a="high"] { background: var(--hi); color: #fff; }
+.avail .p[data-a="medium"] { background: var(--mid); color: #fff; }
+.avail .p[data-a="low"] { background: var(--low); color: #fff; }
+.tierlabel { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+
+/* act 2: proposal rings */
+.prop { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; align-items: center; margin-top: 28px; }
+.rings { width: 100%; max-width: 560px; aspect-ratio: 1; justify-self: center; }
+.rings svg { width: 100%; height: 100%; overflow: visible; }
+.rings .r { transform-origin: 300px 300px; transform-box: view-box; }
+.rings.play .r { animation: grow .9s cubic-bezier(.2,.8,.2,1) both; }
+.rings.play .r2 { animation-delay: .15s; } .rings.play .r3 { animation-delay: .3s; }
+@keyframes grow { from { transform: scale(.82); } to { transform: scale(1); } }
+.rings text { font-family: var(--body); }
+.side { display: grid; gap: 14px; min-width: 0; }
+.kpi { background: var(--navy); color: var(--navy-ink); border-radius: 14px; padding: 14px 18px; font-weight: 800; font-size: 19px; }
+.note { border: 2px solid var(--low); background: var(--surface); border-radius: 14px; padding: 14px 18px; }
+.note h3 { font-family: var(--body); font-weight: 800; font-size: 16px; color: var(--low); margin-bottom: 4px; }
+.note p { margin: 0; font-size: 15px; }
+
+/* act 3: programs */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 18px; }
+.tabs button { font: inherit; font-weight: 700; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
+.tabs button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.leader { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+.leader h3 { font-size: 28px; }
+.leader span { color: var(--muted); font-weight: 500; }
+.plist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: p; }
+.plist li { counter-increment: p; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; animation: rise .45s ease both; animation-delay: calc(var(--i) * 60ms); }
+.plist li::before { content: counter(p); font-family: var(--display); width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--navy-ink); display: grid; place-items: center; }
+.plist .t { font-weight: 700; font-size: 17px; }
+.tag { font-size: 12px; font-weight: 700; border: 1.5px solid var(--gold); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+@keyframes rise { from { transform: translateY(8px); } to { transform: none; } }
+
+/* act 4: week */
+.kpis3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 26px 0 16px; }
+.kpis3 div { background: var(--navy); color: var(--navy-ink); border-radius: 14px; padding: 16px 18px; }
+.kpis3 b { display: block; font-family: var(--display); font-weight: 400; font-size: 26px; }
+.kpis3 span { color: var(--gold); font-size: 14px; }
+.week { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.day { border-radius: 14px; padding: 14px 12px; min-height: 130px; background: var(--surface); border: 1px solid var(--line); transition: transform .3s; }
+.day.k { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+.day small { display: block; font-weight: 700; opacity: .75; }
+.day b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; margin: 4px 0; }
+.day p { margin: 0; font-size: 13px; }
+.week.play .day { animation: pop .5s ease both; animation-delay: calc(var(--i) * 110ms); }
+@keyframes pop { 0% { transform: translateY(0); } 40% { transform: translateY(-8px); } 100% { transform: none; } }
+.plan { grid-column: 4 / 6; background: var(--navy); color: var(--navy-ink); border-radius: 12px; padding: 10px 14px; }
+.plan b { display: block; } .plan span { font-size: 13px; color: var(--gold); }
+.who { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin-top: 16px; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+.box.gold { border: 2px solid var(--gold); }
+.box h3 { font-family: var(--body); font-weight: 800; font-size: 17px; margin-bottom: 8px; }
+.box ul { margin: 0; padding-inline-start: 18px; }
+.box .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.box .dash { border: 1.5px dashed var(--gold); background: transparent; }
+.muted { color: var(--muted); font-size: 14px; }
+
+/* act 5: budget */
+.stages { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 18px; align-items: stretch; margin-top: 28px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; min-width: 0; }
+.stage.b { border: 2px solid var(--gold); }
+.stage .lbl { font-weight: 800; color: var(--muted); font-size: 14px; }
+.stage .big { font-family: var(--display); font-size: clamp(40px, 6vw, 60px); line-height: 1.05; color: var(--navy); margin: 6px 0 2px; }
+.stage.b .big { color: var(--ink); }
+.stage table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+.stage td { padding: 7px 0; border-bottom: 1px solid var(--line); }
+.stage td:nth-child(2) { text-align: start; font-weight: 700; white-space: nowrap; padding-inline: 10px; }
+.stage td:last-child { text-align: end; width: 1%; white-space: nowrap; }
+.chg { font-size: 12px; font-weight: 800; background: var(--gold); color: var(--gold-ink); border-radius: 999px; padding: 2px 9px; }
+.chg.n { background: var(--slate-chip); color: var(--muted); font-weight: 600; }
+.arrow { align-self: center; font-family: var(--display); font-size: 38px; color: var(--gold); text-align: center; }
+.arrow small { display: block; font-family: var(--body); font-size: 13px; color: var(--muted); font-weight: 700; }
+.why { margin-top: 18px; border: 2px solid var(--gold); background: var(--surface); border-radius: 16px; padding: 18px 20px; }
+.why h3 { font-size: 24px; margin-bottom: 8px; }
+.why ul { margin: 0; padding-inline-start: 20px; font-weight: 700; }
+.models { margin-top: 36px; display: grid; gap: 12px; }
+.model { display: grid; grid-template-columns: 170px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
+.model .n { font-weight: 800; }
+.model .n small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.bar { height: 30px; background: var(--slate-chip); border-radius: 8px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: var(--w); background: var(--slate); border-radius: 8px; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.model.hl .bar i { background: var(--gold); }
+.model .v { font-family: var(--display); font-size: 22px; text-align: end; }
+.foot { color: var(--muted); font-size: 13px; padding-block: 28px 48px; text-align: center; }
+
+@media (max-width: 820px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .logo { order: -1; }
+  .prop, .who { grid-template-columns: 1fr; }
+  .stages { grid-template-columns: 1fr; }
+  .arrow { transform: rotate(-90deg); }
+  .week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plan { grid-column: 1 / -1; }
+  .model { grid-template-columns: 1fr auto; }
+  .model .bar { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div dir="rtl" lang="he">
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1>כח התערבות · <b>כנסת 26</b></h1>
+      <p>איך אנחנו בנויים היום, איך נבנה את המערך לכנסת הבאה, מה כל אחד מקדם וכמה זה עולה.</p>
+      <nav class="chapters" aria-label="פרקים">
+        <a href="#today">המבנה היום</a><a href="#proposal">המבנה המוצע</a><a href="#programs">תוכניות</a><a href="#week">שבוע בכנסת</a><a href="#budget">תקציב</a>
+      </nav>
+    </div>
+    <img class="logo" src="__LOGO__" alt="לוגו כח התערבות">
+  </div>
+</header>
+
+<main>
+<section class="act" id="today"><div class="wrap">
+  <div class="eyebrow">פרק 1 · המבנה היום</div>
+  <h2>הרבה אנשים טובים. מעט מאוד זמינות.</h2>
+  <div class="stats">
+    <div class="stat"><b class="num" data-count="__PEOPLE__">__PEOPLE__</b><span>אנשים</span></div>
+    <div class="stat"><b class="num" data-count="__GROUPS__">__GROUPS__</b><span>צוותים</span></div>
+    <div class="stat"><b class="num" data-count="__HIGH__" style="color:var(--hi)">__HIGH__</b><span>בזמינות גבוהה</span></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="תצוגה">
+      <button type="button" id="v-struct" aria-pressed="true">מבנה</button>
+      <button type="button" id="v-avail" aria-pressed="false">זמינות</button>
+    </div>
+    <div class="legend" id="legend">__LEGEND__</div>
+  </div>
+  <div class="map" id="map">__ORG__</div>
+</div></section>
+
+<section class="act" id="proposal"><div class="wrap">
+  <div class="eyebrow">פרק 2 · המבנה המוצע</div>
+  <h2>צוות קבוע בשכר במרכז, וכל השאר מזינים אותו</h2>
+  <div class="prop">
+    <div class="rings" id="rings">__RINGS__</div>
+    <div class="side">__SIDE__</div>
+  </div>
+</div></section>
+
+<section class="act" id="programs"><div class="wrap">
+  <div class="eyebrow">פרק 3 · תוכניות כנסת 26</div>
+  <h2>מה כל אחד מאיתנו מקדם</h2>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="panel" role="tabpanel"></div>
+</div></section>
+
+<section class="act" id="week"><div class="wrap">
+  <div class="eyebrow">פרק 4 · שבוע בכנסת</div>
+  <h2>קצב עבודה קבוע, שבוע אחרי שבוע</h2>
+  <div class="kpis3">__KPIS__</div>
+  <div class="week" id="weekgrid">__WEEK__</div>
+  <div class="who">__WHO__</div>
+</div></section>
+
+<section class="act" id="budget"><div class="wrap">
+  <div class="eyebrow">פרק 5 · תקציב</div>
+  <h2>מאיפה מתחילים, ולאן מגיעים</h2>
+  <div class="stages">__STAGES__</div>
+  <div class="why">__WHY__</div>
+  <div class="models" id="models">__MODELS__</div>
+  <p class="foot">כל נותני השירות פרילנסרים · הסכומים לחודש</p>
+</div></section>
+</main>
+</div>
+
+<script>
+(function () {
+  var PROGRAMS = __PROGRAMS__;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // availability toggle
+  var map = document.getElementById("map"), legend = document.getElementById("legend");
+  var bS = document.getElementById("v-struct"), bA = document.getElementById("v-avail");
+  function setView(avail) {
+    map.classList.toggle("avail", avail);
+    legend.classList.toggle("off", !avail);
+    bA.setAttribute("aria-pressed", String(avail));
+    bS.setAttribute("aria-pressed", String(!avail));
+  }
+  legend.classList.add("off");
+  bS.addEventListener("click", function () { setView(false); });
+  bA.addEventListener("click", function () { setView(true); });
+
+  // count-up for big numbers (starts from the final value at rest; runs once in view)
+  function countUp(el) {
+    var end = parseInt(el.getAttribute("data-count"), 10), t0 = null;
+    if (reduce || !end) return;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var k = Math.min(1, (ts - t0) / 900);
+      el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))).toLocaleString("he-IL");
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // programs tabs
+  var tabs = document.getElementById("tabs"), panel = document.getElementById("panel");
+  function show(i) {
+    var L = PROGRAMS[i];
+    Array.prototype.forEach.call(tabs.children, function (b, j) { b.setAttribute("aria-selected", String(i === j)); b.tabIndex = i === j ? 0 : -1; });
+    var h = '<div class="leader"><h3>' + L.name + '</h3><span>' + L.headline + '</span></div><ol class="plist">';
+    L.items.forEach(function (it, k) {
+      h += '<li style="--i:' + k + '"><span class="t">' + it[1] + '</span><span class="tag">' + (it[2] || "") + '</span></li>';
+    });
+    panel.innerHTML = h + "</ol>";
+  }
+  PROGRAMS.forEach(function (L, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.role = "tab"; b.id = "tab-" + i; b.textContent = L.name;
+    b.addEventListener("click", function () { show(i); });
+    b.addEventListener("keydown", function (e) {
+      var n = PROGRAMS.length, j = null;
+      if (e.key === "ArrowLeft") j = (i + 1) % n;
+      if (e.key === "ArrowRight") j = (i - 1 + n) % n;
+      if (j !== null) { show(j); tabs.children[j].focus(); e.preventDefault(); }
+    });
+    tabs.appendChild(b);
+  });
+  show(0);
+
+  // scroll-triggered moments
+  if (!("IntersectionObserver" in window)) return;
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting || seen.has(e.target)) return;
+      seen.add(e.target);
+      var el = e.target;
+      if (el.id === "map") setTimeout(function () { setView(true); }, reduce ? 0 : 700);
+      if (el.id === "rings" || el.id === "weekgrid") el.classList.add("play");
+      if (el.hasAttribute("data-count")) countUp(el);
+      if (el.id === "models") el.querySelectorAll(".bar i").forEach(function (b) { b.style.width = b.dataset.w; });
+    });
+  }, { threshold: 0.35 });
+  ["map", "rings", "weekgrid", "models"].forEach(function (id) { io.observe(document.getElementById(id)); });
+  document.querySelectorAll("[data-count]").forEach(function (el) { io.observe(el); });
+})();
+</script>

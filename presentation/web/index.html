@@ -1,0 +1,328 @@
+<title>כח התערבות · כנסת 26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Secular+One&family=Heebo:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: one long RTL scroll story, five acts (today → proposal → programs → week → budget), max 1120px column */
+:root {
+  --bg: #F3F5FA;
+  --surface: #FFFFFF;
+  --ink: #15203A;
+  --muted: #6B7590;
+  --line: #D5DBE8;
+  --navy: #1C3C7A;
+  --navy-ink: #FFFFFF;
+  --gold: #F0C000;
+  --gold-ink: #1A2440;
+  --slate: #4A5568;
+  --slate-chip: #E4E8EF;
+  --hi: #2E9E6A;
+  --mid: #E8892B;
+  --low: #D64545;
+  --ring-1: #E7ECF5;
+  --ring-2: #D3DCEE;
+  --display: "Secular One", "Heebo", "Arial Hebrew", sans-serif;
+  --body: "Heebo", "Arial Hebrew", "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1530; --surface: #15214A; --ink: #E9EDF7; --muted: #9AA6C4; --line: #2A3A6A;
+    --navy: #2C55A8; --navy-ink: #FFFFFF; --slate: #3A4560; --slate-chip: #233056;
+    --ring-1: #14204A; --ring-2: #1C2C5E; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1530; --surface: #15214A; --ink: #E9EDF7; --muted: #9AA6C4; --line: #2A3A6A;
+  --navy: #2C55A8; --navy-ink: #FFFFFF; --slate: #3A4560; --slate-chip: #233056;
+  --ring-1: #14204A; --ring-2: #1C2C5E; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(28px, 4.4vw, 44px); }
+.eyebrow { font-size: 13px; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+.lede { color: var(--muted); max-width: 60ch; margin: 10px 0 0; }
+section.act { padding-block: 72px; border-top: 1px solid var(--line); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* hero */
+.hero { background: var(--navy); color: var(--navy-ink); padding-block: 56px 48px; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 8px; background: var(--gold); }
+.hero .wrap { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.hero h1 { font-size: clamp(40px, 7vw, 84px); }
+.hero h1 b { color: var(--gold); font-weight: 400; }
+.hero p { margin: 14px 0 0; font-size: 18px; opacity: .9; max-width: 46ch; }
+.logo { width: clamp(96px, 14vw, 150px); background: #fff; border-radius: 18px; padding: 10px; }
+.chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.chapters a { color: var(--navy-ink); text-decoration: none; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+.chapters a:hover, .chapters a:focus-visible { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); outline: none; }
+
+/* act 1: today */
+.stats { display: flex; flex-wrap: wrap; gap: 28px; margin: 26px 0 8px; }
+.stat b { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 7vw, 72px); color: var(--navy); line-height: 1; display: block; }
+.stat span { color: var(--muted); font-weight: 500; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin: 22px 0 18px; }
+.seg { display: inline-flex; background: var(--slate-chip); border-radius: 999px; padding: 4px; }
+.seg button { border: 0; background: transparent; font: inherit; font-weight: 700; color: var(--muted); padding: 7px 16px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg button:focus-visible { outline: 2px solid var(--gold); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; font-weight: 700; transition: opacity .4s; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-inline-end: 6px; vertical-align: -1px; }
+.map:not(.avail) + .legend, .legend.off { opacity: .35; }
+.org { display: grid; gap: 14px; }
+.tier { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.team { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+.team h3 { font-family: var(--body); font-weight: 800; font-size: 15px; margin-bottom: 4px; }
+.team .lead { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.team .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sub { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.p { display: inline-block; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 8px; background: var(--slate-chip); color: var(--ink);
+     transition: background-color .5s ease, color .5s ease; transition-delay: calc(var(--i, 0) * 12ms); }
+.p.big { font-size: 14px; font-weight: 700; padding: 6px 12px; }
+.avail .p[data-a="high"] { background: var(--hi); color: #fff; }
+.avail .p[data-a="medium"] { background: var(--mid); color: #fff; }
+.avail .p[data-a="low"] { background: var(--low); color: #fff; }
+.tierlabel { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+
+/* act 2: proposal rings */
+.prop { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; align-items: center; margin-top: 28px; }
+.rings { width: 100%; max-width: 560px; aspect-ratio: 1; justify-self: center; }
+.rings svg { width: 100%; height: 100%; overflow: visible; }
+.rings .r { transform-origin: 300px 300px; transform-box: view-box; }
+.rings.play .r { animation: grow .9s cubic-bezier(.2,.8,.2,1) both; }
+.rings.play .r2 { animation-delay: .15s; } .rings.play .r3 { animation-delay: .3s; }
+@keyframes grow { from { transform: scale(.82); } to { transform: scale(1); } }
+.rings text { font-family: var(--body); }
+.side { display: grid; gap: 14px; min-width: 0; }
+.kpi { background: var(--navy); color: var(--navy-ink); border-radius: 14px; padding: 14px 18px; font-weight: 800; font-size: 19px; }
+.note { border: 2px solid var(--low); background: var(--surface); border-radius: 14px; padding: 14px 18px; }
+.note h3 { font-family: var(--body); font-weight: 800; font-size: 16px; color: var(--low); margin-bottom: 4px; }
+.note p { margin: 0; font-size: 15px; }
+
+/* act 3: programs */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 18px; }
+.tabs button { font: inherit; font-weight: 700; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
+.tabs button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.leader { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+.leader h3 { font-size: 28px; }
+.leader span { color: var(--muted); font-weight: 500; }
+.plist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: p; }
+.plist li { counter-increment: p; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; animation: rise .45s ease both; animation-delay: calc(var(--i) * 60ms); }
+.plist li::before { content: counter(p); font-family: var(--display); width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--navy-ink); display: grid; place-items: center; }
+.plist .t { font-weight: 700; font-size: 17px; }
+.tag { font-size: 12px; font-weight: 700; border: 1.5px solid var(--gold); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+@keyframes rise { from { transform: translateY(8px); } to { transform: none; } }
+
+/* act 4: week */
+.kpis3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 26px 0 16px; }
+.kpis3 div { background: var(--navy); color: var(--navy-ink); border-radius: 14px; padding: 16px 18px; }
+.kpis3 b { display: block; font-family: var(--display); font-weight: 400; font-size: 26px; }
+.kpis3 span { color: var(--gold); font-size: 14px; }
+.week { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.day { border-radius: 14px; padding: 14px 12px; min-height: 130px; background: var(--surface); border: 1px solid var(--line); transition: transform .3s; }
+.day.k { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+.day small { display: block; font-weight: 700; opacity: .75; }
+.day b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; margin: 4px 0; }
+.day p { margin: 0; font-size: 13px; }
+.week.play .day { animation: pop .5s ease both; animation-delay: calc(var(--i) * 110ms); }
+@keyframes pop { 0% { transform: translateY(0); } 40% { transform: translateY(-8px); } 100% { transform: none; } }
+.plan { grid-column: 4 / 6; background: var(--navy); color: var(--navy-ink); border-radius: 12px; padding: 10px 14px; }
+.plan b { display: block; } .plan span { font-size: 13px; color: var(--gold); }
+.who { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin-top: 16px; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+.box.gold { border: 2px solid var(--gold); }
+.box h3 { font-family: var(--body); font-weight: 800; font-size: 17px; margin-bottom: 8px; }
+.box ul { margin: 0; padding-inline-start: 18px; }
+.box .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.box .dash { border: 1.5px dashed var(--gold); background: transparent; }
+.muted { color: var(--muted); font-size: 14px; }
+
+/* act 5: budget */
+.stages { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 18px; align-items: stretch; margin-top: 28px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; min-width: 0; }
+.stage.b { border: 2px solid var(--gold); }
+.stage .lbl { font-weight: 800; color: var(--muted); font-size: 14px; }
+.stage .big { font-family: var(--display); font-size: clamp(40px, 6vw, 60px); line-height: 1.05; color: var(--navy); margin: 6px 0 2px; }
+.stage.b .big { color: var(--ink); }
+.stage table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+.stage td { padding: 7px 0; border-bottom: 1px solid var(--line); }
+.stage td:nth-child(2) { text-align: start; font-weight: 700; white-space: nowrap; padding-inline: 10px; }
+.stage td:last-child { text-align: end; width: 1%; white-space: nowrap; }
+.chg { font-size: 12px; font-weight: 800; background: var(--gold); color: var(--gold-ink); border-radius: 999px; padding: 2px 9px; }
+.chg.n { background: var(--slate-chip); color: var(--muted); font-weight: 600; }
+.arrow { align-self: center; font-family: var(--display); font-size: 38px; color: var(--gold); text-align: center; }
+.arrow small { display: block; font-family: var(--body); font-size: 13px; color: var(--muted); font-weight: 700; }
+.why { margin-top: 18px; border: 2px solid var(--gold); background: var(--surface); border-radius: 16px; padding: 18px 20px; }
+.why h3 { font-size: 24px; margin-bottom: 8px; }
+.why ul { margin: 0; padding-inline-start: 20px; font-weight: 700; }
+.models { margin-top: 36px; display: grid; gap: 12px; }
+.model { display: grid; grid-template-columns: 170px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
+.model .n { font-weight: 800; }
+.model .n small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+.bar { height: 30px; background: var(--slate-chip); border-radius: 8px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: var(--w); background: var(--slate); border-radius: 8px; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.model.hl .bar i { background: var(--gold); }
+.model .v { font-family: var(--display); font-size: 22px; text-align: end; }
+.foot { color: var(--muted); font-size: 13px; padding-block: 28px 48px; text-align: center; }
+
+@media (max-width: 820px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .logo { order: -1; }
+  .prop, .who { grid-template-columns: 1fr; }
+  .stages { grid-template-columns: 1fr; }
+  .arrow { transform: rotate(-90deg); }
+  .week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plan { grid-column: 1 / -1; }
+  .model { grid-template-columns: 1fr auto; }
+  .model .bar { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div dir="rtl" lang="he">
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1>כח התערבות · <b>כנסת 26</b></h1>
+      <p>איך אנחנו בנויים היום, איך נבנה את המערך לכנסת הבאה, מה כל אחד מקדם וכמה זה עולה.</p>
+      <nav class="chapters" aria-label="פרקים">
+        <a href="#today">המבנה היום</a><a href="#proposal">המבנה המוצע</a><a href="#programs">תוכניות</a><a href="#week">שבוע בכנסת</a><a href="#budget">תקציב</a>
+      </nav>
+    </div>
+    <img class="logo" src="data:image/png;base64,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" alt="לוגו כח התערבות">
+  </div>
+</header>
+
+<main>
+<section class="act" id="today"><div class="wrap">
+  <div class="eyebrow">פרק 1 · המבנה היום</div>
+  <h2>הרבה אנשים טובים. מעט מאוד זמינות.</h2>
+  <div class="stats">
+    <div class="stat"><b class="num" data-count="49">49</b><span>אנשים</span></div>
+    <div class="stat"><b class="num" data-count="4">4</b><span>צוותים</span></div>
+    <div class="stat"><b class="num" data-count="2" style="color:var(--hi)">2</b><span>בזמינות גבוהה</span></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="תצוגה">
+      <button type="button" id="v-struct" aria-pressed="true">מבנה</button>
+      <button type="button" id="v-avail" aria-pressed="false">זמינות</button>
+    </div>
+    <div class="legend" id="legend"><span><i style="background:var(--hi)"></i>2 · גבוהה</span><span><i style="background:var(--mid)"></i>32 · בינונית</span><span><i style="background:var(--low)"></i>15 · נמוכה</span></div>
+  </div>
+  <div class="map" id="map"><div class="org"><div class="tierlabel">דירקטוריון</div><div class="tier"><span class="p big" data-a="high" style="--i:0">תמיר דורטל</span><span class="p big" data-a="medium" style="--i:1">עו״ד אודליה קדמי</span><span class="p big" data-a="medium" style="--i:2">ד״ר אמיר רובין</span><span class="p big" data-a="medium" style="--i:3">נגה ארבל</span><span class="p big" data-a="low" style="--i:4">טל קופל</span><span class="p big" data-a="low" style="--i:5">עו״ד תמר ארבל</span><span class="p big" data-a="medium" style="--i:6">שלומית לביא</span></div><div class="tierlabel">מנכ״ל</div><div class="tier"><span class="p big" data-a="high" style="--i:8">אדם קורגן</span></div><div class="teams"><div class="team"><h3>צוות מחקר</h3><div class="chips"><span class="p big" data-a="medium" style="--i:0">טמיר שרגא · ראש צוות</span></div><div class="chips" style="margin-top:8px"><span class="p" data-a="medium" style="--i:1">אלטר כהן</span><span class="p" data-a="low" style="--i:2">יואב קוסטינר</span><span class="p" data-a="medium" style="--i:3">מרדכי קמלמן</span><span class="p" data-a="medium" style="--i:4">יפית בירון</span><span class="p" data-a="low" style="--i:5">נתנאל מאמו</span><span class="p" data-a="medium" style="--i:6">ישי זנגן</span><span class="p" data-a="medium" style="--i:7">אלון</span><span class="p" data-a="low" style="--i:8">ליאור טלמור</span><span class="p" data-a="medium" style="--i:9">עידן ליפשיץ</span><span class="p" data-a="medium" style="--i:10">יהודה ליבנר</span><span class="p" data-a="medium" style="--i:11">מיכאל פסין</span><span class="p" data-a="low" style="--i:12">הדר שטרול</span><span class="p" data-a="medium" style="--i:13">ישראל ציג</span><span class="p" data-a="low" style="--i:14">אסתר הורוביץ</span><span class="p" data-a="medium" style="--i:15">מנחם ברעם</span><span class="p" data-a="medium" style="--i:16">משה לנגלב</span><span class="p" data-a="low" style="--i:17">בנימין רוזנסקי</span><span class="p" data-a="medium" style="--i:18">חגי כהן קלונימוס</span></div></div><div class="team"><h3>צוות אקטיביסטים</h3><div class="chips"><span class="p big" data-a="low" style="--i:19">יהונתן יחזקאל · ראש צוות</span></div><div class="chips" style="margin-top:8px"><span class="p" data-a="low" style="--i:20">רוני מרטין</span><span class="p" data-a="medium" style="--i:21">בנימין שיפרין</span><span class="p" data-a="medium" style="--i:22">משה הלר</span><span class="p" data-a="medium" style="--i:23">יהודה שוורצמן</span><span class="p" data-a="low" style="--i:24">צופיה צדוק</span><span class="p" data-a="medium" style="--i:25">יצחק פינק</span><span class="p" data-a="medium" style="--i:26">דובי ג&#x27;ייקובס</span><span class="p" data-a="medium" style="--i:27">סתיו רוט</span></div><div class="sub"><h3>קבוצת נוער</h3><div class="chips"><span class="p big" data-a="medium" style="--i:28">יהונתן אמתי · רכז נוער</span></div><div class="chips" style="margin-top:8px"><span class="p" data-a="medium" style="--i:29">אביתר</span><span class="p" data-a="medium" style="--i:30">אשל לוין</span><span class="p" data-a="medium" style="--i:31">יהודה יאיר שיוביץ&#x27;</span><span class="p" data-a="low" style="--i:32">יובל גרינברגר</span><span class="p" data-a="low" style="--i:33">יוסף גוטויליג</span><span class="p" data-a="low" style="--i:34">משה הורוביץ</span><span class="p" data-a="medium" style="--i:35">שני קולברש</span></div></div></div><div class="team"><h3>צוות דיגיטל</h3><div class="chips"><span class="p big" data-a="medium" style="--i:36">איתמר כהן · ראש צוות (טוויטר)</span></div><div class="chips" style="margin-top:8px"><span class="p" data-a="medium" style="--i:37">אלטר כהן <small>(אינסטגרם)</small></span><span class="p" data-a="medium" style="--i:38">ישראל ציג <small>(פייסבוק)</small></span><span class="p" data-a="medium" style="--i:39">מנחם זיבוטפסקי <small>(יוטיוב)</small></span><span class="p" data-a="medium" style="--i:40">יהודה חדאד <small>(אתר)</small></span><span class="p" data-a="medium" style="--i:41">יוסף</span><span class="p" data-a="low" style="--i:42">יהודה הנדלר</span><span class="p" data-a="low" style="--i:43">יואב קוסטינר</span><span class="p" data-a="low" style="--i:44">יוסף גוטויליג</span><span class="p" data-a="medium" style="--i:45">משה הלר</span></div></div></div></div></div>
+</div></section>
+
+<section class="act" id="proposal"><div class="wrap">
+  <div class="eyebrow">פרק 2 · המבנה המוצע</div>
+  <h2>צוות קבוע בשכר במרכז, וכל השאר מזינים אותו</h2>
+  <div class="prop">
+    <div class="rings" id="rings"><svg viewBox="0 0 600 600" role="img" aria-label="המבנה המוצע: צוות הכנסת במרכז, צוותי תמיכה סביבו, ומעגל ההשפעה בחוץ"><circle class="r r3" cx="300" cy="300" r="285" fill="var(--ring-1)" stroke="var(--line)" stroke-width="2"/><circle class="r r2" cx="300" cy="300" r="195" fill="var(--ring-2)" stroke="var(--line)" stroke-width="2"/><circle class="r r1" cx="300" cy="300" r="110" fill="var(--gold)"/><text x="300" y="228" text-anchor="middle" direction="rtl" font-size="13" fill="var(--gold-ink)">הליבה · בשכר</text><text x="300" y="260" text-anchor="middle" direction="rtl" font-size="26" fill="var(--gold-ink)" style="font-family:var(--display)">צוות הכנסת</text><text x="300" y="290" text-anchor="middle" direction="rtl" font-size="15" font-weight="500" fill="var(--gold-ink)">תמיר דורטל · אדם קורגן</text><text x="300" y="314" text-anchor="middle" direction="rtl" font-size="15" font-weight="500" fill="var(--gold-ink)">חבר דירקטוריון</text><text x="300" y="338" text-anchor="middle" direction="rtl" font-size="15" font-weight="500" fill="var(--gold-ink)">נציג רביעי</text><text x="300" y="362" text-anchor="middle" direction="rtl" font-size="15" font-weight="800" fill="var(--gold-ink)">+ איש תוכן ותקשורת</text><g><rect x="205.0" y="123" width="190" height="54" rx="27" fill="var(--navy)" stroke="none" stroke-width="2"/><text x="300" y="147" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy-ink)">צוות מחקר</text><text x="300" y="167" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--gold)">ניירות עמדה · טמיר שרגא</text></g><g><rect x="317.0" y="395" width="190" height="54" rx="27" fill="var(--navy)" stroke="none" stroke-width="2"/><text x="412" y="419" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy-ink)">צוות דיגיטל</text><text x="412" y="439" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--gold)">הפצה ברשתות · איתמר כהן</text></g><g><rect x="93.0" y="395" width="190" height="54" rx="27" fill="var(--navy)" stroke="none" stroke-width="2"/><text x="188" y="419" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy-ink)">צוות אקטיביסטים</text><text x="188" y="439" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--gold)">מצטרפים לנציג · יהונתן יחזקאל</text></g><g><rect x="185.0" y="35" width="230" height="54" rx="27" fill="var(--surface)" stroke="var(--navy)" stroke-width="2"/><text x="300" y="59" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy)">הנהלה</text><text x="300" y="79" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--muted)">מנכ״ל אדם קורגן + עוזר מנכ״ל (לאיוש)</text></g><g><rect x="361.0" y="469" width="230" height="54" rx="27" fill="var(--surface)" stroke="var(--navy)" stroke-width="2"/><text x="476" y="493" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy)">מובילי תחום</text><text x="476" y="513" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--muted)">אודליה · נגה · שלומית</text></g><g><rect x="9.0" y="469" width="230" height="54" rx="27" fill="var(--surface)" stroke="var(--navy)" stroke-width="2"/><text x="124" y="493" text-anchor="middle" direction="rtl" font-size="17" font-weight="800" fill="var(--navy)">יועצים</text><text x="124" y="513" text-anchor="middle" direction="rtl" font-size="12.5" fill="var(--muted)">טל קופל · תמר ארבל</text></g></svg></div>
+    <div class="side"><div class="kpi">בין 3 ל-4 דיונים בשבוע</div><div class="kpi">לפחות 2 ימי כנסת מלאים</div><div class="note"><h3>נציג קבוע בכל דיון: זה מה שבונה אמינות</h3><p>אקטיביסט יגיע לדיון לבד רק כשאין בשום אופן נציג אחר. מערך שנשען על מתנדבים יקרוס בחיתוליו, גם תדמיתית וגם אופרטיבית.</p></div><div class="note"><h3>איש התוכן: חלק מהצוות, לא ספק חיצוני</h3><p>רק מי שלוקח חלק פעיל בסדר היום יכול להפוך כל דיון בכנסת לחשיפה: מהר, מדויק ואמין.</p></div></div>
+  </div>
+</div></section>
+
+<section class="act" id="programs"><div class="wrap">
+  <div class="eyebrow">פרק 3 · תוכניות כנסת 26</div>
+  <h2>מה כל אחד מאיתנו מקדם</h2>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="panel" role="tabpanel"></div>
+</div></section>
+
+<section class="act" id="week"><div class="wrap">
+  <div class="eyebrow">פרק 4 · שבוע בכנסת</div>
+  <h2>קצב עבודה קבוע, שבוע אחרי שבוע</h2>
+  <div class="kpis3"><div><b>בין 3 ל-4 דיונים</b><span>בכל שבוע</span></div><div><b>לפחות 2 ימי כנסת מלאים</b><span>דיונים, פגישות ושיחות</span></div><div><b>בין 400 ל-600 ₪</b><span>תגמול ליום כנסת · יום מלא או חצי יום</span></div></div>
+  <div class="week" id="weekgrid"><div class="day" style="--i:0"><small>ראשון</small><b>הכנה</b><p>דיון במידה ויש · צוות המחקר מכין ניירות ותדריך</p></div><div class="day k" style="--i:1"><small>שני</small><b>דיונים</b><p>בוועדות הכנסת</p></div><div class="day k" style="--i:2"><small>שלישי</small><b>דיונים</b><p>בוועדות הכנסת</p></div><div class="day k" style="--i:3"><small>רביעי</small><b>דיונים</b><p>בוועדות הכנסת</p></div><div class="day k" style="--i:4"><small>חמישי</small><b>דיונים</b><p>בוועדות הכנסת</p></div><div class="plan"><b>קביעת סדר היום לשבוע הבא</b><span>העברה לצוות המחקר ושיבוץ לדיונים · לא יאוחר מחמישי בבוקר</span></div></div>
+  <div class="who"><div class="box"><h3>מי הולך לכנסת</h3><div class="chips"><span class="p big">תמיר דורטל</span><span class="p big">אדם קורגן</span><span class="p big">חבר דירקטוריון</span><span class="p big dash">נציג רביעי</span></div><p class="muted">נציג רביעי: משרה חלקית, או בשילוב עם תפקיד איש התוכן</p><p style="margin:0;font-weight:700">+ אקטיביסטים משלימים חורים ומצטרפים לנציג</p></div><div class="box gold"><h3>איש תוכן ותקשורת</h3><p class="muted">משרה חלקית בכח התערבות · אפשר בשילוב עם &#x27;על המשמעות&#x27;</p><ul><li><b>לוקח חלק פעיל בסדר היום של הארגון</b></li><li><b>איתו בונים את החשיפה בתקשורת וברשתות</b></li></ul></div></div>
+</div></section>
+
+<section class="act" id="budget"><div class="wrap">
+  <div class="eyebrow">פרק 5 · תקציב</div>
+  <h2>מאיפה מתחילים, ולאן מגיעים</h2>
+  <div class="stages"><div class="stage a"><div class="lbl">שלב א׳ · שינוי מבני, בלי לגעת בשכר</div><div class="big num">20,750 ₪</div><div class="muted">לחודש · 249,000 ₪ בשנה · 13 דיונים בחודש</div><table><tr><td>מנכ״ל · אדם קורגן</td><td class="num">10,000 ₪</td><td><span class="chg n">ללא שינוי</span></td></tr><tr><td>עוזר מנכ״ל · חצי משרה</td><td class="num">5,000 ₪</td><td><span class="chg n">ללא שינוי</span></td></tr><tr><td>מנהל תוכן · חצי משרה</td><td class="num">5,000 ₪</td><td><span class="chg n">ללא שינוי</span></td></tr><tr><td>חברי דירקטוריון · 2 דיונים</td><td class="num">750 ₪</td><td><span class="chg n">במקום נציג 4</span></td></tr><tr><td>אקטיביסטים · 2 דיונים</td><td class="num">בהתנדבות</td><td><span class="chg n">חדש</span></td></tr><tr><td>תמיר דורטל · 4 דיונים</td><td class="num">—</td><td><span class="chg n">בעלים</span></td></tr></table></div><div class="arrow" aria-hidden="true">←<small>+10,850 ₪</small></div><div class="stage b"><div class="lbl">שלב ב׳ · שכר מספק למערך מלא</div><div class="big num">31,600 ₪</div><div class="muted">לחודש · 379,200 ₪ בשנה · 16 דיונים בחודש</div><table><tr><td>מנכ״ל · אדם קורגן</td><td class="num">15,000 ₪</td><td><span class="chg">+5,000</span></td></tr><tr><td>עוזר מנכ״ל · חצי משרה</td><td class="num">7,000 ₪</td><td><span class="chg">+2,000</span></td></tr><tr><td>מנהל תוכן · חצי משרה</td><td class="num">6,000 ₪</td><td><span class="chg">+1,000</span></td></tr><tr><td>נציג 3 · 4 דיונים</td><td class="num">1,800 ₪</td><td><span class="chg n">תעריף מלא</span></td></tr><tr><td>נציג 4 · 4 דיונים</td><td class="num">1,800 ₪</td><td><span class="chg n">חוזר</span></td></tr><tr><td>תמיר דורטל · 4 דיונים</td><td class="num">—</td><td><span class="chg n">בעלים</span></td></tr></table></div></div>
+  <div class="why"><h3>שכר מספק הוא השקעה, לא הוצאה</h3><ul><li>מי שמתפרנס מהתפקיד מתחייב אליו: מגיע לכל דיון, מוכן, ולאורך זמן</li><li>פחות תחלופה = פחות חפיפות, ויותר היכרות אישית עם חברי הכנסת והיועצים</li><li>דיון שחסכנו עליו עולה מעט. דיון שפספסנו עולה בחוק שעבר בלעדינו</li></ul></div>
+  <div class="models" id="models"><div class="model hl"><div class="n">מודל אידיאלי התחלתי<small>צוות מלא בשכר מספק</small></div><div class="bar"><i style="--w:100.0%" data-w="100.0%"></i></div><div class="v num">31,600 ₪</div></div><div class="model"><div class="n">מודל ביניים<small>בלי נציג 4 · דירקטוריון ואקטיביסטים משלימים</small></div><div class="bar"><i style="--w:72.9%" data-w="72.9%"></i></div><div class="v num">23,050 ₪</div></div><div class="model"><div class="n">מודל רזה<small>מינימום דיונים · איש תוכן משותף עם &#x27;על המשמעות&#x27;</small></div><div class="bar"><i style="--w:57.8%" data-w="57.8%"></i></div><div class="v num">18,250 ₪</div></div></div>
+  <p class="foot">כל נותני השירות פרילנסרים · הסכומים לחודש</p>
+</div></section>
+</main>
+</div>
+
+<script>
+(function () {
+  var PROGRAMS = [{"name": "תמיר דורטל", "headline": "מייסד · כלכלה, רגולציה וביטחון אישי", "items": [["1", "רפורמת נשק ארוך: לאפשר לאזרחים לרכוש נשק ארוך", "ביטחון אישי"], ["2", "אישור נהיגה אוטונומית של טסלה בישראל", "רגולציה"]]}, {"name": "עו״ד אודליה קדמי", "headline": "ביטחון אישי", "items": [["1", "הקמת שדולה בכנסת למען האזרח החמוש", "ביטחון אישי"], ["2", "קידום חוק חסינות למשרתי ומתנדבי כוחות הביטחון", "כוחות הביטחון"]]}, {"name": "שלומית לביא", "headline": "רווחה ומשפחה", "items": [["1", "הזכות לייצוג סוציאלי פרטי בהליכי משפט", "זכויות"], ["2", "הבטחת זכויות אזרח בהליכי משפחה", "זכויות"], ["3", "הקמת מו\"פ למשרד הרווחה, לבתי המשפט למשפחה ולבתי הדין", "מחקר ומדיניות"], ["4", "נציבות חיצונית לפיקוח וביקורת על משרד הרווחה", "פיקוח"], ["5", "נציבות לפיקוח וביקורת על בתי המשפט לענייני משפחה", "פיקוח"]]}, {"name": "נגה ארבל", "headline": "חקיקה · ביטחון אישי ולאומי, ריבונות, צה״ל וחינוך", "items": [["1", "חוק הגנה עצמית: זכות יסוד, בדומה לארה״ב", "ביטחון אישי"], ["2", "הגנה ברשת", "טכנולוגיה"], ["3", "ביטוח לאומי: איסור על העברת כספים לחו״ל", "ביטחון לאומי"], ["4", "רוח צה״ל", "צה״ל"], ["5", "מדדים בחינוך: המלצות מדיניות", "חינוך"], ["6", "חוק למניעת כפיפות לאמנות בינלאומיות ללא אישור הכנסת", "ריבונות"]]}, {"name": "טל קופל", "headline": "אתיקה, חינוך והתיישבות", "items": [["1", "ייהוד הגליל והנגב וגרעיני נח״ל", "התיישבות"], ["2", "קוד אתי חדש וחיל חינוך", "זהות יהודית בצה״ל"], ["3", "תגמול המילואים ושדולת הגבורה", "מילואים וגבורה"], ["4", "חוק חינוך ממלכתי, תנ״ך, היסטוריה וחינוך ביתי", "זהות בחינוך"], ["5", "הפרדת ות״ת מהמל״ג ומוסד מחקר לאומי", "אקדמיה ומחקר"]]}];
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // availability toggle
+  var map = document.getElementById("map"), legend = document.getElementById("legend");
+  var bS = document.getElementById("v-struct"), bA = document.getElementById("v-avail");
+  function setView(avail) {
+    map.classList.toggle("avail", avail);
+    legend.classList.toggle("off", !avail);
+    bA.setAttribute("aria-pressed", String(avail));
+    bS.setAttribute("aria-pressed", String(!avail));
+  }
+  legend.classList.add("off");
+  bS.addEventListener("click", function () { setView(false); });
+  bA.addEventListener("click", function () { setView(true); });
+
+  // count-up for big numbers (starts from the final value at rest; runs once in view)
+  function countUp(el) {
+    var end = parseInt(el.getAttribute("data-count"), 10), t0 = null;
+    if (reduce || !end) return;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var k = Math.min(1, (ts - t0) / 900);
+      el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))).toLocaleString("he-IL");
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // programs tabs
+  var tabs = document.getElementById("tabs"), panel = document.getElementById("panel");
+  function show(i) {
+    var L = PROGRAMS[i];
+    Array.prototype.forEach.call(tabs.children, function (b, j) { b.setAttribute("aria-selected", String(i === j)); b.tabIndex = i === j ? 0 : -1; });
+    var h = '<div class="leader"><h3>' + L.name + '</h3><span>' + L.headline + '</span></div><ol class="plist">';
+    L.items.forEach(function (it, k) {
+      h += '<li style="--i:' + k + '"><span class="t">' + it[1] + '</span><span class="tag">' + (it[2] || "") + '</span></li>';
+    });
+    panel.innerHTML = h + "</ol>";
+  }
+  PROGRAMS.forEach(function (L, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.role = "tab"; b.id = "tab-" + i; b.textContent = L.name;
+    b.addEventListener("click", function () { show(i); });
+    b.addEventListener("keydown", function (e) {
+      var n = PROGRAMS.length, j = null;
+      if (e.key === "ArrowLeft") j = (i + 1) % n;
+      if (e.key === "ArrowRight") j = (i - 1 + n) % n;
+      if (j !== null) { show(j); tabs.children[j].focus(); e.preventDefault(); }
+    });
+    tabs.appendChild(b);
+  });
+  show(0);
+
+  // scroll-triggered moments
+  if (!("IntersectionObserver" in window)) return;
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting || seen.has(e.target)) return;
+      seen.add(e.target);
+      var el = e.target;
+      if (el.id === "map") setTimeout(function () { setView(true); }, reduce ? 0 : 700);
+      if (el.id === "rings" || el.id === "weekgrid") el.classList.add("play");
+      if (el.hasAttribute("data-count")) countUp(el);
+      if (el.id === "models") el.querySelectorAll(".bar i").forEach(function (b) { b.style.width = b.dataset.w; });
+    });
+  }, { threshold: 0.35 });
+  ["map", "rings", "weekgrid", "models"].forEach(function (id) { io.observe(document.getElementById(id)); });
+  document.querySelectorAll("[data-count]").forEach(function (el) { io.observe(el); });
+})();
+</script>
