@@ -346,7 +346,13 @@ def proposal_slide(prs, data):
         g = Inches(0.1)
         cw = int((gw - Inches(0.2) - g * (n - 1)) / n)
         for i, (nm, role) in enumerate(gr["people"]):
-            card(s, gx + gw - Inches(0.1) - (i + 1) * cw - i * g, by, cw, bh, nm, role, None, False, size=12)
+            x = gx + gw - Inches(0.1) - (i + 1) * cw - i * g
+            if nm.startswith("?"):  # a seat still to be filled
+                rect(s, x, by, cw, bh, None, line=GOLD, dashed=True)
+                text(s, x, by + Inches(0.03), cw, bh * 0.52, nm[1:], 12, NAVY, bold=True, anchor=MSO_ANCHOR.BOTTOM)
+                text(s, x, by + bh * 0.55, cw, bh * 0.4, role, 9, MUTED, anchor=MSO_ANCHOR.TOP)
+            else:
+                card(s, x, by, cw, bh, nm, role, None, False, size=12)
         x_right = gx - ggap
 
     # Core: the paid Knesset team
@@ -407,17 +413,22 @@ def proposal_slide(prs, data):
     text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
     text(s, dx, dy + Inches(0.44), dw, Inches(0.28), dg["line"], 11, INK)
 
-    # Warning note: volunteers fill gaps, they are not the system
-    note = pr.get("note")
-    if note:
-        ny, nh = dy + dh + Inches(0.25), Inches(0.72)
-        rect(s, margin, ny, W - 2 * margin, nh, WHITE, line=NAVY, radius=0.14)
-        s.shapes[-1].line.width = Pt(1.75)
-        num_dot(s, W - margin - Inches(0.6), ny + (nh - Inches(0.4)) // 2, Inches(0.4), "!", fill=GOLD, color=NAVY_DARK)
-        text(s, margin + Inches(0.2), ny + Inches(0.06), W - 2 * margin - Inches(0.95), Inches(0.32), note["title"], 14,
-             NAVY, bold=True, align=PP_ALIGN.RIGHT)
-        text(s, margin + Inches(0.2), ny + Inches(0.38), W - 2 * margin - Inches(0.95), Inches(0.28), note["line"], 12,
-             INK, align=PP_ALIGN.RIGHT)
+    # Red notes: the two conditions the model depends on
+    notes = pr.get("notes", [])
+    if notes:
+        RED = AVAIL["low"][1]
+        ny, nh = dy + dh + Inches(0.15), Inches(0.92)
+        ng = Inches(0.2)
+        nw = int((W - 2 * margin - ng * (len(notes) - 1)) / len(notes))
+        for i, note in enumerate(notes):
+            x = W - margin - (i + 1) * nw - i * ng
+            rect(s, x, ny, nw, nh, WHITE, line=RED, radius=0.12)
+            s.shapes[-1].line.width = Pt(2)
+            num_dot(s, x + nw - Inches(0.5), ny + Inches(0.12), Inches(0.36), "!", fill=RED)
+            text(s, x + Inches(0.15), ny + Inches(0.1), nw - Inches(0.75), Inches(0.36), note["title"], 14, RED,
+                 bold=True, align=PP_ALIGN.RIGHT)
+            text(s, x + Inches(0.15), ny + Inches(0.46), nw - Inches(0.3), Inches(0.42), note["line"], 11, INK,
+                 align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.TOP)
     return s
 
 
