@@ -687,13 +687,11 @@ def costs_slide(prs, cs):
         if rec:
             s.shapes[-1].line.width = Pt(3)
         # head
-        rect(s, x, top, cw, Inches(0.95), NAVY if rec else SLATE, radius=0.12)
-        text(s, x, top + Inches(0.1), cw, Inches(0.42), m["name"], 20, WHITE, bold=True)
-        text(s, x + Inches(0.1), top + Inches(0.52), cw - Inches(0.2), Inches(0.36), m["tag"], 10, GOLD)
-        if rec:
-            rect(s, x + cw // 2 - Inches(0.7), top - Inches(0.17), Inches(1.4), Inches(0.34), GOLD, radius=0.5)
-            text(s, x + cw // 2 - Inches(0.7), top - Inches(0.17), Inches(1.4), Inches(0.34), "המלצה", 12, NAVY_DARK,
-                 bold=True)
+        # the highlighted model is drawn in gold
+        rect(s, x, top, cw, Inches(0.95), GOLD if rec else SLATE, radius=0.12)
+        text(s, x, top + Inches(0.1), cw, Inches(0.42), m["name"], 20, NAVY_DARK if rec else WHITE, bold=True)
+        text(s, x + Inches(0.1), top + Inches(0.52), cw - Inches(0.2), Inches(0.36), m["tag"], 10,
+             NAVY_DARK if rec else GOLD)
         # the number
         text(s, x, top + Inches(1.05), cw, Inches(0.7), m["monthly"], 36, NAVY, bold=True)
         text(s, x, top + Inches(1.7), cw, Inches(0.3), "לחודש · " + m["yearly"], 12, MUTED)
@@ -717,8 +715,6 @@ def costs_slide(prs, cs):
             ry += Inches(0.4)
         text(s, x + Inches(0.2), ry + Inches(0.05), cw - Inches(0.4), Inches(0.28), "תעריף: " + m["rate"], 10, MUTED,
              align=PP_ALIGN.RIGHT)
-        text(s, x + Inches(0.2), ry + Inches(0.35), cw - Inches(0.4), Inches(0.3), "מימון: " + m["partners"], 11,
-             NAVY, bold=True, align=PP_ALIGN.RIGHT)
     text(s, margin, Inches(7.02), W - 2 * margin, Inches(0.3), cs["footnote"], 10, MUTED)
     return s
 
