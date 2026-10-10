@@ -633,7 +633,7 @@ def org_slide(prs, data, colored):
     else:
         header(s, "מבנה ארגוני קיים", "", SLATE, SLATE_LINE)
         # the problem in three numbers, between logo and title
-        stats = [(str(len(seen)), "אנשים"), (str(n_groups), "צוותים"), ("0", "נציגים קבועים בכנסת")]
+        stats = [(str(len(seen)), "אנשים"), (str(n_groups), "צוותים")]
         x = Inches(7.6)
         for num, label in stats:
             w = Inches(2.35) if len(label) > 8 else Inches(1.45)
