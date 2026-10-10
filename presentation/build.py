@@ -367,7 +367,10 @@ def proposal_slide(prs, data):
             card(s, x, py, pw, Inches(0.62), nm, "נציג קבוע", None, False, size=12)
         else:  # the seat still to be filled
             rect(s, x, py, pw, Inches(0.62), None, line=GOLD, dashed=True)
-            text(s, x, py, pw, Inches(0.62), "נציג רביעי", 12, NAVY, bold=True)
+            f4 = core.get("fourth", {"title": "נציג רביעי", "line": ""})
+            text(s, x, py + Inches(0.04), pw, Inches(0.32), f4["title"], 12, NAVY, bold=True,
+                 anchor=MSO_ANCHOR.BOTTOM)
+            text(s, x, py + Inches(0.36), pw, Inches(0.24), f4["line"], 9, MUTED, anchor=MSO_ANCHOR.TOP)
     # content person sits inside the core: part of the team, not an outside service
     ct = pr["content"]
     qy, qh = cy + Inches(1.35), Inches(0.62)
@@ -402,6 +405,77 @@ def proposal_slide(prs, data):
     rect(s, dx, dy, dw, dh, WHITE, line=LINE, radius=0.08)
     text(s, dx, dy + Inches(0.08), dw, Inches(0.32), f'{dg["title"]} · {dg["lead"]}', 13, NAVY, bold=True)
     text(s, dx, dy + Inches(0.44), dw, Inches(0.28), dg["line"], 11, INK)
+    return s
+
+
+def activity_slide(prs, act):
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, act["title"], "")
+    margin = Inches(0.45)
+    full = W - 2 * margin
+    g = Inches(0.2)
+
+    # KPIs
+    kn = len(act["kpis"])
+    kw = int((full - g * (kn - 1)) / kn)
+    ky, kh = Inches(1.25), Inches(0.95)
+    for i, (big, small) in enumerate(act["kpis"]):
+        x = W - margin - (i + 1) * kw - i * g
+        rect(s, x, ky, kw, kh, NAVY, radius=0.14)
+        text(s, x, ky + Inches(0.1), kw, Inches(0.48), big, 22, WHITE, bold=True, anchor=MSO_ANCHOR.BOTTOM)
+        text(s, x, ky + Inches(0.6), kw, Inches(0.28), small, 12, GOLD, anchor=MSO_ANCHOR.TOP)
+
+    # Week strip
+    days = act["days"]
+    dy, dh = Inches(2.45), Inches(1.6)
+    dg = Inches(0.14)
+    dw = int((full - dg * (len(days) - 1)) / len(days))
+    for i, (day, what, line, knesset) in enumerate(days):
+        x = W - margin - (i + 1) * dw - i * dg
+        rect(s, x, dy, dw, dh, GOLD if knesset else WHITE, line=None if knesset else LINE, radius=0.1)
+        text(s, x, dy + Inches(0.1), dw, Inches(0.3), day, 12, NAVY_DARK if knesset else MUTED, bold=True)
+        text(s, x + Inches(0.1), dy + Inches(0.42), dw - Inches(0.2), Inches(0.5), what, 15, NAVY_DARK if knesset else NAVY,
+             bold=True)
+        text(s, x + Inches(0.1), dy + Inches(0.95), dw - Inches(0.2), Inches(0.55), line, 11, NAVY_DARK if knesset else INK,
+             anchor=MSO_ANCHOR.TOP)
+
+    # Who goes (right) + content person (left)
+    by, bh = Inches(4.3), Inches(2.75)
+    bw = int((full - g) / 2)
+    who = act["who"]
+    wx = W - margin - bw
+    rect(s, wx, by, bw, bh, WHITE, line=LINE, radius=0.06)
+    text(s, wx + Inches(0.2), by + Inches(0.12), bw - Inches(0.4), Inches(0.36), who["title"], 16, NAVY, bold=True,
+         align=PP_ALIGN.RIGHT)
+    n = len(who["reps"])
+    cg = Inches(0.1)
+    cw = int((bw - Inches(0.4) - cg * (n - 1)) / n)
+    for i, nm in enumerate(who["reps"]):
+        x = wx + bw - Inches(0.2) - (i + 1) * cw - i * cg
+        if nm == "נציג רביעי":
+            rect(s, x, by + Inches(0.6), cw, Inches(0.55), None, line=GOLD, dashed=True)
+            text(s, x, by + Inches(0.6), cw, Inches(0.55), nm, 12, NAVY, bold=True)
+        else:
+            card(s, x, by + Inches(0.6), cw, Inches(0.55), nm, None, None, False, size=12)
+    text(s, wx + Inches(0.2), by + Inches(1.3), bw - Inches(0.4), Inches(0.3), who["fourth_note"], 11, MUTED,
+         align=PP_ALIGN.RIGHT)
+    rect(s, wx + Inches(0.2), by + Inches(1.75), bw - Inches(0.4), Inches(0.7), BG, radius=0.15)
+    text(s, wx + Inches(0.3), by + Inches(1.75), bw - Inches(0.6), Inches(0.7), "+ " + who["support"], 13, INK,
+         bold=True, align=PP_ALIGN.RIGHT)
+
+    ct = act["content"]
+    cx = margin
+    rect(s, cx, by, bw, bh, WHITE, line=GOLD, radius=0.06)
+    s.shapes[-1].line.width = Pt(2.5)
+    text(s, cx + Inches(0.2), by + Inches(0.12), bw - Inches(0.4), Inches(0.36), ct["title"], 16, NAVY, bold=True,
+         align=PP_ALIGN.RIGHT)
+    text(s, cx + Inches(0.2), by + Inches(0.5), bw - Inches(0.4), Inches(0.3), ct["sub"], 11, MUTED,
+         align=PP_ALIGN.RIGHT)
+    ly = by + Inches(1.0)
+    for line in ct["lines"]:
+        text(s, cx + Inches(0.25), ly, bw - Inches(0.5), Inches(0.5), "• " + line, 15, INK, bold=True,
+             align=PP_ALIGN.RIGHT)
+        ly += Inches(0.6)
     return s
 
 
@@ -515,6 +589,8 @@ def main():
         for leader in plans.get("programs", []):
             programs_slide(prs, leader)
         # Staged work plans live on the website (site/plans.json), not in the deck.
+    if "activity" in data:
+        activity_slide(prs, data["activity"])
     out.parent.mkdir(exist_ok=True)
     prs.save(out)
     print(out)
