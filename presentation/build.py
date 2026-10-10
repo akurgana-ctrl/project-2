@@ -364,7 +364,8 @@ def proposal_slide(prs, data):
     for i, nm in enumerate(core["names"]):
         x = cx + cwid - Inches(0.15) - (i + 1) * pw - i * g
         if nm:
-            card(s, x, py, pw, Inches(0.62), nm, "נציג קבוע", None, False, size=12)
+            nm, _, alt = nm.partition("|")
+            card(s, x, py, pw, Inches(0.62), nm, alt or "נציג קבוע", None, False, size=12)
         else:  # the seat still to be filled
             rect(s, x, py, pw, Inches(0.62), None, line=GOLD, dashed=True)
             f4 = core.get("fourth", {"title": "נציג רביעי", "line": ""})
@@ -456,7 +457,8 @@ def activity_slide(prs, act):
             rect(s, x, by + Inches(0.6), cw, Inches(0.55), None, line=GOLD, dashed=True)
             text(s, x, by + Inches(0.6), cw, Inches(0.55), nm, 12, NAVY, bold=True)
         else:
-            card(s, x, by + Inches(0.6), cw, Inches(0.55), nm, None, None, False, size=12)
+            nm, _, alt = nm.partition("|")
+            card(s, x, by + Inches(0.6), cw, Inches(0.55), nm, alt or None, None, False, size=12)
     text(s, wx + Inches(0.2), by + Inches(1.3), bw - Inches(0.4), Inches(0.3), who["fourth_note"], 11, MUTED,
          align=PP_ALIGN.RIGHT)
     rect(s, wx + Inches(0.2), by + Inches(1.75), bw - Inches(0.4), Inches(0.7), BG, radius=0.15)
