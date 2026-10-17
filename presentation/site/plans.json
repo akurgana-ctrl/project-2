@@ -8,7 +8,7 @@
     {
       "name": "ביטחון אישי",
       "role": "בהובלת: עו״ד אודליה קדמי, תמיר דורטל",
-      "photo": "/assets/plans/security.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -124,7 +124,7 @@
     {
       "name": "צה״ל וגבורה",
       "role": "בהובלת: טל קופל",
-      "photo": "/assets/plans/idf.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -159,7 +159,7 @@
     {
       "name": "ריבונות",
       "role": "בהובלת: נגה ארבל (בשיתוף פעולה)",
-      "photo": "/assets/plans/sovereignty.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -194,7 +194,7 @@
     {
       "name": "זהות יהודית",
       "role": "בהובלת: נגה ארבל (בשיתוף פעולה)",
-      "photo": "/assets/plans/identity.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -229,7 +229,7 @@
     {
       "name": "חינוך",
       "role": "בהובלת: נגה ארבל (בשיתוף פעולה)",
-      "photo": "/assets/plans/education.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -291,7 +291,7 @@
     {
       "name": "רפואה",
       "role": "בהובלת: ד״ר אמיר רובין",
-      "photo": "/assets/plans/health.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -326,7 +326,7 @@
     {
       "name": "אחריות ברשת",
       "role": "בהובלת: נגה ארבל (בשיתוף פעולה)",
-      "photo": "/assets/plans/online.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -361,7 +361,7 @@
     {
       "name": "התיישבות",
       "role": "בהובלת: טל קופל",
-      "photo": "/assets/plans/settlement.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
@@ -396,7 +396,7 @@
     {
       "name": "כלכלה ורגולציה",
       "role": "בהובלת: תמיר דורטל",
-      "photo": "/assets/plans/economy.png",
+      "photo": "",
       "visible": true,
       "goals": [
         {
