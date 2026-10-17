@@ -57,7 +57,7 @@ board = "".join(chip(m["name"], m["availability"], i, True) for i, m in enumerat
 ceo = people["ceo"]
 teams = "".join(f'<div class="team">{group_html(t)}</div>' for t in people["teams"])
 org = (f'<div class="org"><div class="tierlabel">דירקטוריון</div><div class="tier">{board}</div>'
-       f'<div class="tierlabel">מנכ״ל</div><div class="tier">{chip(ceo["name"], ceo["availability"], 8, True)}</div>'
+       f'<div class="tierlabel">מנהל</div><div class="tier">{chip(ceo["name"], ceo["availability"], 8, True)}</div>'
        f'<div class="teams">{teams}</div></div>')
 counts = {}
 for v in seen.values():
