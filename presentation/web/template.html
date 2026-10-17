@@ -105,8 +105,11 @@ section.act { padding-block: 72px; border-top: 1px solid var(--line); }
 .tabs button { font: inherit; font-weight: 700; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
 .tabs button[aria-selected="true"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
 .tabs button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.leader { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+.leader { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-bottom: 14px; }
 .leader h3 { font-size: 28px; }
+.ticon { width: 52px; height: 52px; border-radius: 12px; }
+.plist .by { display: block; font-size: 13px; font-weight: 500; color: var(--muted); }
+.plist li { grid-template-columns: auto minmax(0, 1fr); }
 .leader span { color: var(--muted); font-weight: 500; }
 .plist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: p; }
 .plist li { counter-increment: p; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center;
@@ -229,7 +232,7 @@ section.act { padding-block: 72px; border-top: 1px solid var(--line); }
 
 <section class="act" id="programs"><div class="wrap">
   <div class="eyebrow">פרק 3 · תוכניות כנסת 26</div>
-  <h2>מה כל אחד מאיתנו מקדם</h2>
+  <h2>הנושאים שאנחנו מקדמים</h2>
   <div class="tabs" role="tablist" id="tabs"></div>
   <div id="panel" role="tabpanel"></div>
 </div></section>
@@ -289,9 +292,9 @@ section.act { padding-block: 72px; border-top: 1px solid var(--line); }
   function show(i) {
     var L = PROGRAMS[i];
     Array.prototype.forEach.call(tabs.children, function (b, j) { b.setAttribute("aria-selected", String(i === j)); b.tabIndex = i === j ? 0 : -1; });
-    var h = '<div class="leader"><h3>' + L.name + '</h3><span>' + L.headline + '</span></div><ol class="plist">';
+    var h = '<div class="leader"><img class="ticon" src="' + L.icon + '" alt=""><h3>' + L.name + '</h3></div><ol class="plist">';
     L.items.forEach(function (it, k) {
-      h += '<li style="--i:' + k + '"><span class="t">' + it[1] + '</span><span class="tag">' + (it[2] || "") + '</span></li>';
+      h += '<li style="--i:' + k + '"><span class="t">' + it[1] + '<small class="by">' + (it[2] || "") + '</small></span></li>';
     });
     panel.innerHTML = h + "</ol>";
   }

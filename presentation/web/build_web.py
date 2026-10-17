@@ -149,7 +149,12 @@ models = "".join(
     f'<div class="v num">{e(m["monthly"])}</div></div>' for m in ms)
 
 logo = "data:image/png;base64," + base64.b64encode((ROOT / "assets" / "logo.png").read_bytes()).decode()
-programs = [{"name": x["name"], "headline": x.get("headline", x["domain"]), "items": x["items"]} for x in plans["programs"]]
+topics = json.loads((PRES / "topics.json").read_text(encoding="utf-8"))["topics"]
+programs = []
+for t in topics:
+    icon = "data:image/png;base64," + base64.b64encode((PRES / "icons" / f'{t["id"]}.png').read_bytes()).decode()
+    programs.append({"name": t["title"], "icon": icon, "headline": "",
+                     "items": [[str(i + 1), p["title"], p["by"]] for i, p in enumerate(t["programs"])]})
 
 html = (HERE / "template.html").read_text(encoding="utf-8")
 for k, v in {

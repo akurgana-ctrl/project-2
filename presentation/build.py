@@ -216,6 +216,51 @@ def num_dot(slide, x, y, d, label, fill=NAVY, color=WHITE):
          rtl=False)
 
 
+def topics_slide(prs, title, topics):
+    """Programs grouped by topic; each program shows, small, who is promoting it."""
+    s = prs.slides.add_slide(prs.slide_layouts[6])
+    header(s, title, "")
+    margin = Inches(0.45)
+    g = Inches(0.25)
+    cw = int((W - 2 * margin - g) / 2)
+    head_h, row_h, pad = Inches(0.78), Inches(0.6), Inches(0.12)
+
+    def card_h(t):
+        return head_h + len(t["programs"]) * row_h + pad
+
+    # balance two columns, largest topics first into the shorter column (right column first, RTL)
+    cols = [[], []]
+    heights = [0, 0]
+    for t in topics:
+        c = 0 if heights[0] <= heights[1] else 1
+        cols[c].append(t)
+        heights[c] += card_h(t) + Inches(0.18)
+    for c, col in enumerate(cols):
+        x = W - margin - (c + 1) * cw - c * g
+        y = Inches(1.25)
+        for t in col:
+            h = card_h(t)
+            rect(s, x, y, cw, h, WHITE, line=LINE, radius=0.06)
+            ic = Inches(0.56)
+            s.shapes.add_picture(str(HERE / "icons" / f'{t["id"]}.png'), x + cw - Inches(0.16) - ic, y + Inches(0.11),
+                                 width=ic, height=ic)
+            text(s, x + Inches(0.2), y + Inches(0.11), cw - ic - Inches(0.5), ic, t["title"], 19, NAVY, bold=True,
+                 align=PP_ALIGN.RIGHT)
+            ry = y + head_h
+            for p in t["programs"]:
+                ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, x + Inches(0.2), ry - Inches(0.04),
+                                            x + cw - Inches(0.2), ry - Inches(0.04))
+                ln.line.color.rgb = LINE
+                ln.line.width = Pt(0.75)
+                text(s, x + Inches(0.2), ry, cw - Inches(0.4), Inches(0.32), p["title"], 13, INK, bold=True,
+                     align=PP_ALIGN.RIGHT)
+                text(s, x + Inches(0.2), ry + Inches(0.3), cw - Inches(0.4), Inches(0.25), p["by"], 10, MUTED,
+                     align=PP_ALIGN.RIGHT)
+                ry += row_h
+            y += h + Inches(0.18)
+    return s
+
+
 def programs_slide(prs, leader):
     """Programs only: numbered cards, no work plan (that lives in the appendices)."""
     s = prs.slides.add_slide(prs.slide_layouts[6])
@@ -862,8 +907,14 @@ def main():
     plans_path = HERE / "plans.json"
     if plans_path.exists():
         plans = json.loads(plans_path.read_text(encoding="utf-8"))
-        for leader in plans.get("programs", []):
-            programs_slide(prs, leader)
+        pass
+    topics_path = HERE / "topics.json"
+    if topics_path.exists():
+        tp = {t["id"]: t for t in json.loads(topics_path.read_text(encoding="utf-8"))["topics"]}
+        topics_slide(prs, "תוכניות כנסת 26 · ביטחון, ריבונות וזהות",
+                     [tp[k] for k in ("security", "idf", "sovereignty", "identity")])
+        topics_slide(prs, "תוכניות כנסת 26 · חברה, חינוך וכלכלה",
+                     [tp[k] for k in ("education", "health", "online", "settlement", "economy")])
         # Staged work plans live on the website (site/plans.json), not in the deck.
     if "activity" in data:
         activity_slide(prs, data["activity"])
