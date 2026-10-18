@@ -86,6 +86,7 @@
   let filter = "all";
   let busy = false;
   let resetArmed = false;
+  let linkMode = false;   // the board was opened from a shared link
   let menuEl = null;
   let dragId = null;
   const root = $("#root");
@@ -122,10 +123,12 @@
       <div class="tools">
         <div class="progress"><span>${done} מתוך ${TASKS.length} חולקו</span><span class="bar"><i style="width:${(done / TASKS.length) * 100}%"></i></span></div>
         <button class="btn primary" id="save"${dirty && !busy ? "" : " disabled"}>${busy ? "שומר…" : "שמירת החלוקה"}</button>
+        <button class="btn" id="shareLink">העתקת קישור לחלוקה</button>
         <button class="btn cta" id="makeReport">יצירת דו״ח חלוקת אחריות</button>
         <button class="btn warn" id="reset">${resetArmed ? "לחצו שוב לאישור" : "חזרה לחלוקה ההתחלתית"}</button>
       </div></header>`;
-    const st = dirty ? "יש שינויים שלא נשמרו. הם נשמרים בינתיים בדפדפן הזה." : savedAt ? `החלוקה נשמרה לאחרונה ב-${savedAt}` : "";
+    const st = linkMode ? "מוצגת החלוקה מהקישור. אחרי שינויים, לחצו ״העתקת קישור לחלוקה״ כדי לשלוח את הגרסה החדשה." :
+      dirty ? "יש שינויים שלא נשמרו. הם נשמרים בינתיים בדפדפן הזה." : savedAt ? `החלוקה נשמרה לאחרונה ב-${savedAt}` : "";
     h += `<p class="status${dirty ? " dirty" : ""}">${esc(st)}</p>`;
     h += `<div class="filters" role="group" aria-label="סינון לפי תחום"><button class="chip" data-f="all" aria-pressed="${filter === "all"}">כל התחומים</button>` +
       DOMAINS.map((d) => `<button class="chip" data-f="${d.k}" aria-pressed="${filter === d.k}">${d.k} · ${esc(d.name)}</button>`).join("") + `</div>`;
@@ -202,6 +205,7 @@
       assign = Object.assign({}, DEFAULTS); resetArmed = false; storeDraft(); render(); return;
     }
     if (e.target.closest("#save")) { save(); return; }
+    if (e.target.closest("#shareLink")) { copyShareLink(); return; }
     if (e.target.closest("#makeReport")) showReport();
   });
   document.addEventListener("click", (e) => { if (menuEl && !menuEl.contains(e.target)) closeMenu(); });
@@ -351,6 +355,45 @@
     }
   }
 
+  /* ---------------- Share link ---------------- */
+  // The allocation travels in the query string: ?a=adam:A1.A2;ran:E3 (the slide number stays in the hash).
+  function encodeShare() {
+    return PEOPLE.map((p) => {
+      const ids = TASKS.filter((t) => owner(t.id) === p.id).map((t) => t.id);
+      return ids.length ? `${p.id}:${ids.join(".")}` : "";
+    }).filter(Boolean).join(";");
+  }
+  function readShareParam() {
+    const raw = new URLSearchParams(location.search).get("a");
+    if (raw === null) return null;
+    const out = {};
+    raw.split(";").forEach((part) => {
+      const [person, list] = part.split(":");
+      if (!isPerson(person) || !list) return;
+      list.split(".").forEach((id) => { if (byId[id]) out[id] = person; });
+    });
+    return out;
+  }
+  function shareUrl() {
+    return `${location.origin}${location.pathname}?a=${encodeURIComponent(encodeShare()).replace(/%3A/g, ":").replace(/%3B/g, ";")}#7`;
+  }
+  async function copyShareLink() {
+    const url = shareUrl();
+    history.replaceState(null, "", url);
+    try {
+      await navigator.clipboard.writeText(url);
+      toast("הקישור הועתק. מי שיפתח אותו יראה בדיוק את החלוקה הזו.");
+    } catch {
+      const dlg = $("#dlg");
+      dlg.innerHTML = `<form method="dialog"><h2>קישור לחלוקה</h2>
+        <p class="note">ההעתקה האוטומטית לא עבדה. סמנו את הקישור והעתיקו אותו:</p>
+        <input id="shareInput" dir="ltr" readonly value="${esc(url)}">
+        <div class="dlg-actions"><button class="btn primary" value="ok">סגירה</button></div></form>`;
+      dlg.showModal();
+      const inp = $("#shareInput"); inp.focus(); inp.select();
+    }
+  }
+
   /* ---------------- Presentation ---------------- */
   // The task list as it was originally written, before regrouping into domains.
   const RAW = [
@@ -417,7 +460,14 @@
     saved = cleanMap(data && data.savedAt ? data.assign || {} : DEFAULTS);
     if (data && data.savedAt) savedAt = new Date(data.savedAt).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short" });
     assign = Object.assign({}, saved);
-    try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); if (d) assign = cleanMap(d); } catch { /* ignore */ }
+    const fromLink = readShareParam();
+    if (fromLink) {
+      assign = fromLink;
+      linkMode = true;
+      setTimeout(() => toast("מוצגת החלוקה מהקישור ששלחו לכם"), 300);
+    } else {
+      try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); if (d) assign = cleanMap(d); } catch { /* ignore */ }
+    }
     render();
   }
   render();
