@@ -347,6 +347,59 @@
     }
   }
 
+  /* ---------------- Presentation ---------------- */
+  // The task list as it was originally written, before regrouping into domains.
+  const RAW = [
+    ["ניהול", ["בניית פורמט משימה", "סנכרון שבועי", "תוכנית עבודה ויעדים", "אישור תוכניות עבודה", "אישור תקציב", "אישור עמדות מדיניות", "רתימת אנשים ושותפים"]],
+    ["תקשורת מול חברי דירקטוריון", ["קביעת פרקים בהשתתפותם", "רתימה לעניין", "קביעת מפגשים", "תוכניות עבודה בכנסת", "קבלת חומרים: הרצאות, פוסטים, סרטונים ושיתוף ברשתות"]],
+    ["מתנדבים", ["גיוס מתנדבים למשימה מתוך הצוות", "הורדת משימות, מעקב ופידבקים", "הכשרה וקליטה של מתנדבים חדשים", "הורדת משימות לראשי צוותים, מעקב ופידבקים", "פגישות ושיחות קבועות עם ראשי צוותים"]],
+    ["כנסת", ["לו״ז כנסת שבועי", "שיבוץ לדיונים", "הופעה בדיונים", "ניירות עמדה והכנה לדיונים", "מכתבים לכנסת", "סרטונים מהוועדות ומההופעות בכנסת"]],
+    ["קשרי חוץ", ["חברי כנסת", "ועדות הכנסת", "משרדי ממשלה", "ארגונים ושותפים אחרים לדרך"]],
+    ["קשרי תורמים", ["תקשורת אישית", "הזמנה לאירועים"]],
+    ["שיווק וכספים", ["מעקב אחרי תרומות בכל שלב", "ניהול דו״ח הכנסות מתרומות", "שיווק הרצאות של חברי דירקטוריון (לא גפן)", "גיוס שותפים אסטרטגיים", "גיוס תורמים: קרנות ופילנתרופיה", "טלפנות", "קמפיין", "ניוזלטר", "טורי דעה", "פרסומות בתוך פרקי על המשמעות", "לידים של Peach"]],
+    ["דיגיטל", ["העלאת חומרים ברשתות של על המשמעות", "סושיאל של כח התערבות", "עריכת סרטונים", "גרפיקה לאירועים ועוד", "עריכת האתר", "עריכה ועיצוב דפי נחיתה"]],
+    ["כנסים ואירועים", ["אירועי מתנדבים", "אירועי דירקטוריון", "כנסים"]],
+    ["יוזמות", ["פעילות שטח", "פעילות ביום הבחירות", "יוזמות נוספות"]]
+  ];
+  $("#rawList").innerHTML = RAW.map(([name, items]) =>
+    `<div class="rawgroup"><h3>${esc(name)}</h3><ul>${items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>`).join("");
+  $("#mapTitle").textContent = `אותן ${TASKS.length} משימות, ב-${DOMAINS.length} תחומים`;
+  $("#domainCards").innerHTML = DOMAINS.map((d) =>
+    `<div class="dcard"><div class="dcard__top"><b>${d.k}</b><span>${d.tasks.length} משימות</span></div><h3>${esc(d.name)}</h3><p>${esc(d.tasks.slice(0, 5).join(", "))}${d.tasks.length > 5 ? "…" : ""}</p></div>`).join("");
+
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  let current = 0;
+  $("#dots").innerHTML = slides.map((s, i) => `<button class="dot" data-i="${i}" aria-label="${esc(s.dataset.title)}" title="${esc(s.dataset.title)}"></button>`).join("");
+  function go(i, push = true) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, j) => s.classList.toggle("active", j === current));
+    document.querySelectorAll(".dot").forEach((d, j) => d.setAttribute("aria-current", String(j === current)));
+    $("#counter").textContent = `${current + 1} / ${slides.length} · ${slides[current].dataset.title}`;
+    $("#prevSlide").disabled = current === 0;
+    $("#nextSlide").disabled = current === slides.length - 1;
+    closeMenu();
+    scrollTo(0, 0);
+    if (push) history.replaceState(null, "", `#${current + 1}`);
+  }
+  $("#prevSlide").addEventListener("click", () => go(current - 1));
+  $("#nextSlide").addEventListener("click", () => go(current + 1));
+  $("#dots").addEventListener("click", (e) => { const d = e.target.closest(".dot"); if (d) go(+d.dataset.i); });
+  document.addEventListener("keydown", (e) => {
+    if (menuEl || $("#dlg").open || !$("#report").hidden || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    // Right-to-left: the left arrow moves forward.
+    if (e.key === "ArrowLeft" || e.key === "PageDown") { e.preventDefault(); go(current + 1); }
+    else if (e.key === "ArrowRight" || e.key === "PageUp") { e.preventDefault(); go(current - 1); }
+  });
+  let touchX = null;
+  document.addEventListener("touchstart", (e) => { touchX = slides[current].classList.contains("slide--board") ? null : e.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) go(current + (dx > 0 ? 1 : -1));
+    touchX = null;
+  }, { passive: true });
+  go((parseInt(location.hash.slice(1), 10) || 1) - 1, false);
+
   /* ---------------- Load ---------------- */
   async function load() {
     let data = null;
