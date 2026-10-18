@@ -21,6 +21,10 @@
     { id: "adam", name: "אדם" }, { id: "matan", name: "מתן" }, { id: "ran", name: "רן" },
     { id: "tamir", name: "תמיר" }, { id: "extra", name: "איש צוות נוסף" }
   ];
+  // Starting allocation, shown until someone saves a different one.
+  const DEFAULTS = Object.fromEntries(
+    ["M3", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "B1", "B3", "B4", "B5", "C1", "C2", "C3", "C4", "C5"].map((id) => [id, "adam"])
+  );
   const DATA_PATH = "chaluka/assignments.json";
   const DRAFT_KEY = "kh-chaluka-draft";
   const CFG_KEY = "kh-editor"; // shared with the main site's editor
@@ -119,7 +123,7 @@
         <div class="progress"><span>${done} מתוך ${TASKS.length} חולקו</span><span class="bar"><i style="width:${(done / TASKS.length) * 100}%"></i></span></div>
         <button class="btn primary" id="save"${dirty && !busy ? "" : " disabled"}>${busy ? "שומר…" : "שמירת החלוקה"}</button>
         <button class="btn cta" id="makeReport">יצירת דו״ח חלוקת אחריות</button>
-        <button class="btn warn" id="reset">${resetArmed ? "לחצו שוב לאיפוס" : "איפוס"}</button>
+        <button class="btn warn" id="reset">${resetArmed ? "לחצו שוב לאישור" : "חזרה לחלוקה ההתחלתית"}</button>
       </div></header>`;
     const st = dirty ? "יש שינויים שלא נשמרו. הם נשמרים בינתיים בדפדפן הזה." : savedAt ? `החלוקה נשמרה לאחרונה ב-${savedAt}` : "";
     h += `<p class="status${dirty ? " dirty" : ""}">${esc(st)}</p>`;
@@ -195,7 +199,7 @@
     if (chip) { filter = chip.dataset.f; render(); return; }
     if (e.target.closest("#reset")) {
       if (!resetArmed) { resetArmed = true; render(); return; }
-      assign = {}; resetArmed = false; storeDraft(); render(); return;
+      assign = Object.assign({}, DEFAULTS); resetArmed = false; storeDraft(); render(); return;
     }
     if (e.target.closest("#save")) { save(); return; }
     if (e.target.closest("#makeReport")) showReport();
@@ -409,7 +413,8 @@
     if (!data) {
       try { const r = await fetch(`assignments.json?t=${Date.now()}`, { cache: "no-store" }); if (r.ok) data = await r.json(); } catch { /* offline or opened as a file */ }
     }
-    saved = cleanMap((data && data.assign) || {});
+    // Until the first save, the board starts from the default allocation.
+    saved = cleanMap(data && data.savedAt ? data.assign || {} : DEFAULTS);
     if (data && data.savedAt) savedAt = new Date(data.savedAt).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short" });
     assign = Object.assign({}, saved);
     try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); if (d) assign = cleanMap(d); } catch { /* ignore */ }
