@@ -3,12 +3,92 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>חלוקת משימות – כח התערבות</title>
+<title>הגדרות תפקיד – כח התערבות</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&family=Assistant:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="root" class="wrap"><p class="note">טוען את לוח החלוקה…</p></div>
+<main id="deck">
+
+  <section class="slide slide--dark" id="s1" data-title="פתיחה">
+    <div class="slide__inner cover">
+      <p class="eyebrow">כח התערבות</p>
+      <h1 class="cover__title">הגדרות תפקיד</h1>
+      <p class="cover__sub">מי אחראי על מה, איך משימות יורדות, ואיפה עוברים הגבולות</p>
+      <p class="cover__meta">ישיבת צוות · 18.10</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s2" data-title="מטרת הישיבה">
+    <div class="slide__inner">
+      <p class="eyebrow">מטרת הישיבה</p>
+      <h2 class="slide__title">לסדר את העבודה של כח התערבות</h2>
+      <div class="cards3">
+        <div class="pcard"><span class="num">1</span><h3>מי אחראי על מה</h3><p>שם אחד לכל משימה, בלי כפילויות ובלי משימות שאין להן בעלים</p></div>
+        <div class="pcard"><span class="num">2</span><h3>איך משימות יורדות</h3><p>פורמט אחיד: מטרה, אחראי, דדליין ולוח זמנים</p></div>
+        <div class="pcard"><span class="num">3</span><h3>איפה עוברים הגבולות</h3><p>מה כל אחד מחליט לבד, ומה דורש אישור</p></div>
+      </div>
+      <p class="lead">המטרה: לצאת מהישיבה עם חלוקה מאושרת ותוכנית ליישום.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s3" data-title="איך זה צריך להיראות">
+    <div class="slide__inner">
+      <p class="eyebrow">איך זה צריך להיראות</p>
+      <h2 class="slide__title">עבודה עם תהליך מוגדר</h2>
+      <div class="principles">
+        <div class="principles__head"><span>העיקרון</span><span></span><span>מה זה נותן</span></div>
+        <div class="principle"><b>כל משימה יורדת עם מטרה, דדליין ואחראי</b><span class="arrow" aria-hidden="true"></span><span>כולם מבינים אותה אותו דבר, והעבודה נעשית פעם אחת</span></div>
+        <div class="principle"><b>מי שמוריד משימה מלווה אותה בנקודות ביקורת</b><span class="arrow" aria-hidden="true"></span><span>ההערות מגיעות בזמן, כשעוד אפשר לשנות</span></div>
+        <div class="principle"><b>לכל משימה יש שם אחד</b><span class="arrow" aria-hidden="true"></span><span>ברור מי מבצע, ושום דבר לא נופל בין הכיסאות</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s4" data-title="כל המשימות">
+    <div class="slide__inner slide__inner--wide">
+      <p class="eyebrow">נקודת המוצא</p>
+      <h2 class="slide__title">כל המשימות של כח התערבות היום</h2>
+      <div class="rawlist" id="rawList"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s5" data-title="גבולות גזרה אפשריים">
+    <div class="slide__inner slide__inner--wide">
+      <p class="eyebrow">גבולות גזרה אפשריים</p>
+      <h2 class="slide__title" id="mapTitle">אותן משימות, לפי תחומים</h2>
+      <div class="domains" id="domainCards"></div>
+    </div>
+  </section>
+
+  <section class="slide" id="s6" data-title="פורמט משימה">
+    <div class="slide__inner">
+      <p class="eyebrow">פורמט משימה</p>
+      <h2 class="slide__title">כך יורדת כל משימה</h2>
+      <div class="fields">
+        <div class="pcard field"><span class="num">1</span><h3>מטרה</h3><p>למה, ומה האסטרטגיה</p></div>
+        <div class="pcard field"><span class="num">2</span><h3>אחראי</h3><p>שם אחד בלבד</p></div>
+        <div class="pcard field"><span class="num">3</span><h3>תפקידים</h3><p>מי עוד משתתף, ובמה</p></div>
+        <div class="pcard field"><span class="num">4</span><h3>דדליין</h3><p>תאריך סיום</p></div>
+        <div class="pcard field"><span class="num">5</span><h3>לוח זמנים</h3><p>אבני דרך בדרך</p></div>
+        <div class="pcard field"><span class="num">6</span><h3>״גמור״</h3><p>איך נראה סיום</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide slide--board" id="s7" data-title="חלוקה">
+    <div id="root" class="wrap"><p class="note">טוען את לוח החלוקה…</p></div>
+  </section>
+
+</main>
+
+<nav class="deck-nav" aria-label="ניווט במצגת">
+  <button class="nav-btn" id="prevSlide" aria-label="השקף הקודם">→</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter"></span>
+  <button class="nav-btn" id="nextSlide" aria-label="השקף הבא">←</button>
+</nav>
+
 <section id="report" class="report" hidden aria-labelledby="reportTitle"></section>
 <dialog id="dlg"></dialog>
 <div id="toast" class="toast" role="status"></div>
