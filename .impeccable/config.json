@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "join/index.html"
+        ],
+        "createdAt": "2026-10-19T09:44:11.560Z",
+        "reason": "Claude: .join has var(--margin) (16-40px) inline padding and .join__form has 20-32px padding in join.css; bottom 0 on .join is intentional so the passport photo bleeds to the edge"
+      }
+    ]
+  }
+}

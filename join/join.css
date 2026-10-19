@@ -121,7 +121,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
   display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 64px);
 }
 .plan__steps p { margin-top: 10px; max-width: 30ch; }
-.plan__steps li:last-child h3 { color: var(--red); }
+.plan__steps li:last-child h3 { color: #ff4136; }
 
 /* Band: the runway, one deliberate rest */
 .band { margin: var(--gap) 0 0; height: clamp(260px, 46vh, 520px); overflow: hidden; }
