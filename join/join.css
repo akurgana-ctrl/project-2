@@ -171,6 +171,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
 
 @media (max-width: 900px) {
   .bar__links { display: none; }
+  .bar { position: relative; background: var(--ground); padding-block: 12px; }
   .bar .btn--small { margin-inline-start: auto; }
   .hero { display: block; min-height: 0; padding: 0; }
   .hero__img { position: relative; height: 62svh; object-position: 28% 40%; }
