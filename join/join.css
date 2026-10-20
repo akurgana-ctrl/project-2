@@ -191,7 +191,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   .plan__diagram { margin-top: 0; }
   .plan__steps { margin-top: 0; grid-template-columns: 1fr; align-content: space-between; }
   .join { padding-bottom: 0; }
-  .join__form { margin: 0 calc(-1 * var(--margin)); order: 1; }
+  .join__form { margin: 0 calc(-1 * var(--margin)); order: 1; align-self: stretch; padding: 16px 12px; }
   .join__text { display: contents; }
   .join__text > * { order: 0; }
   .join__img { order: 2; width: 100%; margin: 0; height: 56svh; object-fit: cover; object-position: 50% 30%; }
