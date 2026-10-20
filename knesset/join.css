@@ -257,3 +257,9 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   :root { --muted: var(--ink); }
   .btn { outline: 2px solid #fff; outline-offset: -2px; }
 }
+
+/* Motion drives these when it is loaded; CSS stays out of its way */
+.motion-on [data-rise] { transition: none; }
+.motion-on .hero__img { animation: none; }
+.motion-on .btn:active { transform: none; }
+.motion-on .dock { transition: background-color .2s var(--ease); }
