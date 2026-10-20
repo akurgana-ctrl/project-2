@@ -11,6 +11,24 @@
         ],
         "createdAt": "2026-10-19T09:44:11.560Z",
         "reason": "Claude: .join has var(--margin) (16-40px) inline padding and .join__form has 20-32px padding in join.css; bottom 0 on .join is intentional so the passport photo bleeds to the edge"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "knesset/index.html"
+        ],
+        "createdAt": "2026-10-20T11:33:40.366Z",
+        "reason": "Claude: same layout as join/index.html; .join has var(--margin) 16-40px inline padding and .join__form 20-32px padding in join.css"
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          "knesset/index.html"
+        ],
+        "createdAt": "2026-10-20T11:33:40.378Z",
+        "reason": "Claude: detector read the phone rule (7.9vw) without its max-width:900px media query; rendered desktop h1 is 70px on 2 lines with lead and CTA above the fold (inspect.mjs measured)"
       }
     ]
   }
