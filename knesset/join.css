@@ -79,8 +79,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
 .hero__text { position: relative; z-index: 1; width: 46%; }
 .hero h1 { font-size: clamp(30px, 3.9vw, 72px); }
 .hero h1 span { display: block; white-space: nowrap; }
-.hero h1 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.hero__shout { color: var(--red); font-weight: 900; letter-spacing: -.03em; line-height: .9; font-size: clamp(64px, 9vw, 168px); margin-bottom: 12px; }
+.hero h1 .hero__shout { color: var(--red); font-weight: 900; letter-spacing: -.03em; line-height: .9; font-size: clamp(64px, 9vw, 168px); margin-bottom: 12px; }
 .hero__lead { margin-top: 36px; font-size: var(--step-m); max-width: 34ch; line-height: 1.5; }
 .hero__actions { margin-top: 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
 
@@ -212,7 +211,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
   .join { display: flex; flex-direction: column; gap: 0; }
   .join__form { margin-top: 40px !important; }
   .hero h1 { font-size: 7.9vw; }
-  .hero__shout { font-size: 17vw; margin-bottom: 8px; }
+  .hero h1 .hero__shout { font-size: 17vw; margin-bottom: 8px; }
   .foot__row { flex-direction: column; }
   .dock { display: flex; }
 }
