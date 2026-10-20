@@ -83,6 +83,21 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
 .hero__lead { margin-top: 36px; font-size: var(--step-m); max-width: 34ch; line-height: 1.5; }
 .hero__actions { margin-top: 40px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
 
+/* This hero's picture is centred and full of detail, so on desktop
+   the text sits under it instead of on top of it */
+@media (min-width: 901px) {
+  .hero { display: block; min-height: 0; padding: 0; }
+  .hero__img { position: relative; height: min(64vh, 50vw); object-position: 50% 42%; animation: none; }
+  .hero::after { inset: 0 0 auto 0; height: min(64vh, 50vw); background: linear-gradient(to top /* taste-skill-ignore: neutral scrim */, var(--ground) 0%, rgba(11,11,12,0) 30%); }
+  .hero__text {
+    width: auto; margin-top: 8px; padding: 0 var(--margin) 24px;
+    display: grid; grid-template-columns: 7fr 5fr; column-gap: clamp(32px, 5vw, 96px); align-items: end;
+  }
+  .hero__aside { padding-bottom: 6px; }
+  .hero__lead { margin-top: 0; }
+  .hero__actions { margin-top: 24px; }
+}
+
 @keyframes drift { from { transform: scale(1.08); } to { transform: scale(1); } }
 
 /* Video */
@@ -116,7 +131,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
 .zero__num { font-size: clamp(160px, 26vw, 420px); font-weight: 900; line-height: .8; color: var(--red); letter-spacing: -.04em; }
 .zero h2 { font-size: var(--step-l); margin-top: 24px; }
 .zero__text > p:last-child { margin-top: 24px; font-size: var(--step-m); max-width: 34ch; }
-.zero__img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.zero__img { width: 100%; height: auto; }
 
 /* Plan */
 .plan { padding: var(--gap) var(--margin) 0; }
@@ -188,7 +203,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
   .bar { position: relative; background: var(--ground); padding-block: 12px; }
   .bar .btn--small { margin-inline-start: auto; }
   .hero { display: block; min-height: 0; padding: 0; }
-  .hero__img { position: relative; height: 62svh; object-position: 36% 60%; }
+  .hero__img { position: relative; height: 62svh; object-position: 72% 55%; }
   .hero::after { inset: 0 0 auto 0; height: 62svh; background: linear-gradient(to top /* taste-skill-ignore: neutral scrim */, var(--ground) 0%, rgba(11,11,12,0) 45%); }
   .hero__text { width: auto; margin-top: -48px; padding: 0 var(--margin); }
   .hero__lead { margin-top: 24px; }
