@@ -4,13 +4,6 @@ const CONFIG = {
   peachCampaign: "",
   // YouTube / Vimeo link or a direct .mp4 path (the video is already in the page)
   video: "",
-  // WhatsApp appeal to the Knesset Speaker, sent by the supporter
-  whatsappNumber: "972547484840",
-  whatsappMessage: `שלום יו״ר הכנסת, אמיר אוחנה.
-פונה אליך באופן אישי.
-היום חבר כנסת לא יכול להניח הצעת חוק על שולחן הכנסת. במערכת החקיקה "סנהדרין" הרשאות החקיקה ניתנות רק ליועצים המשפטיים, גורם שכלל לא מופיע בתקנון הכנסת.
-אבקש ממך לפעול כדי להחזיר לחברי הכנסת את הכלים לחוקק בעצמם.
-אשמח לראות שינוי בקרוב. תודה.`,
 };
 
 document.documentElement.classList.add("js");
@@ -43,10 +36,6 @@ document.documentElement.classList.add("js");
   frame.querySelector(".video__soon")?.remove();
   frame.appendChild(el);
 })();
-
-/* WhatsApp appeal */
-document.getElementById("waLink").href =
-  `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(CONFIG.whatsappMessage)}`;
 
 /* Peach */
 (function mountPeach() {

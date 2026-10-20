@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>תודה | כח התערבות</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="icon" href="../../assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../join.css">
+  <style>
+    .thanks { min-height: 100svh; display: grid; align-content: center; gap: 28px; padding: 96px var(--margin); max-width: 760px; }
+    .thanks h1 { font-size: var(--step-l); }
+    .thanks p { font-size: var(--step-m); max-width: 34ch; }
+    .thanks .btn { justify-self: start; }
+    .thanks__note { color: var(--muted); font-size: var(--step-xs) !important; }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <a class="bar__brand" href="../../">
+      <img src="../../assets/logo-light.png" alt="" width="312" height="285">
+      <span>כח התערבות</span>
+    </a>
+  </header>
+
+  <main class="thanks">
+    <h1>תודה. עכשיו יו״ר הכנסת צריך לשמוע.</h1>
+    <p>אנחנו פותחים לכם וואטסאפ עם פנייה מוכנה לאמיר אוחנה. נשאר רק ללחוץ "שליחה".</p>
+    <a class="btn btn--wa" id="waLink" href="https://wa.me/972547484840">פתיחת הוואטסאפ</a>
+    <p class="thanks__note">אם הוואטסאפ לא נפתח מעצמו, לחצו על הכפתור.</p>
+  </main>
+
+  <script src="../appeal.js"></script>
+  <script>
+    document.getElementById("waLink").href = APPEAL.url;
+    setTimeout(() => location.assign(APPEAL.url), 1200);
+  </script>
+</body>
+</html>

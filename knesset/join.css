@@ -158,8 +158,6 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
 
 .join__side { display: flex; flex-direction: column; gap: 24px; align-self: start; margin-bottom: clamp(80px, 9vw, 140px); }
 .join__side .join__form { margin-bottom: 0; }
-.join__wa { background: var(--ground); padding: clamp(20px, 2.4vw, 32px); }
-.join__wa p { margin: 12px 0 24px; color: var(--muted); }
 .btn--wa { background: #25d366; color: #0b0b0c; }
 .btn--wa:hover { background: #1ebe5a; }
 
@@ -198,7 +196,6 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; }
   .video, .plan__head, .join, .zero, .video:has(.video__frame--tall) { grid-template-columns: 1fr; }
   .zero__img { order: 2; max-width: 100%; }
   .join__side { order: 1; align-self: stretch; margin: 40px calc(-1 * var(--margin)) 0; }
-  .join__side .join__wa { order: 2; }
   .btn--wa { width: 100%; }
   .join__side .join__form { margin: 0 !important; }
   .video { align-items: start; }
