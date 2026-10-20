@@ -184,7 +184,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 .join__secure { margin-top: 16px; font-size: var(--step-xs); letter-spacing: .01em; color: var(--muted); }
 
 .join__side { display: flex; flex-direction: column; gap: 24px; align-self: start; margin-bottom: clamp(80px, 9vw, 140px); }
-.join__side .join__form { margin-bottom: 0; }
+.join__side .join__form { margin-bottom: 0; align-self: stretch; }
 .btn--wa { background: #25d366; color: #0b0b0c; }
 .btn--wa:active { background: #1ebe5a; }
 @media (hover: hover) and (pointer: fine) { .btn--wa:hover { background: #1ebe5a; } }
