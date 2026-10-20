@@ -1,7 +1,7 @@
 // Fill these in before launch.
 const CONFIG = {
   // Peach campaign link, e.g. "https://www.peach-in.com/cmp/AbC123xyz"
-  peachCampaign: "https://www.peach-in.com/cmp/iframe/j4l1sj97r",
+  peachCampaign: "https://www.peach-in.com/cmp/iframe/j4l1sj97r?sum=30",
   // YouTube / Vimeo link or a direct .mp4 path
   video: "",
 };
@@ -46,7 +46,8 @@ document.documentElement.classList.add("js");
   const kind = url.includes("/org/") ? "org" : "cmp";
   document.getElementById("peachLink").href = url;
   const frame = document.createElement("iframe");
-  frame.src = `https://www.peach-in.com/${kind}/iframe/${id}`;
+  const query = url.includes("?") ? url.slice(url.indexOf("?")) : "";
+  frame.src = `https://www.peach-in.com/${kind}/iframe/${id}${query}`;
   frame.title = "טופס תמיכה – Peach";
   frame.loading = "lazy";
   frame.allow = "payment";
