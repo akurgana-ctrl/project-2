@@ -97,6 +97,7 @@ document.documentElement.classList.add("js");
   build();
   phone.addEventListener("change", build);
 
+  if (window.campaignMotion) return window.campaignMotion.diagram(svg);
   if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
   svg.classList.add("is-waiting");
   new IntersectionObserver((entries, io) => {
@@ -113,6 +114,7 @@ document.documentElement.classList.add("js");
 
 /* Entrances, staggered within each section */
 (function rise() {
+  if (window.campaignMotion) return;
   const items = document.querySelectorAll("[data-rise]");
   if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-in")); return; }
   document.querySelectorAll("section").forEach((sec) => {
@@ -130,8 +132,22 @@ document.documentElement.classList.add("js");
   const hero = document.querySelector(".hero");
   const join = document.getElementById("join");
   if (!("IntersectionObserver" in window)) return;
-  let pastHero = false, atJoin = false;
-  const update = () => dockEl.classList.toggle("is-on", pastHero && !atJoin);
+  let pastHero = false, atJoin = false, headings = 0;
+  let shown = false;
+  const update = () => {
+    const on = pastHero && !atJoin && headings === 0;
+    if (on === shown) return;
+    shown = on;
+    if (window.campaignMotion) window.campaignMotion.dock(dockEl, on);
+    else dockEl.classList.toggle("is-on", on);
+  };
   new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; update(); }).observe(hero);
   new IntersectionObserver(([e]) => { atJoin = e.isIntersecting; update(); }).observe(join);
+  // step aside while a section heading passes through the bottom of the screen
+  const low = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { headings += e.isIntersecting ? 1 : (e.target.dataset.low ? -1 : 0); e.target.dataset.low = e.isIntersecting ? "1" : ""; });
+    headings = Math.max(0, headings);
+    update();
+  }, { rootMargin: "-78% 0px 0px 0px" });
+  document.querySelectorAll("main h2").forEach((h) => low.observe(h));
 })();
