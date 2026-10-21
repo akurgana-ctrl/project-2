@@ -22,7 +22,6 @@ DEMO = "https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa"
 LINKS = {
     "VOTE_A_URL": DEMO + "#vote-a",
     "VOTE_B_URL": DEMO + "#vote-b",
-    "VOTE_C_URL": DEMO + "#vote-c",
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
     "CONF_DOC_URL": "#",
