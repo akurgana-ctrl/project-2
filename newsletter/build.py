@@ -15,6 +15,7 @@ IMAGES = {
     "IMG_CONF": "images/conference.jpg",
     "IMG_TRAINING": "images/training.jpg",
     "IMG_HACKATHON": "images/hackathon.jpg",
+    "IMG_PRESSURE": "images/pressure-group.jpg",
 }
 DEMO = "https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa"
 LINKS = {
