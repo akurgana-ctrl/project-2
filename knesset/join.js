@@ -1,7 +1,7 @@
 // Fill these in before launch.
 const CONFIG = {
   // Peach campaign link, e.g. "https://www.peach-in.com/cmp/AbC123xyz"
-  peachCampaign: "https://www.peach-in.com/cmp/iframe/j4l1m1aiq?sum=30",
+  peachCampaign: "https://www.peach-in.com/cmp/iframe/j4l1m1aiq",
   // YouTube / Vimeo link or a direct .mp4 path (the video is already in the page)
   video: "",
 };
