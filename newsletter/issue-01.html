@@ -6,7 +6,8 @@
 
   משתנים להחלפה:
     {{IMG_LOGO}} {{IMG_CONF}} {{IMG_TRAINING}} {{IMG_HACKATHON}} {{IMG_PRESSURE}} {{IMG_PODCAST}}  כתובות התמונות (logo.png, images/*.jpg) אחרי העלאה למערכת הדיוור
-    {{VOTE_A_URL}} {{VOTE_B_URL}}  קישור לכל אפשרות הצבעה. מערכת הדיוור סופרת לחיצות לכל קישור בנפרד
+    {{VOTE_URL}}          כתובת מערכת ההצבעה (Google Apps Script, ראו vote/README.md)
+    {{SUBSCRIBER_ID}}     מזהה המנוי ממערכת הדיוור, כדי שכל קורא יצביע פעם אחת
     {{CONF_DOC_URL}}      הגיליון מהכנס להורדה
     {{WEB_VERSION_URL}}   הגיליון בדפדפן
     {{UNSUBSCRIBE_URL}}   הסרה מהרשימה (חובה)
@@ -81,9 +82,8 @@
       <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">01 · 15.10 · ירושלים · שודר בלייב ברדיו גלי ישראל ובעל המשמעות</div>
       <div style="font-size:26px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">כנס בחירות: רגע לפני הקלפי</div>
       <img class="full" src="{{IMG_CONF}}" width="548" alt="נציגי המפלגות על הבמה בכנס הבחירות" style="width:548px;max-width:100%;height:auto;">
-      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;">הכנס כולו התקיים בשיתוף מרכז יכין, ושודר בלייב ברדיו גלי ישראל ובעל המשמעות.</div>
-      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק הראשון</b> הצגנו את תוכנית העבודה שלנו לכנסת הקרובה. <b style="color:#1D2E67;">נגה ארבל</b>, חוקרת מדיניות במרכז יכין וחברת דירקטוריון בכח התערבות, דיברה על ההשפעה של רוח צה״ל על החיילים, הפרוגרס במערכת החינוך, הגנה על הבית והמשפחה, ואיך ביטוח לאומי מתערב בביטחון של כולנו. מטעמנו דיברו גם <b style="color:#1D2E67;">אודליה קדמי</b>, על חוק ההגנה העצמית, ו<b style="color:#1D2E67;">אמיר רובין</b>, על חוק התרופות.</div>
-      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק השני</b> עלו לבמה נציגים של חמש מפלגות לדיבייט על מדיניות, בלי "מי יישב עם מי", בהנחיית <b style="color:#1D2E67;">זיו מאור</b>. את מרכז יכין ייצג המנכ״ל, <b style="color:#1D2E67;">אורן הניג</b>.</div>
+      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק הראשון</b> הצגנו את תוכנית העבודה שלנו לכנסת הקרובה. <b style="color:#1D2E67;">נגה ארבל</b>, ראש תחום חקיקה בכח התערבות וראש תחום מדיניות יישומית במרכז יכין, דיברה על ההשפעה של רוח צה״ל על החיילים, הפרוגרס במערכת החינוך, הגנה על הבית והמשפחה, ואיך ביטוח לאומי מתערב בביטחון של כולנו. מטעמנו דיברו גם <b style="color:#1D2E67;">אודליה קדמי</b>, על חוק ההגנה העצמית, ו<b style="color:#1D2E67;">אמיר רובין</b>, על חוק התרופות. את מרכז יכין ייצג המנכ״ל, <b style="color:#1D2E67;">אורן הניג</b>.</div>
+      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק השני</b> עלו לבמה נציגים של חמש מפלגות לדיבייט על מדיניות, בלי "מי יישב עם מי", בהנחיית <b style="color:#1D2E67;">זיו מאור</b>.</div>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
         <tr><td bgcolor="#F2F4F8" style="background:#F2F4F8;border-right:4px solid #F0C000;padding:12px 14px;font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:25px;color:#141A2E;text-align:right;">
           <b style="color:#1D2E67;">איתמר איתם</b> · הציונות הדתית<br>
@@ -93,6 +93,7 @@
           <b style="color:#1D2E67;">דוד בבלי</b> · עוצמה יהודית
         </td></tr>
       </table>
+      <div style="font-size:13px;line-height:20px;color:#596079;padding-top:10px;">הכנס בשיתוף מרכז יכין.</div>
       <table class="cbtns" role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;"><tr>
         <td class="cbtn" bgcolor="#1D2E67" style="background:#1D2E67;">
           <a href="https://youtu.be/KvCN84yzbXA" style="display:inline-block;color:#FFFFFF;font-family:'Heebo',Arial,sans-serif;font-size:16px;font-weight:900;line-height:22px;padding:12px 20px;">&#9654;&nbsp; צפו בחלק הראשון ביוטיוב</a>
@@ -150,22 +151,22 @@
             <tr><td style="padding-bottom:10px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
                 <td width="40" valign="top" bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 16px 15px 0;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_A_URL}}" style="color:#1D2E67;text-decoration:none;">א</a></td></tr></table>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_URL}}?v=a&amp;id={{SUBSCRIBER_ID}}" style="color:#1D2E67;text-decoration:none;">א</a></td></tr></table>
                 </td>
                 <td bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 12px 15px 16px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-                  <a href="{{VOTE_A_URL}}" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">מעיפים את אנדריי X</a>
-                  <a href="{{VOTE_A_URL}}" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">דרישה ממקבלי ההחלטות: שלילת אזרחות וגירוש של הפעיל האנטי-ישראלי מהארץ</a>
+                  <a href="{{VOTE_URL}}?v=a&amp;id={{SUBSCRIBER_ID}}" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">מעיפים את אנדריי X</a>
+                  <a href="{{VOTE_URL}}?v=a&amp;id={{SUBSCRIBER_ID}}" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">דרישה ממקבלי ההחלטות: שלילת אזרחות וגירוש של הפעיל האנטי-ישראלי מהארץ</a>
                 </td>
               </tr></table>
             </td></tr>
             <tr><td>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
                 <td width="40" valign="top" bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 16px 15px 0;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_B_URL}}" style="color:#1D2E67;text-decoration:none;">ב</a></td></tr></table>
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_URL}}?v=b&amp;id={{SUBSCRIBER_ID}}" style="color:#1D2E67;text-decoration:none;">ב</a></td></tr></table>
                 </td>
                 <td bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 12px 15px 16px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-                  <a href="{{VOTE_B_URL}}" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">אבי מעוז, קח אחריות ופרוש</a>
-                  <a href="{{VOTE_B_URL}}" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">אל תשרוף קולות!</a>
+                  <a href="{{VOTE_URL}}?v=b&amp;id={{SUBSCRIBER_ID}}" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">אבי מעוז, קח אחריות ופרוש</a>
+                  <a href="{{VOTE_URL}}?v=b&amp;id={{SUBSCRIBER_ID}}" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">אל תשרוף קולות!</a>
                 </td>
               </tr></table>
             </td></tr>
@@ -177,11 +178,11 @@
 
     <!-- ===== קבוצת הלחץ: כפתור גדול ===== -->
     <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:32px 26px 34px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
-      <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:52px;line-height:50px;font-weight:700;color:#FFFFFF;">הצטרפו לקבוצת הלחץ</div>
-      <div style="font-size:16px;line-height:25px;color:#FFFFFF;padding:10px 0 20px;">בקבוצה נצא לדרך עם הנושא שתבחרו בהצבעה: מקבלים ראשונים את הפעולות הדחופות, ופועלים יחד מול הכנסת.</div>
+      <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:52px;line-height:50px;font-weight:700;color:#FFFFFF;">קבוצת לחץ ציבורי</div>
+      <div style="font-size:16px;line-height:25px;color:#FFFFFF;padding:10px 0 20px;">בקבוצה הזו אנחנו מניעים את הציבור ללחוץ על נבחרי הציבור ומקבלי ההחלטות, בזמן הנכון ובמקום הנכון. כאן נצא לדרך עם הנושא שתבחרו בהצבעה.</div>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td align="center" bgcolor="#F0C000" style="background:#F0C000;">
-          <a href="https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi" style="display:block;color:#1D2E67;font-family:'Heebo',Arial,sans-serif;font-size:20px;font-weight:900;line-height:26px;padding:18px 20px;text-align:center;">להצטרפות לקבוצת הלחץ בוואטסאפ</a>
+          <a href="https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi" style="display:block;color:#1D2E67;font-family:'Heebo',Arial,sans-serif;font-size:20px;font-weight:900;line-height:26px;padding:18px 20px;text-align:center;">הצטרפות לקבוצת לחץ</a>
         </td>
       </tr></table>
     </td></tr>
