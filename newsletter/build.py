@@ -16,6 +16,7 @@ IMAGES = {
     "IMG_TRAINING": "images/training.jpg",
     "IMG_HACKATHON": "images/hackathon.jpg",
     "IMG_PRESSURE": "images/pressure-group.jpg",
+    "IMG_PODCAST": "images/podcast.jpg",
 }
 DEMO = "https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa"
 LINKS = {
@@ -24,7 +25,7 @@ LINKS = {
     "VOTE_C_URL": DEMO + "#vote-c",
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
-    "UPDATES_GROUP_URL": "#",
+    "CONF_DOC_URL": "#",
     "ORG_ADDRESS": "[כתובת הארגון]",
 }
 
