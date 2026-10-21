@@ -25,7 +25,6 @@ LINKS = {
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
     "UPDATES_GROUP_URL": "#",
-    "X_URL": "#",
     "ORG_ADDRESS": "[כתובת הארגון]",
 }
 
