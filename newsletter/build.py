@@ -20,8 +20,7 @@ IMAGES = {
 }
 DEMO = "https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa"
 LINKS = {
-    "VOTE_URL": DEMO,
-    "SUBSCRIBER_ID": "test",
+    "VOTE_EMAIL": "akurgana@gmail.com",
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
     "CONF_DOC_URL": "#",
