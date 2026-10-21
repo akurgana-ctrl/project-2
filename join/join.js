@@ -52,6 +52,10 @@ document.documentElement.classList.add("js");
   frame.loading = "lazy";
   frame.allow = "payment";
   box.querySelector(".join__fallback").replaceWith(frame);
+  // The first step is short; once the donor starts using the form, make room for the details step
+  addEventListener("blur", () => {
+    if (document.activeElement === frame) frame.classList.add("is-open");
+  });
 })();
 
 /* Diagram: scattered voices -> one ribbon of pressure -> the X */
