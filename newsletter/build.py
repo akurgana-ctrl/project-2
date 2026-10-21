@@ -11,6 +11,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 IMAGES = {
+    "IMG_LOGO": "logo.png",
     "IMG_LOGO_WHITE": "logo-white.png",
     "IMG_CONF": "images/conference.jpg",
     "IMG_TRAINING": "images/training.jpg",

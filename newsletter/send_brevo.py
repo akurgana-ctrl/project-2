@@ -13,6 +13,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 RAW = "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/"
 IMAGES = {
+    "IMG_LOGO": "logo.png",
     "IMG_LOGO_WHITE": "logo-white.png",
     "IMG_CONF": "images/conference.jpg",
     "IMG_TRAINING": "images/training.jpg",
@@ -30,6 +31,7 @@ def render(name):
         html = html.replace("{{%s}}" % key, RAW + path)
     # no conference handout yet: drop the download button
     html = re.sub(r'\n\s*<td class="btn-cell">\n\s*<table[^\n]*\n\s*<a href="\{\{CONF_DOC_URL\}\}".*?</td>\n', "\n", html, flags=re.S)
+    html = re.sub(r'\n\s*<td class="cgap"[^\n]*\n\s*<td class="cbtn"[^\n]*\n\s*<a href="\{\{CONF_DOC_URL\}\}"[^\n]*\n\s*</td>', "", html)
     # no public web version yet: drop the "open in browser" row
     html = re.sub(r'<table role="presentation" class="container" width="600"[^>]*style="width:600px;">.*?</table>', "", html, count=1, flags=re.S)
     html = html.replace("{{VOTE_EMAIL}}", VOTE_EMAIL)
