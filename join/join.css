@@ -191,7 +191,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   .plan__diagram { margin-top: 0; }
   .plan__steps { margin-top: 0; grid-template-columns: 1fr; align-content: space-between; }
   .join { padding-bottom: 0; }
-  .join__form { margin: 0 calc(-1 * var(--margin)); order: 1; align-self: stretch; padding: 16px 12px; }
+  .join__form { margin: 0 calc(-1 * var(--margin)); order: 1; align-self: stretch; padding: 16px; }
   .join__text { display: contents; }
   .join__text > * { order: 0; }
   .join__img { order: 2; width: 100%; margin: 0; height: 56svh; object-fit: cover; object-position: 50% 30%; }
@@ -215,6 +215,18 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 @media (prefers-contrast: more) {
   :root { --muted: var(--ink); }
   .btn { outline: 2px solid #fff; outline-offset: -2px; }
+}
+
+/* Board: the people behind the campaign, beside the form */
+.board { margin-top: 56px; max-width: 560px; }
+.board h3 { font-size: var(--step-m); }
+.board__grid { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 16px; }
+.board__grid img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.board__name { margin-top: 10px; font-weight: 800; font-size: var(--step-xs); line-height: 1.25; }
+.board__role { margin-top: 2px; font-size: var(--step-xs); line-height: 1.3; color: #f7dcda; }
+@media (max-width: 900px) {
+  .board { order: 2; margin: 40px 0 0; max-width: none; padding-bottom: 64px; }
+  .board__grid { gap: 16px 10px; }
 }
 
 /* Motion drives these when it is loaded; CSS stays out of its way */
