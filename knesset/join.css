@@ -136,16 +136,6 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 .video:has(.video__frame--tall) { grid-template-columns: 6fr 6fr; align-items: center; }
 .video__frame--tall { aspect-ratio: 9 / 16; width: min(100%, 420px); justify-self: center; }
 
-/* Zero: the one number */
-.zero {
-  display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); align-items: center;
-  padding: var(--gap) var(--margin) 0;
-}
-.zero__num { font-size: clamp(160px, 26vw, 420px); font-weight: 900; line-height: .8; color: var(--red); letter-spacing: -.04em; }
-.zero h2 { font-size: var(--step-l); margin-top: 24px; }
-.zero__text > p:last-child { margin-top: 24px; font-size: var(--step-m); max-width: 34ch; }
-.zero__img { width: 100%; height: auto; }
-
 /* Plan */
 .plan { padding: var(--gap) var(--margin) 0; }
 .plan__head { display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 4vw, 64px); align-items: end; }
@@ -224,8 +214,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   .hero__lead { margin-top: 24px; }
   .hero__actions { margin-top: 32px; gap: 24px; }
   .hero__actions .btn { width: 100%; }
-  .video, .plan__head, .join, .zero, .video:has(.video__frame--tall) { grid-template-columns: 1fr; }
-  .zero__img { order: 2; max-width: 100%; }
+  .video, .plan__head, .join, .video:has(.video__frame--tall) { grid-template-columns: 1fr; }
   .join__side { order: 1; align-self: stretch; margin: 40px calc(-1 * var(--margin)) 0; }
   .btn--wa { width: 100%; }
   .join__side .join__form { margin: 0 !important; }
@@ -262,7 +251,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 }
 
 /* Board: the people behind the campaign, beside the form */
-.board { margin-top: 56px; max-width: 560px; }
+.board { margin: 56px 0 clamp(80px, 9vw, 140px); max-width: 560px; }
 .board h3 { font-size: var(--step-m); }
 .board__grid { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 16px; }
 .board__grid img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
