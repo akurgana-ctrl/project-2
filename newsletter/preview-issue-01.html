@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <!--
   כח התערבות · גיליון 1 · אוקטובר 2026
-  מבוסס על issue-template.html. התמונות מוגשות מהריפו (raw.githubusercontent.com).
-  לפני שליחה אמיתית: להעלות את התמונות למערכת הדיוור ולהחליף את הכתובות.
+  צבעי רקע מוגדרים גם כ-bgcolor על תאי טבלה, כי חלק משרתי הדיוור ואאוטלוק מתעלמים מ-background ב-CSS.
+  build.py מייצר מהקובץ הזה תצוגה מקדימה וגרסת דפדפן.
 
   משתנים להחלפה:
-    {{VOTE_A_URL}} {{VOTE_B_URL}} {{VOTE_C_URL}}  קישור לכל אפשרות הצבעה. מערכת הדיוור סופרת לחיצות לכל קישור בנפרד
-    {{WEB_VERSION_URL}}   הגיליון בדפדפן
-    {{UNSUBSCRIBE_URL}}   הסרה מהרשימה (חובה)
-    {{ORG_ADDRESS}}       כתובת הארגון (חובה בדיוור)
+    logo.png images/conference.jpg images/training.jpg images/hackathon.jpg  כתובות התמונות (logo.png, images/*.jpg) אחרי העלאה למערכת הדיוור
+    https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-a https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-b https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-c  קישור לכל אפשרות הצבעה. מערכת הדיוור סופרת לחיצות לכל קישור בנפרד
+    # קבוצת הוואטסאפ לעדכונים
+    #             החשבון באיקס
+    https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#web   הגיליון בדפדפן
+    https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#unsub   הסרה מהרשימה (חובה)
+    [כתובת הארגון]       כתובת הארגון (חובה בדיוור)
 -->
 <html lang="he" dir="rtl" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -28,163 +31,180 @@
   @media only screen and (max-width:620px){
     .container{width:100% !important}
     .px{padding-left:18px !important;padding-right:18px !important}
-    .h2{font-size:44px !important;line-height:44px !important}
-    .stack{display:block !important;width:100% !important;text-align:right !important}
-    .issue{text-align:right !important;padding-top:12px !important}
+    .sec-title{font-size:56px !important;line-height:52px !important}
     .full{width:100% !important;height:auto !important}
-    .btn a{display:block !important;text-align:center !important}
+    .small-btn{display:block !important;width:100% !important;padding:0 0 8px 0 !important}
+    .small-btn a{display:block !important}
   }
 </style>
 </head>
 <body style="margin:0;padding:0;background:#E9ECF3;" dir="rtl">
 
 <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#E9ECF3;">
-  כנס בחירות, הדרכה פרלמנטרית והאקתון. ועכשיו אתם מחליטים מה נעשה הלאה.&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  כנס בחירות, הדרכה פרלמנטרית והאקתון. ועכשיו אתם מחליטים על מה נילחם.&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
 </div>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E9ECF3;" dir="rtl">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#E9ECF3" style="background:#E9ECF3;" dir="rtl">
 <tr><td align="center" style="padding:16px 0;">
 
   <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;">
     <tr><td class="px" align="center" style="padding:0 26px 10px;font-family:'Heebo',Arial,sans-serif;font-size:12px;color:#6A7190;">
-      לא מוצג טוב? <a href="{{WEB_VERSION_URL}}" style="color:#1D2E67;text-decoration:underline;">פתחו בדפדפן</a>
+      לא מוצג טוב? <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#web" style="color:#1D2E67;text-decoration:underline;">פתחו בדפדפן</a>
     </td></tr>
   </table>
 
-  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;background:#FFFFFF;" dir="rtl">
+  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:600px;background:#FFFFFF;" dir="rtl">
 
-    <!-- ===== כותרת ===== -->
-    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:24px 26px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td class="stack" valign="middle" align="right" style="text-align:right;">
-            <img src="logo-white.png" width="120" alt="כח התערבות · לובי ציוני לאומי" style="width:120px;max-width:120px;height:auto;color:#FFFFFF;font-family:Arial,sans-serif;font-size:18px;font-weight:bold;">
-          </td>
-          <td class="stack issue" valign="middle" align="left" style="text-align:left;font-family:'Heebo',Arial,sans-serif;font-size:12px;line-height:18px;color:#D5DBEE;">
-            <span style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:34px;line-height:34px;font-weight:700;color:#F0C000;display:block;">גיליון 1</span>
-            אוקטובר 2026 · 3 דקות קריאה
-          </td>
-        </tr>
-      </table>
+    <!-- ===== כותרת: לוגו ===== -->
+    <tr><td align="center" bgcolor="#FFFFFF" style="background:#FFFFFF;padding:34px 26px 26px;">
+      <img src="logo.png" width="220" alt="כח התערבות · לובי ציוני לאומי" style="width:220px;max-width:220px;height:auto;margin:0 auto;font-family:Arial,sans-serif;font-size:28px;font-weight:bold;color:#1D2E67;">
+    </td></tr>
+    <tr><td height="6" bgcolor="#F0C000" style="background:#F0C000;font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td class="px" align="center" bgcolor="#1D2E67" style="background:#1D2E67;padding:12px 26px;font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:700;color:#FFFFFF;">
+      הניוזלטר של כח התערבות&nbsp;&nbsp;<span style="color:#F0C000;">|</span>&nbsp;&nbsp;גיליון 1&nbsp;&nbsp;<span style="color:#F0C000;">|</span>&nbsp;&nbsp;אוקטובר 2026
     </td></tr>
 
     <!-- ===== פתיח ===== -->
-    <tr><td class="px" bgcolor="#F0C000" style="background:#F0C000;padding:12px 26px;font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:23px;font-weight:700;color:#1D2E67;text-align:right;">
-      שבוע עמוס מאחורינו: כנס בחירות, הדרכה פרלמנטרית לפעילים והאקתון. הנה מה היה, ובסוף אתם מחליטים מה עושים הלאה.
+    <tr><td class="px" style="padding:26px 26px 6px;font-family:'Heebo',Arial,sans-serif;font-size:17px;line-height:27px;color:#141A2E;text-align:right;">
+      שבועיים עמוסים מאחורינו: כנס בחירות, הדרכה פרלמנטרית לפעילים והאקתון. הנה מה היה, ובסוף אתם מחליטים על מה נילחם בהמשך.
     </td></tr>
 
     <!-- ===== חלק 1: מה היה לנו ===== -->
-    <tr><td class="px" style="padding:30px 26px 10px;text-align:right;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#1D2E67" style="background:#1D2E67;padding:2px 8px;font-family:'Heebo',Arial,sans-serif;font-size:11px;font-weight:900;color:#FFFFFF;letter-spacing:1px;">עבר</td>
-      </tr></table>
-      <h2 class="h2" style="margin:8px 0 6px;font-family:'Karantina','Heebo',Arial,sans-serif;font-size:56px;line-height:52px;font-weight:700;color:#1D2E67;">מה היה לנו</h2>
+    <tr><td style="padding:24px 0 0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:26px 26px 22px;text-align:right;">
+          <div style="font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:18px;font-weight:900;color:#F0C000;letter-spacing:2px;">חלק ראשון</div>
+          <div class="sec-title" style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:72px;line-height:66px;font-weight:700;color:#FFFFFF;padding-top:4px;">מה היה לנו</div>
+          <div style="font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:22px;color:#C9D0E6;padding-top:6px;">כנס בחירות · הדרכה פרלמנטרית · האקתון</div>
+        </td></tr>
+        <tr><td height="6" bgcolor="#F0C000" style="background:#F0C000;font-size:0;line-height:0;">&nbsp;</td></tr>
+      </table>
     </td></tr>
 
     <!-- פריט 1: כנס בחירות -->
-    <tr><td class="px" style="padding:14px 26px 26px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+    <tr><td class="px" style="padding:30px 26px 30px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">01 · 15.10 · ירושלים · שודר בלייב</div>
+      <div style="font-size:26px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">כנס הבחירות: נציגי המפלגות על במה אחת</div>
       <img class="full" src="images/conference.jpg" width="548" alt="נציגי המפלגות על הבמה בכנס הבחירות" style="width:548px;max-width:100%;height:auto;">
-      <div style="border-top:3px solid #1D2E67;margin-top:14px;padding-top:10px;">
-        <div style="font-size:12px;line-height:18px;font-weight:700;color:#1B3E7D;">15.10 · ירושלים · שודר בלייב</div>
-        <div style="font-size:20px;line-height:28px;font-weight:900;color:#1D2E67;padding-top:2px;">כנס הבחירות: נציגי המפלגות על במה אחת</div>
-        <div style="font-size:15px;line-height:24px;color:#141A2E;padding-top:6px;">יחד עם יכין, המרכז למחקרים אסטרטגיים לאומיים, ישראל 2050 והפודקאסט על המשמעות, הבאנו את נציגי המפלגות לשיחה פתוחה מול הקהל, לפני שהולכים לקלפי.</div>
-        <div style="font-size:15px;line-height:24px;color:#141A2E;padding-top:6px;"><b style="color:#1D2E67;">למה זה חשוב:</b> מה שמבטיחים לפני הבחירות קובע את מה שנדרוש מהם אחרי.</div>
-      </div>
+      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;">יחד עם יכין, המרכז למחקרים אסטרטגיים לאומיים, ישראל 2050 והפודקאסט על המשמעות, הבאנו את נציגי המפלגות לשיחה פתוחה מול הקהל, לפני שהולכים לקלפי.</div>
+      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:8px;"><b style="color:#1D2E67;">למה זה חשוב:</b> מה שמבטיחים לפני הבחירות קובע את מה שנדרוש מהם אחרי.</div>
     </td></tr>
+    <tr><td class="px" style="padding:0 26px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="2" bgcolor="#D8DCE6" style="background:#D8DCE6;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
 
-    <!-- פריט 2: הדרכה פרלמנטרית (מודעה) -->
-    <tr><td class="px" style="padding:0 26px 26px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+    <!-- פריט 2: הדרכה פרלמנטרית -->
+    <tr><td class="px" style="padding:30px 26px 30px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">02 · ירושלים · מפגש ראשון</div>
+      <div style="font-size:26px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">הדרכה פרלמנטרית: מתכוננים לכנסת הבאה</div>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr><td bgcolor="#1D2E67" style="background:#1D2E67;">
           <img class="full" src="images/training.jpg" width="548" alt="פעילי כח התערבות בהדרכה הפרלמנטרית" style="width:548px;max-width:100%;height:auto;">
         </td></tr>
-        <tr><td bgcolor="#1D2E67" style="background:#1D2E67;padding:18px 20px 22px;text-align:right;">
-          <div style="font-size:12px;line-height:18px;font-weight:700;color:#F0C000;">הדרכה פרלמנטרית · מפגש ראשון</div>
-          <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:40px;line-height:40px;font-weight:700;color:#FFFFFF;padding-top:6px;">מתכוננים לכנסת הבאה</div>
-          <div style="font-size:15px;line-height:24px;color:#FFFFFF;padding-top:10px;">ביום שני פתחנו בירושלים את ההדרכה הפרלמנטרית לפעילי כח התערבות.</div>
-          <div style="font-size:15px;line-height:24px;color:#FFFFFF;padding-top:8px;"><b style="color:#F0C000;">נגה ארבל</b>, חברת הדירקטוריון, דיברה על ההבדלים האמיתיים בין ימין לשמאל, על הרעיונות שעומדים מאחוריהם ועל כוחה של הרטוריקה בוויכוח פוליטי.</div>
-          <div style="font-size:15px;line-height:24px;color:#FFFFFF;padding-top:8px;"><b style="color:#F0C000;">אריאל קלנר</b> סיפר על הניסיון שלו מול הפקידות בכנסת, ונתן כלים מעשיים להשפיע על מדיניות באמת.</div>
-          <div style="font-size:15px;line-height:24px;color:#FFFFFF;padding-top:8px;">הפעילים ישבו עם כוכבים בעיניים ולא רצו ללכת הביתה.</div>
-          <div style="font-size:16px;line-height:24px;font-weight:900;color:#F0C000;padding-top:12px;">המטרה: לשמור על הפתק שתשימו בקלפי. ההמשך יבוא.</div>
+        <tr><td bgcolor="#1D2E67" style="background:#1D2E67;padding:18px 20px 22px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+          <div style="font-size:16px;line-height:26px;color:#FFFFFF;">ביום שני פתחנו בירושלים את ההדרכה הפרלמנטרית לפעילי כח התערבות.</div>
+          <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding-top:8px;"><b style="color:#F0C000;">נגה ארבל</b>, חברת הדירקטוריון, דיברה על ההבדלים האמיתיים בין ימין לשמאל, על הרעיונות שעומדים מאחוריהם ועל כוחה של הרטוריקה בוויכוח פוליטי.</div>
+          <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding-top:8px;"><b style="color:#F0C000;">אריאל קלנר</b> סיפר על הניסיון שלו מול הפקידות בכנסת, ונתן כלים מעשיים להשפיע על מדיניות באמת.</div>
+          <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding-top:8px;">הפעילים ישבו עם כוכבים בעיניים ולא רצו ללכת הביתה.</div>
+          <div style="font-size:17px;line-height:26px;font-weight:900;color:#F0C000;padding-top:12px;">המטרה: לשמור על הפתק שתשימו בקלפי. ההמשך יבוא.</div>
         </td></tr>
       </table>
     </td></tr>
+    <tr><td class="px" style="padding:0 26px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="2" bgcolor="#D8DCE6" style="background:#D8DCE6;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
 
     <!-- פריט 3: האקתון -->
-    <tr><td class="px" style="padding:0 26px 30px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+    <tr><td class="px" style="padding:30px 26px 36px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">03 · 11.10–15.10 · ירושלים</div>
+      <div style="font-size:26px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">האקתון "אמנות כמחאה" בנושא בג״ץ</div>
       <img class="full" src="images/hackathon.jpg" width="548" alt="האקתון אמנות כמחאה בנושא בג״ץ" style="width:548px;max-width:100%;height:auto;">
-      <div style="border-top:3px solid #1D2E67;margin-top:14px;padding-top:10px;">
-        <div style="font-size:12px;line-height:18px;font-weight:700;color:#1B3E7D;">11.10–15.10 · ירושלים</div>
-        <div style="font-size:20px;line-height:28px;font-weight:900;color:#1D2E67;padding-top:2px;">האקתון "אמנות כמחאה" בנושא בג״ץ</div>
-        <div style="font-size:15px;line-height:24px;color:#141A2E;padding-top:6px;">יוצרים הגישו סרטונים, איורים, קריקטורות ושירים בדרישה לתיקון מערכת המשפט. לקחנו חלק בהאקתון ושידרנו אותו בלייב בפודקאסט על המשמעות.</div>
-      </div>
+      <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;">יוצרים הגישו סרטונים, איורים, קריקטורות ושירים בדרישה לתיקון מערכת המשפט. לקחנו חלק בהאקתון ושידרנו אותו בלייב בפודקאסט על המשמעות.</div>
     </td></tr>
 
-    <!-- ===== חלק 2: אתם מחליטים ===== -->
-    <tr><td class="px" bgcolor="#F0C000" style="background:#F0C000;padding:30px 26px;text-align:right;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#1D2E67" style="background:#1D2E67;padding:2px 8px;font-family:'Heebo',Arial,sans-serif;font-size:11px;font-weight:900;color:#FFFFFF;letter-spacing:1px;">עתיד</td>
-      </tr></table>
-      <h2 class="h2" style="margin:8px 0 12px;font-family:'Karantina','Heebo',Arial,sans-serif;font-size:56px;line-height:52px;font-weight:700;color:#1D2E67;">אתם מחליטים</h2>
-      <p style="margin:0 0 14px;font-family:'Heebo',Arial,sans-serif;font-size:18px;line-height:26px;font-weight:900;color:#1D2E67;">על מה תעבוד קבוצת הלחץ הציבורי שלנו?</p>
-
+    <!-- ===== חלק 2: מה יהיה לנו ===== -->
+    <tr><td>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td style="padding-bottom:8px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-            <td width="34" valign="top" bgcolor="#1D2E67" style="padding:13px 14px 13px 0;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="26" height="26" align="center" bgcolor="#F0C000" style="font-family:'Heebo',Arial,sans-serif;font-size:15px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_A_URL}}" style="color:#1D2E67;text-decoration:none;">א</a></td></tr></table>
-            </td>
-            <td bgcolor="#1D2E67" style="padding:13px 10px 13px 14px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-              <a href="{{VOTE_A_URL}}" style="color:#FFFFFF;text-decoration:none;font-size:16px;line-height:22px;font-weight:700;display:block;">התחייבות המועמדים לתיקון מערכת המשפט</a>
-              <a href="{{VOTE_A_URL}}" style="color:#C9D0E6;text-decoration:none;font-size:13px;line-height:19px;display:block;padding-top:3px;">נדרוש מכל מועמד להתחייב בכתב לפני הבחירות</a>
-            </td>
-          </tr></table>
-        </td></tr>
-        <tr><td style="padding-bottom:8px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-            <td width="34" valign="top" bgcolor="#1D2E67" style="padding:13px 14px 13px 0;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="26" height="26" align="center" bgcolor="#F0C000" style="font-family:'Heebo',Arial,sans-serif;font-size:15px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_B_URL}}" style="color:#1D2E67;text-decoration:none;">ב</a></td></tr></table>
-            </td>
-            <td bgcolor="#1D2E67" style="padding:13px 10px 13px 14px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-              <a href="{{VOTE_B_URL}}" style="color:#FFFFFF;text-decoration:none;font-size:16px;line-height:22px;font-weight:700;display:block;">שומרים על הפתק</a>
-              <a href="{{VOTE_B_URL}}" style="color:#C9D0E6;text-decoration:none;font-size:13px;line-height:19px;display:block;padding-top:3px;">מעקב פומבי אחרי הבטחות הבחירות, מהיום הראשון של הכנסת</a>
-            </td>
-          </tr></table>
-        </td></tr>
-        <tr><td>
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-            <td width="34" valign="top" bgcolor="#1D2E67" style="padding:13px 14px 13px 0;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="26" height="26" align="center" bgcolor="#F0C000" style="font-family:'Heebo',Arial,sans-serif;font-size:15px;font-weight:900;color:#1D2E67;"><a href="{{VOTE_C_URL}}" style="color:#1D2E67;text-decoration:none;">ג</a></td></tr></table>
-            </td>
-            <td bgcolor="#1D2E67" style="padding:13px 10px 13px 14px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-              <a href="{{VOTE_C_URL}}" style="color:#FFFFFF;text-decoration:none;font-size:16px;line-height:22px;font-weight:700;display:block;">פעילים בכל עיר</a>
-              <a href="{{VOTE_C_URL}}" style="color:#C9D0E6;text-decoration:none;font-size:13px;line-height:19px;display:block;padding-top:3px;">מחזור נוסף של ההדרכה הפרלמנטרית, פתוח לפעילים חדשים</a>
-            </td>
-          </tr></table>
+        <tr><td height="6" bgcolor="#1D2E67" style="background:#1D2E67;font-size:0;line-height:0;">&nbsp;</td></tr>
+        <tr><td class="px" bgcolor="#F0C000" style="background:#F0C000;padding:26px 26px 30px;text-align:right;">
+          <div style="font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:18px;font-weight:900;color:#1D2E67;letter-spacing:2px;">חלק שני</div>
+          <div class="sec-title" style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:72px;line-height:66px;font-weight:700;color:#1D2E67;padding-top:4px;">מה יהיה לנו</div>
+          <div style="font-family:'Heebo',Arial,sans-serif;font-size:20px;line-height:28px;font-weight:900;color:#1D2E67;padding:10px 0 4px;">אתם מחליטים: על מה תעבוד קבוצת הלחץ הציבורי שלנו?</div>
+          <div style="font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:22px;color:#1D2E67;padding-bottom:16px;">לחיצה אחת היא הצבעה. את התוצאות נפרסם ביום ראשון.</div>
+
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td style="padding-bottom:10px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td width="40" valign="top" bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 16px 15px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-a" style="color:#1D2E67;text-decoration:none;">א</a></td></tr></table>
+                </td>
+                <td bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 12px 15px 16px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-a" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">התחייבות המועמדים לתיקון מערכת המשפט</a>
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-a" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">נדרוש מכל מועמד להתחייב בכתב לפני הבחירות</a>
+                </td>
+              </tr></table>
+            </td></tr>
+            <tr><td style="padding-bottom:10px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td width="40" valign="top" bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 16px 15px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-b" style="color:#1D2E67;text-decoration:none;">ב</a></td></tr></table>
+                </td>
+                <td bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 12px 15px 16px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-b" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">שומרים על הפתק</a>
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-b" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">מעקב פומבי אחרי הבטחות הבחירות, מהיום הראשון של הכנסת</a>
+                </td>
+              </tr></table>
+            </td></tr>
+            <tr><td>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td width="40" valign="top" bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 16px 15px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="30" height="30" align="center" bgcolor="#F0C000" style="background:#F0C000;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;color:#1D2E67;"><a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-c" style="color:#1D2E67;text-decoration:none;">ג</a></td></tr></table>
+                </td>
+                <td bgcolor="#1D2E67" style="background:#1D2E67;padding:15px 12px 15px 16px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-c" style="color:#FFFFFF;text-decoration:none;font-size:18px;line-height:24px;font-weight:900;display:block;">פעילים בכל עיר</a>
+                  <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#vote-c" style="color:#C9D0E6;text-decoration:none;font-size:14px;line-height:20px;display:block;padding-top:3px;">מחזור נוסף של ההדרכה הפרלמנטרית, פתוח לפעילים חדשים</a>
+                </td>
+              </tr></table>
+            </td></tr>
+          </table>
         </td></tr>
       </table>
-      <p style="margin:12px 0 0;font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:20px;color:#1D2E67;">לחיצה אחת היא הצבעה. את התוצאות נפרסם ביום ראשון.</p>
     </td></tr>
 
-    <!-- ===== הצטרפות לקבוצה ===== -->
-    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:28px 26px;text-align:right;font-family:'Heebo',Arial,sans-serif;">
-      <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:40px;line-height:40px;font-weight:700;color:#FFFFFF;">רוצים להיות חלק מהלחץ?</div>
-      <div style="font-size:15px;line-height:24px;color:#FFFFFF;padding:8px 0 16px;">בקבוצת הוואטסאפ שלנו מקבלים את הפעולות הדחופות ראשונים, ומצטרפים לפעילים שעובדים מול הכנסת.</div>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td class="btn" bgcolor="#F0C000" style="background:#F0C000;">
-        <a href="https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi" style="display:inline-block;color:#1D2E67;font-family:'Heebo',Arial,sans-serif;font-size:16px;font-weight:900;line-height:20px;padding:14px 24px;">הצטרפו לקבוצת הוואטסאפ</a>
-      </td></tr></table>
+    <!-- ===== קבוצת הלחץ: כפתור גדול ===== -->
+    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:32px 26px 34px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:52px;line-height:50px;font-weight:700;color:#FFFFFF;">הצטרפו לקבוצת הלחץ</div>
+      <div style="font-size:16px;line-height:25px;color:#FFFFFF;padding:10px 0 20px;">בקבוצה מקבלים ראשונים את הפעולות הדחופות, ומצטרפים לפעילים שעובדים מול הכנסת.</div>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td align="center" bgcolor="#F0C000" style="background:#F0C000;">
+          <a href="https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi" style="display:block;color:#1D2E67;font-family:'Heebo',Arial,sans-serif;font-size:20px;font-weight:900;line-height:26px;padding:18px 20px;text-align:center;">להצטרפות לקבוצת הלחץ בוואטסאפ</a>
+        </td>
+      </tr></table>
+    </td></tr>
+
+    <!-- ===== כפתורים קטנים: עדכונים, אינסטגרם, איקס ===== -->
+    <tr><td class="px" bgcolor="#16234F" style="background:#16234F;padding:22px 26px 8px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-size:13px;line-height:18px;font-weight:700;color:#AEB7D6;padding-bottom:12px;">עקבו אחרינו</div>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td class="small-btn" width="33%" style="padding:0 0 0 6px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#2A3B78" style="background:#2A3B78;border:1px solid #F0C000;">
+            <a href="#" style="display:block;color:#FFFFFF;font-size:14px;font-weight:700;line-height:20px;padding:10px 6px;">קבוצת עדכונים</a>
+          </td></tr></table>
+        </td>
+        <td class="small-btn" width="34%" style="padding:0 3px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#2A3B78" style="background:#2A3B78;border:1px solid #F0C000;">
+            <a href="https://www.instagram.com/koachhitarvut/" style="display:block;color:#FFFFFF;font-size:14px;font-weight:700;line-height:20px;padding:10px 6px;">אינסטגרם</a>
+          </td></tr></table>
+        </td>
+        <td class="small-btn" width="33%" style="padding:0 6px 0 0;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#2A3B78" style="background:#2A3B78;border:1px solid #F0C000;">
+            <a href="#" style="display:block;color:#FFFFFF;font-size:14px;font-weight:700;line-height:20px;padding:10px 6px;">X (טוויטר)</a>
+          </td></tr></table>
+        </td>
+      </tr></table>
     </td></tr>
 
     <!-- ===== תחתית ===== -->
-    <tr><td class="px" bgcolor="#16234F" style="background:#16234F;padding:22px 26px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
-      <div style="font-size:14px;line-height:22px;">
-        <a href="https://www.instagram.com/koachhitarvut/" style="color:#F0C000;font-weight:700;">עקבו אחרינו באינסטגרם</a>
-        <span style="color:#56639A;">&nbsp;·&nbsp;</span>
-        <a href="https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi" style="color:#FFFFFF;">קבוצת הוואטסאפ</a>
-      </div>
-      <div style="font-size:12px;line-height:19px;color:#AEB7D6;padding-top:10px;">
+    <tr><td class="px" bgcolor="#16234F" style="background:#16234F;padding:14px 26px 24px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
+      <div style="font-size:12px;line-height:19px;color:#AEB7D6;">
         קיבלתם את המייל כי נרשמתם לעדכונים של כח התערבות · לובי ציוני לאומי.<br>
-        {{ORG_ADDRESS}} · <a href="{{UNSUBSCRIBE_URL}}" style="color:#AEB7D6;text-decoration:underline;">הסרה מהרשימה</a>
+        [כתובת הארגון] · <a href="https://claude.ai/artifact/BitaazYA1yUxEs9iazZaUa#unsub" style="color:#AEB7D6;text-decoration:underline;">הסרה מהרשימה</a>
       </div>
     </td></tr>
 
