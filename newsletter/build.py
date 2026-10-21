@@ -25,7 +25,6 @@ LINKS = {
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
     "CONF_DOC_URL": "#",
-    "ORG_ADDRESS": "[כתובת הארגון]",
 }
 
 
