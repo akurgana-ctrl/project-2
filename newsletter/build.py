@@ -24,7 +24,7 @@ LINKS = {
     "VOTE_EMAIL": "akurgana@gmail.com",
     "WEB_VERSION_URL": DEMO + "#web",
     "UNSUBSCRIBE_URL": DEMO + "#unsub",
-    "CONF_DOC_URL": "#",
+    "CONF_DOC_URL": "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/knesset-26-booklet.pdf",
 }
 
 
