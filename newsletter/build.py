@@ -9,6 +9,8 @@ import re
 import sys
 from pathlib import Path
 
+from tracking import links as tracked
+
 HERE = Path(__file__).parent
 IMAGES = {
     "IMG_LOGO": "logo.png",
@@ -40,7 +42,7 @@ def data_uri(path):
 
 
 def main(name):
-    src = (HERE / name).read_text()
+    src = tracked.fill((HERE / name).read_text())
     stem = Path(name).stem
 
     preview = fill(fill(src, IMAGES), LINKS)

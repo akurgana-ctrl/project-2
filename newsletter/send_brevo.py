@@ -10,6 +10,8 @@ import sys
 import urllib.request
 from pathlib import Path
 
+from tracking import links as tracked
+
 HERE = Path(__file__).parent
 RAW = "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/"
 IMAGES = {
@@ -25,7 +27,7 @@ VOTE_EMAIL = "akurgana@gmail.com"
 
 
 def render(name):
-    html = (HERE / name).read_text()
+    html = tracked.fill((HERE / name).read_text())
     html = re.sub(r"<!--(?!\[if).*?-->", "", html, flags=re.S)
     for key, path in IMAGES.items():
         html = html.replace("{{%s}}" % key, RAW + path)
