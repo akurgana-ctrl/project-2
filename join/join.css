@@ -79,11 +79,12 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   padding: 120px var(--margin) 80px;
   overflow: hidden;
 }
-.hero__img {
+.hero__media { position: absolute; inset: 0; overflow: hidden; --focus: 25% 30%; }
+.hero__media img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 25% 30%;
-  animation: drift 1.6s var(--ease) both;
+  object-fit: cover; object-position: var(--focus);
 }
+.hero__plate { animation: drift 1.6s var(--ease) both; }
 .hero::after {
   /* neutral scrim under the text */
   content: ""; position: absolute; inset: 0;
@@ -179,7 +180,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   .bar { position: relative; background: var(--ground); padding-block: 12px; }
   .bar .btn--small { margin-inline-start: auto; }
   .hero { display: block; min-height: 0; padding: 0; }
-  .hero__img { position: relative; height: 62svh; object-position: 28% 40%; }
+  .hero__media { position: relative; height: 62svh; --focus: 28% 40%; }
   .hero::after { inset: 0 0 auto 0; height: 62svh; background: linear-gradient(to top /* taste-skill-ignore: neutral scrim */, var(--ground) 0%, rgba(11,11,12,0) 45%); }
   .hero__text { width: auto; margin-top: -48px; padding: 0 var(--margin); }
   .hero__lead { margin-top: 24px; }
@@ -204,7 +205,7 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hero__img { animation: none; }
+  .hero__plate { animation: none; }
   .js [data-rise] { transform: none; transition: opacity .3s linear; }
   .dock, .dock.is-on { transform: none; transition: opacity .2s linear; }
   .dock { opacity: 0; pointer-events: none; }
@@ -229,8 +230,13 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
   .board__grid { gap: 16px 10px; }
 }
 
+/* Hero depth: the stage tilts a touch under the pointer */
+.hero { perspective: 1400px; }
+.hero__media { transform-style: preserve-3d; }
+.hero__subject { pointer-events: none; }
+
 /* Motion drives these when it is loaded; CSS stays out of its way */
 .motion-on [data-rise] { transition: none; }
-.motion-on .hero__img { animation: none; }
+.motion-on .hero__plate { animation: none; }
 .motion-on .btn:active { transform: none; }
 .motion-on .dock { transition: background-color .2s var(--ease); }
