@@ -117,8 +117,9 @@ h3 { font-size: var(--step-m); font-weight: 800; line-height: 1.2; letter-spacin
 }
 .video__soon::before { content: "▶"; color: var(--red); margin-inline-end: 10px; }
 
-/* Tall video: the vertical clip stands beside its text */
-.video:has(.video__frame--tall) { grid-template-columns: 6fr 6fr; align-items: center; }
+/* Tall video: the vertical clip stands alone, centred */
+.video:has(.video__frame--tall) { grid-template-columns: 1fr; justify-items: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .video__frame--tall { aspect-ratio: 9 / 16; width: min(100%, 420px); justify-self: center; }
 
 /* Plan */
