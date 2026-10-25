@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800;900&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/hero.jpg" imagesrcset="assets/hero-960.jpg 960w, assets/hero.jpg 1600w" imagesizes="100vw">
-  <link rel="stylesheet" href="join.css?v=15">
+  <link rel="preload" as="image" href="assets/plate.jpg" imagesrcset="assets/plate-960.jpg 960w, assets/plate.jpg 1600w" imagesizes="100vw">
+  <link rel="stylesheet" href="join.css?v=16">
 </head>
 <body>
   <header class="bar">
@@ -31,8 +31,10 @@
 
   <main>
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero__img" src="assets/hero.jpg" srcset="assets/hero-960.jpg 960w, assets/hero.jpg 1600w" sizes="100vw"
-        alt="צעיר עם משקפיים מחזיק דרכון ישראלי מחוק באיקס אדום, על מסלול המראה בלילה ליד מטוס" width="1600" height="900">
+      <div class="hero__media" data-depth="walk">
+        <img class="hero__plate" src="assets/plate.jpg" srcset="assets/plate-960.jpg 960w, assets/plate.jpg 1600w" sizes="100vw" alt="" width="1600" height="900">
+        <img class="hero__subject" src="assets/subject.webp" srcset="assets/subject-960.webp 960w, assets/subject.webp 1600w" sizes="100vw" alt="צעיר עם משקפיים מחזיק דרכון ישראלי מחוק באיקס אדום, על מסלול המראה בלילה ליד מטוס" width="1600" height="900">
+      </div>
       <div class="hero__text">
         <h1 id="hero-title" data-rise><span>עוצרים את האבסורד.</span> <span>מגרשים את אנדריי X.</span></h1>
         <p class="hero__lead" data-rise>פעיל אנטי-ישראלי שמחזיק באזרחות ישראלית ופועל נגד המדינה. כח התערבות פועל לשלילת אזרחותו ולגירושו מישראל.</p>
@@ -117,7 +119,7 @@
   <a class="dock btn" href="#join" id="dock">אני בפנים – ₪1 ביום</a>
 
   <script src="../assets/vendor/motion-14.4.0.js" defer></script>
-  <script src="../assets/campaign-motion.js?v=8" defer></script>
-  <script src="join.js?v=14" defer></script>
+  <script src="../assets/campaign-motion.js?v=16" defer></script>
+  <script src="join.js?v=16" defer></script>
 </body>
 </html>

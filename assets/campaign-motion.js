@@ -6,12 +6,55 @@
   const settle = { type: "spring", bounce: 0, visualDuration: 0.5 };
   document.documentElement.classList.add("motion-on");
 
-  /* Hero: settles once, then drifts a little slower than the page as it scrolls away */
+  /* Hero: two planes. The plate settles and falls behind; the subject keeps its own path */
   const hero = document.querySelector(".hero");
-  const heroImg = hero && hero.querySelector(".hero__img");
-  if (heroImg) {
-    animate(heroImg, { scale: [1.04, 1] }, { duration: 1.6, ease: [0.22, 1, 0.36, 1] });
-    scroll(animate(heroImg, { y: [0, 90] }, { ease: "linear" }), { target: hero, offset: ["start start", "end start"] });
+  const media = hero && hero.querySelector(".hero__media");
+  if (media) {
+    const plate = media.querySelector(".hero__plate");
+    const subject = media.querySelector(".hero__subject");
+    const exit = { target: hero, offset: ["start start", "end start"] };
+    animate(plate, { scale: [1.08, 1.03] }, { duration: 1.6, ease: [0.22, 1, 0.36, 1] });
+    scroll(animate(plate, { y: [0, 110] }, { ease: "linear" }), exit);
+
+    if (media.dataset.depth === "walk") {
+      /* he turns toward the plane and goes */
+      scroll(animate(subject, { x: ["0%", "-16%"], y: [0, 24], scale: [1, 0.92], opacity: [1, 0.15] }, { ease: "linear" }), exit);
+    } else {
+      /* the chair comes forward while the hall falls away */
+      scroll(animate(subject, { y: [0, -36], scale: [1, 1.05] }, { ease: "linear" }), exit);
+      scroll(animate(plate, { filter: ["blur(0px)", "blur(3px)"] }, { ease: "linear" }), exit);
+    }
+
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      hero.addEventListener("pointermove", (e) => {
+        const r = hero.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        animate(plate, { x: dx * -18, rotate: dx * 0.4 }, { type: "spring", bounce: 0, visualDuration: 0.6 });
+        animate(media, { rotateX: dy * -2, rotateY: dx * 3 }, { type: "spring", bounce: 0, visualDuration: 0.6 });
+      });
+    }
+  }
+
+  /* Video: the frame comes up to full size as it reaches the middle of the screen */
+  const clip = document.querySelector(".video__frame video, .video__frame img");
+  if (clip) {
+    scroll(animate(clip, { scale: [0.86, 1] }, { ease: "linear" }),
+      { target: clip.parentElement, offset: ["start end", "center center"] });
+  }
+
+  /* Donation: the red field opens from the middle as it arrives */
+  const join = document.getElementById("join");
+  if (join) {
+    scroll(animate(join, { clipPath: ["inset(0% 12% 0% 12%)", "inset(0% 0% 0% 0%)"] }, { ease: "linear" }),
+      { target: join, offset: ["start end", "start 45%"] });
+  }
+
+  /* The lock above the donation opens as the section comes up */
+  const shackle = document.querySelector(".join__shackle");
+  if (shackle) {
+    scroll(animate(shackle, { y: [0, -9, -9], rotate: [0, 0, -38] }, { ease: "linear" }),
+      { target: join, offset: ["start 85%", "start 25%"] });
   }
 
   /* Entrances: the parts of each section arrive in order */
