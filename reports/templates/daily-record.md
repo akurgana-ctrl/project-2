@@ -2,6 +2,7 @@
 date: YYYY-MM-DD
 day: א׳
 week: YYYY-Www
+state: draft         # draft | final
 overall: green        # green | yellow | red
 headline: "השורה התחתונה של היום במשפט אחד"
 ---
