@@ -22,6 +22,7 @@ soffice --headless --convert-to pdf out.docx
 ```
 `content.json` מכיל את השדות: date_hebrew, date_gregorian, to[], subject, subtitle, sections[{title, paragraphs[]}], signer, org.
 להכנסת טקסט ארוך לעמוד אחד: `"layout": {"size": 10.5, "pitch": 13.0, "gap": 0.3, "top": 116}`. בלי השדה הזה המסמך נבנה במידות התבנית המקורית.
+בתוך פסקה, טקסט בין `**…**` יודגש.
 פריט ב-paragraphs שהוא `{"items": [...]}` הופך לרשימה מוזחת.
 לתאריך העברי: `https://www.hebcal.com/converter?cfg=json&gy=YYYY&gm=M&gd=D&g2h=1`.
 מכתבים עצמם לא נשמרים בריפו, כי הוא ציבורי.

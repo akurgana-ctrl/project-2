@@ -69,6 +69,13 @@ def run(par, text, bold=False, underline=False, size=None):
     return r
 
 
+def rich(par, text):
+    """Add text where **segments** are bold."""
+    for i, part in enumerate(text.split("**")):
+        if part:
+            run(par, part, bold=i % 2 == 1)
+
+
 def para(doc, jc=None, **kw):
     p = doc.add_paragraph()
     set_rtl(p, jc)
@@ -115,11 +122,11 @@ def build(content, logo, out):
                 for j, sub in enumerate(item["items"]):
                     last = j == len(item["items"]) - 1
                     p = para(doc, jc="both", after=10.3 if last else 6.3, right_indent=36)
-                    run(p, sub)
+                    rich(p, sub)
             else:
                 n += 1
                 p = para(doc, jc="both", after=10.3)
-                run(p, f"{n}. {item}")
+                rich(p, f"{n}. {item}")
 
     run(para(doc, jc="center", before=0, after=0.3), "בברכה,", bold=True)
     run(para(doc, jc="center", after=6.3), content["signer"])
