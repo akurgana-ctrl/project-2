@@ -108,7 +108,8 @@ def build(content, logo, out):
 
     n = 0
     for sec_ in content["sections"]:
-        run(para(doc, before=0, after=8.3), sec_["title"], bold=True, underline=True)
+        if sec_.get("title"):  # untitled sections give a plain numbered list
+            run(para(doc, before=0, after=8.3), sec_["title"], bold=True, underline=True)
         for item in sec_["paragraphs"]:
             if isinstance(item, dict):  # lettered sub-list
                 for j, sub in enumerate(item["items"]):
