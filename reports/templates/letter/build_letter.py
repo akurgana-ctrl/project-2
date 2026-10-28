@@ -17,7 +17,9 @@ from docx.shared import Pt
 
 FONT = "David"
 SIZE = 12
-PITCH = Pt(17.7)
+PITCH = 17.7
+# Defaults reproduce the template; content["layout"] may tighten them to fit one page
+LAYOUT = {"size": SIZE, "pitch": PITCH, "gap": 1.0, "top": 140}
 
 
 def set_rtl(par, jc=None):
@@ -30,12 +32,12 @@ def set_rtl(par, jc=None):
         ppr.append(el)
 
 
-def fmt(par, before=0, after=0, pitch=PITCH, right_indent=None):
+def fmt(par, before=0, after=0, pitch=None, right_indent=None):
     pf = par.paragraph_format
-    pf.space_before = Pt(before)
-    pf.space_after = Pt(after)
+    pf.space_before = Pt(before * LAYOUT["gap"])
+    pf.space_after = Pt(after * LAYOUT["gap"])
     pf.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-    pf.line_spacing = pitch
+    pf.line_spacing = pitch or Pt(LAYOUT["pitch"])
     if right_indent is not None:
         # In a bidi paragraph w:left is the visual right (start) side
         ppr = par._p.get_or_add_pPr()
@@ -44,7 +46,8 @@ def fmt(par, before=0, after=0, pitch=PITCH, right_indent=None):
         ppr.append(ind)
 
 
-def run(par, text, bold=False, underline=False, size=SIZE):
+def run(par, text, bold=False, underline=False, size=None):
+    size = size or LAYOUT["size"]
     r = par.add_run(text)
     rpr = r._r.get_or_add_rPr()
     fonts = OxmlElement("w:rFonts")
@@ -74,11 +77,12 @@ def para(doc, jc=None, **kw):
 
 
 def build(content, logo, out):
+    LAYOUT.update(content.get("layout", {}))
     doc = Document()
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Pt(595.3), Pt(841.9)
     sec.right_margin, sec.left_margin = Pt(50), Pt(45)
-    sec.top_margin, sec.bottom_margin = Pt(140), Pt(42)
+    sec.top_margin, sec.bottom_margin = Pt(LAYOUT["top"]), Pt(42)
     sec.header_distance, sec.footer_distance = Pt(9), Pt(30)
     sec._sectPr.append(OxmlElement("w:bidi"))
 
