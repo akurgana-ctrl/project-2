@@ -100,7 +100,7 @@ def build(content, logo, out):
         run(para(doc, after=3.3 if i < len(content["to"]) - 1 else 0), line)
     para(doc, after=0)
 
-    p = para(doc, jc="center", before=0, after=6.3)
+    p = para(doc, jc="center", before=0, after=6.3 if content.get("subtitle") else 14)
     run(p, "הנדון: ", bold=True, underline=True)
     run(p, content["subject"], bold=True, underline=True)
     if content.get("subtitle"):
