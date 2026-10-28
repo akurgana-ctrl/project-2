@@ -128,7 +128,10 @@ def build(content, logo, out):
                 p = para(doc, jc="both", after=10.3)
                 rich(p, f"{n}. {item}")
 
-    run(para(doc, jc="center", before=0, after=0.3), "בברכה,", bold=True)
+    # sig_gap: extra space (pt) between the last paragraph and the signature
+    sig = para(doc, jc="center", after=0.3)
+    sig.paragraph_format.space_before = Pt(LAYOUT.get("sig_gap", 0))
+    run(sig, "בברכה,", bold=True)
     run(para(doc, jc="center", after=6.3), content["signer"])
     run(para(doc, jc="center", after=0), content["org"])
 
