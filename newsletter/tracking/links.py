@@ -21,6 +21,7 @@ LINKS = {
     "andrey_video": "https://akurgana-ctrl.github.io/project-2/join/assets/andrei.mp4",
     "noga_video": "https://akurgana-ctrl.github.io/project-2/knesset/assets/noga.mp4",
     "ohana_page": "https://akurgana-ctrl.github.io/project-2/knesset/",
+    "debate_video": "https://youtu.be/yFkOOdQ4UXw",
     "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
     "podcast_btn": "https://youtu.be/ZpHFRbkM4fM",
