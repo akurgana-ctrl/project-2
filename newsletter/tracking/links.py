@@ -18,6 +18,8 @@ LINKS = {
     "bill_med": DOCS + "bill-medicine.pdf",
     "bill_net": DOCS + "bill-online-responsibility.pdf",
     "andrey_page": "https://akurgana-ctrl.github.io/project-2/join/",
+    "andrey_video": "https://akurgana-ctrl.github.io/project-2/join/assets/andrei.mp4",
+    "noga_video": "https://akurgana-ctrl.github.io/project-2/knesset/assets/noga.mp4",
     "ohana_page": "https://akurgana-ctrl.github.io/project-2/knesset/",
     "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
