@@ -17,6 +17,8 @@ LINKS = {
     "bill_selfdef": DOCS + "bill-self-defense.pdf",
     "bill_med": DOCS + "bill-medicine.pdf",
     "bill_net": DOCS + "bill-online-responsibility.pdf",
+    "andrey_page": "https://akurgana-ctrl.github.io/project-2/join/",
+    "ohana_page": "https://akurgana-ctrl.github.io/project-2/knesset/",
     "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
     "podcast_btn": "https://youtu.be/ZpHFRbkM4fM",
