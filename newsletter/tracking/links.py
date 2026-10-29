@@ -22,6 +22,7 @@ LINKS = {
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
     "ohana_page": "https://activism.mashma.net/hakika",
+    "kanfo_episode": "https://youtu.be/UJh6zniXEnw",
     "debate_video": "https://youtu.be/yFkOOdQ4UXw",
     "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
