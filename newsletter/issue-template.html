@@ -1,195 +1,182 @@
 <!DOCTYPE html>
 <!--
-  כח התערבות · תבנית הגיליון השבועי (כיוון "הכרזה")
-
-  משתנים להחלפה לפני שליחה (התאימו לתחביר של מערכת הדיוור):
-    {{LOGO_URL}}          כתובת הלוגו הלבן (PNG, רוחב 240px לפחות). Gmail חוסם תמונות שמוטמעות בקוד, אז הלוגו חייב להיות כתובת באינטרנט
-    {{WEB_VERSION_URL}}   הגיליון בדפדפן
-    {{LETTER_URL}}        דף המכתב (כפתורי Gmail / Outlook / מייל / העתקה)
-    {{LETTER_TEXT_URL}}   הנוסח המלא של המכתב
-    {{POLL_URL}}          דף ההצבעה. כל אפשרות שולחת c=a/b/c, הקול נרשם בדף ולא בלחיצה
-    {{SUBSCRIBER_ID}}     מזהה המנוי ממערכת הדיוור
-    {{FIRST_NAME}}        שם פרטי של המנוי
-    {{WHATSAPP_URL}}      ערוץ הוואטסאפ
-    {{DONATE_URL}}        תרומה
-    {{FORWARD_URL}}       העברה לחבר
-    {{UNSUBSCRIBE_URL}}   הסרה מהרשימה (חובה)
-    {{ORG_ADDRESS}}       כתובת הארגון (חובה בדיוור)
+  תבנית לגיליון חדש. מעתיקים ל-issue-NN.html, ממלאים כל [סוגריים], מוחקים בלוקים שלא צריך,
+  ומריצים: python3 publish.py issue-NN.html
+  הכללים המלאים (תוכן, עיצוב, ג'ימייל): STYLE.md. בקצרה:
+  - רק בלוקים פשוטים (div) עם עיצוב inline. בלי טבלאות מקוננות ובלי class: ג'ימייל מוחק אותם בהדבקה.
+  - תמונה: width="100%" וגם style width:100%, מקובץ בתיקייה images/ ({{IMG:images/...}}).
+  - כפתור ראשי: <a> ברוחב מלא בתוך div צבעוני. כפתור משני (הצעת חוק): inline-block קטן.
+  - כל קישור הוא {{T:מזהה}}: מוסיפים את המזהה ב-tracking/links.py ובלשונית links בגיליון המעקב.
+  - כפתור אחד בלבד לקבוצת הלחץ (בבלוק הכחול). אפשרויות ההצבעה הן טקסט, לא קישורים.
+  - בלי מספרים (01/02) על הידיעות. שורה קטנה מעל כל כותרת: תאריך, ואם רלוונטי מקום/פרט.
 -->
-<html lang="he" dir="rtl" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<!-- נושא: [שורת הנושא: קצרה, מסקרנת, נכונה למה שיש בגיליון] -->
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
-<title>כח התערבות · גיליון 12</title>
-<!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+<title>כח התערבות · גיליון [N]</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Karantina:wght@700&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;padding:0;width:100%;background:#E9ECF3;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
-  table{border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0}
-  img{border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;display:block}
+  body{margin:0;padding:0;background:#E9ECF3;-webkit-text-size-adjust:100%}
+  img{border:0;outline:none;display:block}
   a{text-decoration:none}
-  .hl{font-family:'Karantina','Heebo',Arial,sans-serif}
-  .tx{font-family:'Heebo',Arial,sans-serif}
-  @media only screen and (max-width:620px){
-    .container{width:100% !important}
-    .px{padding-left:18px !important;padding-right:18px !important}
-    .h2{font-size:44px !important;line-height:44px !important}
-    .stack{display:block !important;width:100% !important;text-align:right !important}
-    .issue{text-align:right !important;padding-top:12px !important}
-    .btn-cell{display:block !important;width:100% !important;padding:0 0 8px 0 !important}
-    .btn-cell a{display:block !important;text-align:center !important}
-  }
 </style>
 </head>
 <body style="margin:0;padding:0;background:#E9ECF3;" dir="rtl">
 
-<!-- preheader: השורה שמופיעה בתיבת הדואר אחרי הנושא -->
-<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#E9ECF3;">
-  הכנסת בפגרה, אבל אנחנו לא: מכתב אחד לראשי הרשימות, והצבעה על היום הראשון של הכנסת ה-26.&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+<!-- טקסט התצוגה המקדימה בתיבת הדואר (משפט אחד) -->
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#E9ECF3;">
+  [משפט אחד שמופיע אחרי הנושא בתיבת הדואר].&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
 </div>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E9ECF3;" dir="rtl">
-<tr><td align="center" style="padding:16px 0;">
-
-  <!-- גרסת דפדפן -->
-  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;">
-    <tr><td class="tx px" align="center" style="padding:0 26px 10px;font-family:'Heebo',Arial,sans-serif;font-size:12px;color:#6A7190;">
-      לא מוצג טוב? <a href="{{WEB_VERSION_URL}}" style="color:#1D2E67;text-decoration:underline;">פתחו בדפדפן</a>
-    </td></tr>
-  </table>
-
-  <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;background:#FFFFFF;" dir="rtl">
-
-    <!-- ===== כותרת ===== -->
-    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:24px 26px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td class="stack" valign="middle" align="right" style="text-align:right;">
-            <img src="{{LOGO_URL}}" width="120" alt="כח התערבות · לובי ציוני לאומי" style="width:120px;max-width:120px;height:auto;color:#FFFFFF;font-family:Arial,sans-serif;font-size:18px;font-weight:bold;">
-          </td>
-          <td class="stack issue" valign="middle" align="left" style="text-align:left;font-family:'Heebo',Arial,sans-serif;font-size:12px;line-height:18px;color:#D5DBEE;">
-            <span class="hl" style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:34px;line-height:34px;font-weight:700;color:#F0C000;display:block;">גיליון 12</span>
-            יום ראשון · 4 דקות קריאה
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-    <!-- ===== פס פגרה ===== -->
-    <tr><td class="tx px" bgcolor="#F0C000" style="background:#F0C000;padding:11px 26px;font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:22px;font-weight:700;color:#1D2E67;text-align:right;">
-      שלום {{FIRST_NAME}}, הכנסת בפגרת בחירות ואין דיונים בוועדות עד שהכנסת ה-26 תושבע. אבל יש הרבה מה לעשות.
-    </td></tr>
-
-    <!-- ===== חלק 1: מה היה לנו (עבר, רקע לבן) ===== -->
-    <tr><td class="px" style="padding:30px 26px 28px;text-align:right;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#1D2E67" style="background:#1D2E67;padding:2px 8px;font-family:'Heebo',Arial,sans-serif;font-size:11px;font-weight:900;color:#FFFFFF;letter-spacing:1px;">עבר</td>
-      </tr></table>
-      <h2 class="hl h2" style="margin:8px 0 18px;font-family:'Karantina','Heebo',Arial,sans-serif;font-size:56px;line-height:52px;font-weight:700;color:#1D2E67;">מה היה לנו</h2>
-
-      <!-- פריט -->
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td style="border-top:3px solid #1D2E67;padding:10px 0 16px;font-family:'Heebo',Arial,sans-serif;text-align:right;">
-          <div style="font-size:17px;line-height:24px;font-weight:900;color:#1D2E67;">הכנסת ה-25 התפזרה</div>
-          <div style="font-size:15px;line-height:23px;color:#141A2E;padding-top:3px;"><span style="background:#FFD329;font-weight:700;">למה זה חשוב:</span> כל הצעת חוק שלא עברה קריאה שלישית צריכה לחזור לשולחן בכנסת הבאה.</div>
-          <div style="font-size:12px;line-height:18px;font-weight:700;color:#1B3E7D;padding-top:4px;">המושב האחרון</div>
-        </td></tr>
-        <tr><td style="border-top:3px solid #1D2E67;padding:10px 0 16px;font-family:'Heebo',Arial,sans-serif;text-align:right;">
-          <div style="font-size:17px;line-height:24px;font-weight:900;color:#1D2E67;">הצעת החוק שליווינו עברה בקריאה ראשונה</div>
-          <div style="font-size:15px;line-height:23px;color:#141A2E;padding-top:3px;"><span style="background:#FFD329;font-weight:700;">למה זה חשוב:</span> אפשר להחיל עליה רציפות בכנסת הבאה, כך שלא תתחיל מאפס.</div>
-          <div style="font-size:12px;line-height:18px;font-weight:700;color:#1B3E7D;padding-top:4px;">ועדת החוקה</div>
-        </td></tr>
-        <tr><td style="border-top:3px solid #1D2E67;padding:10px 0 18px;font-family:'Heebo',Arial,sans-serif;text-align:right;">
-          <div style="font-size:17px;line-height:24px;font-weight:900;color:#1D2E67;">3 חברי כנסת הצטרפו לשדולה</div>
-          <div style="font-size:15px;line-height:23px;color:#141A2E;padding-top:3px;"><span style="background:#FFD329;font-weight:700;">למה זה חשוב:</span> הם מתמודדים שוב, ואפשר לבקש מהם להתחייב גם בכנסת הבאה.</div>
-        </td></tr>
-        <!-- בזכותכם -->
-        <tr><td bgcolor="#1D2E67" style="background:#1D2E67;padding:14px 16px;font-family:'Heebo',Arial,sans-serif;font-size:15px;line-height:23px;color:#FFFFFF;text-align:right;">
-          <span style="color:#F0C000;font-weight:900;">בזכותכם:</span> 900 מכתבים לחברי הוועדה לפני ההצבעה, והסעיף השנוי במחלוקת הוסר.
-        </td></tr>
-      </table>
-    </td></tr>
-
-    <!-- ===== חלק 2: מה עושים עכשיו (הווה, רקע כחול) ===== -->
-    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:30px 26px;text-align:right;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#F0C000" style="background:#F0C000;padding:2px 8px;font-family:'Heebo',Arial,sans-serif;font-size:11px;font-weight:900;color:#1D2E67;letter-spacing:1px;">עכשיו</td>
-      </tr></table>
-      <h2 class="hl h2" style="margin:8px 0 14px;font-family:'Karantina','Heebo',Arial,sans-serif;font-size:56px;line-height:52px;font-weight:700;color:#FFFFFF;">מה <span style="background:#F0C000;color:#1D2E67;padding:0 6px;">עושים</span> עכשיו</h2>
-      <p class="tx" style="margin:0 0 16px;font-family:'Heebo',Arial,sans-serif;font-size:16px;line-height:25px;color:#FFFFFF;">לפני בחירות, מועמדים מקשיבים לבוחרים יותר מבכל זמן אחר. השבוע מבקשים מראשי הרשימות להתחייב בכתב. זה לוקח דקה.</p>
-
-      <!-- המכתב -->
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td bgcolor="#FFFFFF" style="background:#FFFFFF;border-right:6px solid #F0C000;padding:14px 16px;font-family:'Heebo',Arial,sans-serif;text-align:right;">
-          <div style="font-size:13px;line-height:20px;color:#141A2E;"><span style="color:#6A7190;">אל:</span> ראשי הרשימות</div>
-          <div style="font-size:13px;line-height:20px;color:#141A2E;"><span style="color:#6A7190;">נושא:</span> בקשה להתחייבות לפני הבחירות</div>
-          <div style="font-size:15px;line-height:23px;color:#141A2E;padding-top:8px;">״שלום, שמי {{FIRST_NAME}}. לפני שאחליט למי להצביע, אבקש לדעת אם תתחייב/י לקדם את...״</div>
-        </td></tr>
-      </table>
-
-      <!-- כפתורים -->
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;">
-        <tr>
-          <td class="btn-cell" style="padding-left:8px;">
-            <!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" href="{{LETTER_URL}}?id={{SUBSCRIBER_ID}}" style="height:46px;v-text-anchor:middle;width:240px;" stroke="f" fillcolor="#F0C000"><center style="color:#1D2E67;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">שלחו את המכתב משמכם</center></v:rect><![endif]-->
-            <!--[if !mso]><!--><a href="{{LETTER_URL}}?id={{SUBSCRIBER_ID}}" style="display:inline-block;background:#F0C000;color:#1D2E67;font-family:'Heebo',Arial,sans-serif;font-size:16px;font-weight:900;line-height:20px;padding:13px 22px;">שלחו את המכתב משמכם</a><!--<![endif]-->
-          </td>
-          <td class="btn-cell">
-            <a href="{{LETTER_TEXT_URL}}" style="display:inline-block;border:2px solid #FFFFFF;color:#FFFFFF;font-family:'Heebo',Arial,sans-serif;font-size:15px;font-weight:700;line-height:20px;padding:11px 18px;">לנוסח המלא</a>
-          </td>
-        </tr>
-      </table>
-      <p class="tx" style="margin:12px 0 0;font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:700;color:#F0C000;">1,240 קוראים כבר שלחו · היעד 2,000</p>
-    </td></tr>
-
-    <!-- ===== חלק 3: מה יהיה לנו (עתיד, רקע זהב) ===== -->
-    <tr><td class="px" bgcolor="#F0C000" style="background:#F0C000;padding:30px 26px;text-align:right;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#1D2E67" style="background:#1D2E67;padding:2px 8px;font-family:'Heebo',Arial,sans-serif;font-size:11px;font-weight:900;color:#FFFFFF;letter-spacing:1px;">עתיד</td>
-      </tr></table>
-      <h2 class="hl h2" style="margin:8px 0 12px;font-family:'Karantina','Heebo',Arial,sans-serif;font-size:56px;line-height:52px;font-weight:700;color:#1D2E67;">מה יהיה לנו</h2>
-      <p class="tx" style="margin:0 0 14px;font-family:'Heebo',Arial,sans-serif;font-size:18px;line-height:26px;font-weight:900;color:#1D2E67;">על מה נילחם ביום הראשון של הכנסת ה-26?</p>
-
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr><td style="padding-bottom:8px;">
-          <a href="{{POLL_URL}}?w=12&amp;c=a&amp;id={{SUBSCRIBER_ID}}" style="display:block;background:#1D2E67;color:#FFFFFF;font-family:'Heebo',Arial,sans-serif;font-size:16px;line-height:22px;font-weight:700;padding:13px 14px;text-align:right;">
-            <span style="display:inline-block;background:#F0C000;color:#1D2E67;font-weight:900;width:26px;text-align:center;margin-left:10px;">א</span>החזרת הצעת החוק לשולחן ברציפות
-          </a>
-        </td></tr>
-        <tr><td style="padding-bottom:8px;">
-          <a href="{{POLL_URL}}?w=12&amp;c=b&amp;id={{SUBSCRIBER_ID}}" style="display:block;background:#1D2E67;color:#FFFFFF;font-family:'Heebo',Arial,sans-serif;font-size:16px;line-height:22px;font-weight:700;padding:13px 14px;text-align:right;">
-            <span style="display:inline-block;background:#F0C000;color:#1D2E67;font-weight:900;width:26px;text-align:center;margin-left:10px;">ב</span>הקמת שדולה חדשה עם הח״כים שנבחרו
-          </a>
-        </td></tr>
-        <tr><td>
-          <a href="{{POLL_URL}}?w=12&amp;c=c&amp;id={{SUBSCRIBER_ID}}" style="display:block;background:#1D2E67;color:#FFFFFF;font-family:'Heebo',Arial,sans-serif;font-size:16px;line-height:22px;font-weight:700;padding:13px 14px;text-align:right;">
-            <span style="display:inline-block;background:#F0C000;color:#1D2E67;font-weight:900;width:26px;text-align:center;margin-left:10px;">ג</span>מעקב אחרי ההתחייבויות מהבחירות
-          </a>
-        </td></tr>
-      </table>
-      <p class="tx" style="margin:12px 0 0;font-family:'Heebo',Arial,sans-serif;font-size:13px;line-height:20px;color:#1D2E67;">לחצו על אפשרות כדי להצביע. התוצאות בגיליון הבא.</p>
-    </td></tr>
-
-    <!-- ===== תחתית ===== -->
-    <tr><td class="px" bgcolor="#1D2E67" style="background:#1D2E67;padding:22px 26px;text-align:center;font-family:'Heebo',Arial,sans-serif;">
-      <div style="font-size:14px;line-height:22px;">
-        <a href="{{FORWARD_URL}}" style="color:#F0C000;font-weight:700;">העבירו לחבר</a>
-        <span style="color:#56639A;">&nbsp;·&nbsp;</span>
-        <a href="{{WHATSAPP_URL}}" style="color:#FFFFFF;">ערוץ הוואטסאפ</a>
-        <span style="color:#56639A;">&nbsp;·&nbsp;</span>
-        <a href="{{DONATE_URL}}" style="color:#FFFFFF;">תמיכה חודשית</a>
-      </div>
-      <div style="font-size:12px;line-height:19px;color:#AEB7D6;padding-top:10px;">
-        קיבלתם את המייל כי נרשמתם לעדכונים של כח התערבות.<br>
-        {{ORG_ADDRESS}} · <a href="{{UNSUBSCRIBE_URL}}" style="color:#AEB7D6;text-decoration:underline;">הסרה מהרשימה</a>
-      </div>
-    </td></tr>
-
-  </table>
-</td></tr>
+<table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="width:600px;">
+  <tr><td align="center" style="padding:12px 18px 0;font-family:'Heebo',Arial,sans-serif;font-size:12px;color:#6A7190;">
+    לא מוצג טוב? <a href="{{WEB_VERSION_URL}}" style="color:#1D2E67;text-decoration:underline;">פתחו בדפדפן</a>
+  </td></tr>
 </table>
+
+<div dir="rtl" style="background:#E9ECF3;padding:12px 0;direction:rtl;">
+<div dir="rtl" style="max-width:600px;margin:0 auto;background:#FFFFFF;direction:rtl;text-align:right;font-family:'Heebo',Arial,sans-serif;">
+
+  <!-- ===== כותרת: לוגו ופס הגיליון ===== -->
+  <div style="background:#FFFFFF;padding:30px 20px 24px;text-align:center;">
+    <img src="{{IMG:logo.png}}" width="200" alt="כח התערבות · לובי ציוני לאומי" style="display:block;width:200px;max-width:60%;height:auto;margin:0 auto;font-size:26px;font-weight:bold;color:#1D2E67;">
+  </div>
+  <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
+  <div style="background:#1D2E67;padding:12px 18px;text-align:center;font-size:15px;line-height:24px;font-weight:700;color:#FFFFFF;">
+    <span style="font-size:20px;font-weight:900;">ניוזלטר של כח התערבות</span>&nbsp;&nbsp;<span style="color:#F0C000;">|</span>&nbsp;&nbsp;גיליון [N]&nbsp;&nbsp;<span style="color:#F0C000;">|</span>&nbsp;&nbsp;[DD.MM.YYYY]
+  </div>
+
+  <!-- ===== חלק 1: מה היה לנו ===== -->
+  <div style="height:20px;line-height:20px;font-size:0;">&nbsp;</div>
+  <div style="background:#1D2E67;padding:22px 20px 18px;text-align:right;">
+    <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:50px;line-height:52px;font-weight:700;color:#FFFFFF;">מה היה לנו</div>
+  </div>
+  <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
+
+  <!-- ידיעה ראשית: ההישג הכי חזק של הלובי, בלי תמונה, עם כפתור צהוב אחד. -->
+  <div style="padding:28px 20px;text-align:right;">
+    <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">[חודש או תאריך] · [על מה]</div>
+    <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 4px;">[כותרת]</div>
+    <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:10px;">[הבעיה, במשפט או שניים]</div>
+    <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:10px;">[מה עשינו] <b style="color:#1D2E67;">[מה זה הביא: השורה שלוקחת קרדיט]</b></div>
+    <div style="margin-top:16px;background:#F0C000;text-align:center;">
+      <a href="{{T:[מזהה]}}" style="display:block;background:#F0C000;color:#1D2E67;text-decoration:none;text-align:center;font-family:'Heebo',Arial,sans-serif;font-size:16px;font-weight:900;line-height:22px;padding:13px 16px;">&#11015;&nbsp; [להורדת ...]</a>
+    </div>
+  </div>
+  <div style="margin:0 20px;height:2px;line-height:2px;font-size:0;background:#D8DCE6;">&nbsp;</div>
+
+  <!-- ידיעה עם תמונה. אפשר כפתור כחול (צפייה) וכפתור צהוב (הורדה), אחד מתחת לשני. -->
+  <div style="padding:28px 20px;text-align:right;">
+    <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">[DD.MM] · [מקום]</div>
+    <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">[כותרת]</div>
+    <img src="{{IMG:images/[קובץ].jpg}}" width="100%" alt="[תיאור התמונה]" style="display:block;width:100%;max-width:100%;height:auto;">
+    <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;">[טקסט. שמות בהדגשה: <b style="color:#1D2E67;">שם</b>]</div>
+    <div style="margin-top:16px;background:#1D2E67;text-align:center;">
+      <a href="{{T:[מזהה]}}" style="display:block;background:#1D2E67;color:#FFFFFF;text-decoration:none;text-align:center;font-family:'Heebo',Arial,sans-serif;font-size:16px;font-weight:900;line-height:22px;padding:13px 16px;">&#9654;&nbsp; [צפו ביוטיוב]</a>
+    </div>
+  </div>
+
+  <!-- ===== מה אנחנו מקדמים בכנסת: תמיד הבלוק השני, אחרי הידיעה הראשית או אחרי האירוע שקשור אליו.
+       2-3 חוקים. לכל חוק: כותרת, 2 שורות (הבעיה ומה אנחנו דורשים), "מוביל/ה: שם", כפתור הורדה.
+       בלי "הונח על ידי" ובלי "לקראת הכנסת הבאה". קרדיט ללובי, לא ליכין. ===== -->
+  <div style="height:4px;line-height:4px;font-size:0;background:#F0C000;">&nbsp;</div>
+  <div style="background:#F2F4F8;padding:26px 20px 12px;text-align:right;">
+    <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:36px;line-height:40px;font-weight:700;color:#1D2E67;">מה אנחנו מקדמים בכנסת</div>
+    <div style="font-size:16px;line-height:25px;color:#141A2E;padding:8px 0 4px;">[משפט פתיחה אחד]</div>
+
+    <div style="padding:16px 0;border-bottom:1px solid #D8DCE6;">
+      <div style="font-size:19px;line-height:26px;font-weight:900;color:#1D2E67;">[שם החוק]</div>
+      <div style="font-size:16px;line-height:25px;color:#141A2E;padding-top:4px;">[הבעיה. מה אנחנו דורשים.]</div>
+      <div style="font-size:13px;line-height:19px;font-weight:700;color:#596079;padding:6px 0 10px;">[מוביל/ה]: [שם]</div>
+      <a href="{{T:[מזהה]}}" style="display:inline-block;background:#1D2E67;color:#FFFFFF;text-decoration:none;font-family:'Heebo',Arial,sans-serif;font-size:14px;font-weight:700;line-height:18px;padding:9px 16px;">&#11015;&nbsp; להורדת הצעת החוק</a>
+    </div>
+
+    <!-- החוק האחרון בלי border-bottom -->
+    <div style="padding:16px 0;">
+      <div style="font-size:19px;line-height:26px;font-weight:900;color:#1D2E67;">[שם החוק]</div>
+      <div style="font-size:16px;line-height:25px;color:#141A2E;padding-top:4px;">[הבעיה. מה אנחנו דורשים.]</div>
+      <div style="font-size:13px;line-height:19px;font-weight:700;color:#596079;padding:6px 0 10px;">[מוביל/ה]: [שם]</div>
+      <a href="{{T:[מזהה]}}" style="display:inline-block;background:#1D2E67;color:#FFFFFF;text-decoration:none;font-family:'Heebo',Arial,sans-serif;font-size:14px;font-weight:700;line-height:18px;padding:9px 16px;">&#11015;&nbsp; להורדת הצעת החוק</a>
+    </div>
+  </div>
+
+  <!-- ידיעה עם תמונה ותיבה כחולה (כמו ההדרכה הפרלמנטרית) -->
+  <div style="padding:28px 20px;text-align:right;">
+    <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">[DD.MM]</div>
+    <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">[כותרת]</div>
+    <div style="background:#1D2E67;">
+      <img src="{{IMG:images/[קובץ].jpg}}" width="100%" alt="[תיאור התמונה]" style="display:block;width:100%;max-width:100%;height:auto;">
+      <div style="padding:18px 18px 22px;text-align:right;">
+        <div style="font-size:16px;line-height:26px;color:#FFFFFF;">[טקסט. שמות בצהוב: <b style="color:#F0C000;">שם</b>]</div>
+        <div style="font-size:17px;line-height:26px;font-weight:900;color:#F0C000;padding-top:12px;">[שורת סיכום]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== חלק 2: מה יהיה לנו ===== -->
+  <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
+  <div style="background:#0E1A45;padding:26px 20px 24px;text-align:center;">
+    <img src="{{IMG:images/pressure-group.jpg}}" width="220" alt="כח התערבות · קבוצת לחץ" style="display:block;width:220px;max-width:70%;height:auto;margin:0 auto;font-size:22px;font-weight:bold;color:#F0C000;">
+    <div style="font-size:15px;line-height:20px;font-weight:900;color:#F0C000;letter-spacing:2px;padding-top:16px;">בשבוע הבא</div>
+    <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:50px;line-height:52px;font-weight:700;color:#FFFFFF;padding-top:4px;">מה יהיה לנו</div>
+  </div>
+  <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
+
+  <!-- ההצבעה: האפשרויות הן טקסט בלבד. מצביעים בסקר בקבוצת הלחץ (לפתוח אותו לפני השליחה). -->
+  <div style="background:#F0C000;padding:22px 20px 26px;text-align:right;">
+    <div style="font-size:20px;line-height:28px;font-weight:900;color:#1D2E67;padding:0 0 4px;">אתם מחליטים: על מה תעבוד קבוצת הלחץ בשבוע הבא?</div>
+    <div style="font-size:15px;line-height:22px;color:#1D2E67;padding-bottom:16px;">ההצבעה מתקיימת בקבוצת הלחץ בוואטסאפ, בכפתור שלמטה.</div>
+
+    <div style="background:#1D2E67;padding:14px 16px;margin-bottom:10px;text-align:right;">
+      <div style="font-size:18px;line-height:26px;font-weight:900;color:#FFFFFF;"><span style="display:inline-block;background:#F0C000;color:#1D2E67;width:28px;line-height:28px;text-align:center;font-size:16px;font-weight:900;margin-left:10px;">א</span>[אפשרות א]</div>
+      <div style="font-size:14px;line-height:20px;color:#C9D0E6;padding-top:6px;">[פירוט בשורה]</div>
+    </div>
+    <div style="background:#1D2E67;padding:14px 16px;text-align:right;">
+      <div style="font-size:18px;line-height:26px;font-weight:900;color:#FFFFFF;"><span style="display:inline-block;background:#F0C000;color:#1D2E67;width:28px;line-height:28px;text-align:center;font-size:16px;font-weight:900;margin-left:10px;">ב</span>[אפשרות ב]</div>
+      <div style="font-size:14px;line-height:20px;color:#C9D0E6;padding-top:6px;">[פירוט בשורה]</div>
+    </div>
+
+    <div style="font-size:16px;line-height:24px;font-weight:900;color:#1D2E67;padding-top:16px;">את התוצאות נפרסם ביום ראשון בקבוצה.</div>
+  </div>
+
+  <!-- ===== קבוצת הלחץ: הכפתור היחיד לקבוצה ===== -->
+  <div style="background:#1D2E67;padding:30px 20px 32px;text-align:center;">
+    <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:42px;line-height:44px;font-weight:700;color:#FFFFFF;">קבוצת לחץ ציבורי</div>
+    <div style="font-size:16px;line-height:25px;color:#FFFFFF;padding:10px 0 20px;">בקבוצה הזו אנחנו מניעים את הציבור ללחוץ על נבחרי הציבור ומקבלי ההחלטות, בזמן הנכון ובמקום הנכון. כאן נצא לדרך עם הנושא שתבחרו בהצבעה.</div>
+    <div style="background:#F0C000;text-align:center;">
+      <a href="{{T:join_group}}" style="display:block;background:#F0C000;color:#1D2E67;text-decoration:none;text-align:center;font-family:'Heebo',Arial,sans-serif;font-size:19px;font-weight:900;line-height:26px;padding:16px 16px;">להצטרפות והצבעה בקבוצת הלחץ</a>
+    </div>
+  </div>
+
+  <!-- ===== טיזר: פרק הפודקאסט הבא ===== -->
+  <div style="background:#0E1A45;padding:28px 20px 30px;text-align:right;">
+    <div style="font-size:14px;line-height:20px;font-weight:900;color:#F0C000;letter-spacing:1px;">[מתי] · פרק חדש של "על האקטיביזם"</div>
+    <div style="font-size:23px;line-height:31px;font-weight:900;color:#FFFFFF;padding:6px 0 14px;">[כותרת הפרק, מתוך הכותרת ביוטיוב]</div>
+    <a href="{{T:[מזהה]}}" style="display:block;text-decoration:none;"><img src="{{IMG:images/[קובץ].jpg}}" width="100%" alt="[תיאור]" style="display:block;width:100%;max-width:100%;height:auto;border:2px solid #F0C000;box-sizing:border-box;"></a>
+    <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding:14px 0 16px;">[מי האורח ועל מה הפרק].<br><br>[מתי עולה ומה לעשות]</div>
+    <div style="background:#F0C000;text-align:center;">
+      <a href="{{T:[מזהה]}}" style="display:block;background:#F0C000;color:#1D2E67;text-decoration:none;text-align:center;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;line-height:22px;padding:13px 16px;">&#128276;&nbsp; הזכירו לי כשהפרק עולה</a>
+    </div>
+  </div>
+
+  <!-- ===== עקבו אחרינו ===== -->
+  <div style="background:#16234F;padding:22px 20px 8px;text-align:center;">
+    <div style="font-size:13px;line-height:18px;font-weight:700;color:#AEB7D6;padding-bottom:12px;">עקבו אחרינו</div>
+    <a href="{{T:updates_group}}" style="display:inline-block;background:#2A3B78;border:1px solid #F0C000;color:#FFFFFF;text-decoration:none;font-size:14px;font-weight:700;line-height:20px;padding:9px 14px;margin:0 3px 8px;">קבוצת עדכונים</a>
+    <a href="{{T:instagram}}" style="display:inline-block;background:#2A3B78;border:1px solid #F0C000;color:#FFFFFF;text-decoration:none;font-size:14px;font-weight:700;line-height:20px;padding:9px 14px;margin:0 3px 8px;">אינסטגרם</a>
+    <a href="{{T:x}}" style="display:inline-block;background:#2A3B78;border:1px solid #F0C000;color:#FFFFFF;text-decoration:none;font-size:14px;font-weight:700;line-height:20px;padding:9px 14px;margin:0 3px 8px;">X (טוויטר)</a>
+  </div>
+
+  <!-- ===== תחתית: רק הסרה מהתפוצה ===== -->
+  <div style="background:#16234F;padding:10px 20px 24px;text-align:center;">
+    <div style="font-size:12px;line-height:19px;color:#AEB7D6;"><a href="{{UNSUBSCRIBE_URL}}" style="color:#AEB7D6;text-decoration:underline;">הסרה מהתפוצה</a></div>
+  </div>
+
+</div>
+</div>
 </body>
 </html>

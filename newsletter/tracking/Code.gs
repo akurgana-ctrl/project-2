@@ -1,7 +1,7 @@
 /**
  * כח התערבות · מעקב לחיצות בניוזלטר
  *
- * כל כפתור בניוזלטר מפנה לכאן עם ?l=<מזהה>. הסקריפט רושם את הלחיצה בגיליון
+ * כל כפתור בניוזלטר מפנה לכאן עם ?l=<מזהה>&i=<מספר גיליון>. הסקריפט רושם את הלחיצה בגיליון
  * "clicks" ומעביר מיד ליעד שרשום בגיליון "links". מזהה שלא מופיע ב-links
  * לא מועבר לשום מקום, כך שאי אפשר להשתמש בקישור כדי להפנות לאתר זר.
  */
@@ -19,7 +19,8 @@ function doGet(e) {
 
   // the day goes in as text (leading ') so the sheet keeps it as yyyy-MM-dd
   const day = Utilities.formatDate(new Date(), 'Asia/Jerusalem', 'yyyy-MM-dd');
-  ss.getSheetByName('clicks').appendRow([new Date(), id, link[3], "'" + day]);
+  const issue = String(e.parameter.i || link[3] || '').replace(/\D/g, '').slice(0, 4);
+  ss.getSheetByName('clicks').appendRow([new Date(), id, issue, "'" + day]);
 
   const page = HtmlService.createTemplateFromFile('Redirect');
   page.url = String(link[2]);

@@ -1,0 +1,72 @@
+<title>{{TITLE}} · העתקה למייל</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap">
+<style>
+/* Layout: סרגל פעולות דביק למעלה (שני כפתורי העתקה והוראות קצרות), ומתחתיו הגיליון עצמו בדיוק כפי שיודבק במייל */
+:root{--bg:#E9ECF3;--bar:#FFFFFF;--fg:#141A2E;--muted:#596079;--line:#D8DCE6;--navy:#1D2E67;--gold:#F0C000;--ok:#1E7A46;--f:"Heebo",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1222;--bar:#171C30;--fg:#E8EBF4;--muted:#9EA6C0;--line:#2A3253;--ok:#6FCF97;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1222;--bar:#171C30;--fg:#E8EBF4;--muted:#9EA6C0;--line:#2A3253;--ok:#6FCF97;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f);direction:rtl}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bar);border-bottom:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px}
+.in{max-width:640px;margin:0 auto;display:grid;gap:10px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;font-weight:900;font-size:16px;border:0;cursor:pointer;padding:12px 18px}
+#copy-mail{background:var(--gold);color:var(--navy)}
+#copy-code{background:transparent;color:var(--fg);border:2px solid var(--line)}
+button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.steps{margin:0;padding-inline-start:20px;font-size:14px;color:var(--muted);line-height:1.6}
+.steps b{color:var(--fg)}
+#status{font-size:14px;font-weight:700;color:var(--ok);min-height:1.2em}
+.mail{padding-block:16px 40px;overflow-x:auto}
+#code{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1}
+#rich{position:fixed;left:0;top:0;width:600px;height:1px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1}
+</style>
+<div class="bar"><div class="in">
+  <div class="btns">
+    <button id="copy-mail" type="button">העתקה ל-Gmail</button>
+    <button id="copy-code" type="button">קוד HTML (רק למערכת דיוור)</button>
+  </div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <ol class="steps">
+    <li>לוחצים על הכפתור הצהוב <b>העתקה ל-Gmail</b>, ובמייל חדש ב-Gmail לוחצים <b>Ctrl+V</b>. מדביקים את הניוזלטר עצמו, לא קוד.</li>
+    <li>אם הודבק קוד: מסמנים את הניוזלטר כאן למטה עם העכבר, מהכותרת עד הסוף, ומעתיקים ב-<b>Ctrl+C</b>.</li>
+    <li>נושא: <b>{{SUBJECT}}</b>. את הכתובות מכניסים ב-<b>Bcc</b>.</li>
+    <li><b>העתקת קוד HTML</b> מיועד למערכת דיוור (Brevo, Mailchimp וכו׳).</li>
+  </ol>
+</div></div>
+{{EMAIL_STYLE}}
+<div class="mail">{{MAIL}}</div>
+<div id="rich" aria-hidden="true">{{RICH}}</div>
+<textarea id="code" aria-hidden="true" tabindex="-1" readonly>{{CODE}}</textarea>
+<script>
+const status=document.getElementById("status");
+const say=t=>{status.textContent=t};
+const richEl=document.getElementById("rich");
+const code=document.getElementById("code").value;
+function selectCopy(el){
+  const r=document.createRange(); r.selectNodeContents(el);
+  const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+  let ok=false; try{ok=document.execCommand("copy")}catch(e){}
+  s.removeAllRanges(); return ok;
+}
+document.getElementById("copy-mail").addEventListener("click",async()=>{
+  const html=richEl.innerHTML;
+  try{
+    await navigator.clipboard.write([new ClipboardItem({
+      "text/html":new Blob([html],{type:"text/html"}),
+      "text/plain":new Blob([richEl.innerText],{type:"text/plain"})})]);
+    say("הועתק. עכשיו Ctrl+V במייל חדש ב-Gmail.");
+  }catch(e){
+    say(selectCopy(richEl)?"הועתק. עכשיו Ctrl+V במייל חדש ב-Gmail.":"ההעתקה נחסמה. סמנו את הגיליון עם העכבר והעתיקו ידנית.");
+  }
+});
+document.getElementById("copy-code").addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(code); say("קוד ה-HTML הועתק.");}
+  catch(e){
+    const t=document.getElementById("code"); t.style.cssText="position:fixed;left:0;top:0;opacity:0"; t.select();
+    let ok=false; try{ok=document.execCommand("copy")}catch(_){}
+    t.style.cssText=""; say(ok?"קוד ה-HTML הועתק.":"ההעתקה נחסמה בדפדפן הזה.");
+  }
+});
+</script>

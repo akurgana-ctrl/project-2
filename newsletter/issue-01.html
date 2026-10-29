@@ -3,14 +3,10 @@
   כח התערבות · גיליון 1 · 22.10.2026
   בנוי מבלוקים פשוטים (div) ולא מטבלאות מקוננות: כשמדביקים בג'ימייל הוא מוחק רוחב של טבלאות,
   מחלקות ו-<style>, ובלוקים פשוטים נשארים ברוחב מלא בלי תלות בהם. כל העיצוב כתוב inline.
-  build.py מייצר מהקובץ הזה תצוגה מקדימה וגרסת דפדפן.
 
-  משתנים להחלפה:
-    {{IMG_LOGO}} {{IMG_CONF}} {{IMG_TRAINING}} {{IMG_HACKATHON}} {{IMG_PRESSURE}} {{IMG_PODCAST}}  כתובות התמונות
-    {{CONF_DOC_URL}}      הגיליון מהכנס להורדה
-    {{WEB_VERSION_URL}}   הגיליון בדפדפן
-    {{UNSUBSCRIBE_URL}}   הסרה מהרשימה (חובה)
+  נבנה עם: python3 publish.py issue-01.html
 -->
+<!-- נושא: שלוש שנים הם התחמקו. ואז הגענו אנחנו -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
@@ -42,7 +38,7 @@
 
   <!-- ===== כותרת: לוגו ===== -->
   <div style="background:#FFFFFF;padding:30px 20px 24px;text-align:center;">
-    <img src="{{IMG_LOGO}}" width="200" alt="כח התערבות · לובי ציוני לאומי" style="display:block;width:200px;max-width:60%;height:auto;margin:0 auto;font-size:26px;font-weight:bold;color:#1D2E67;">
+    <img src="{{IMG:logo.png}}" width="200" alt="כח התערבות · לובי ציוני לאומי" style="display:block;width:200px;max-width:60%;height:auto;margin:0 auto;font-size:26px;font-weight:bold;color:#1D2E67;">
   </div>
   <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
   <div style="background:#1D2E67;padding:12px 18px;text-align:center;font-size:15px;line-height:24px;font-weight:700;color:#FFFFFF;">
@@ -73,7 +69,7 @@
   <div style="padding:28px 20px;text-align:right;">
     <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">15.10 · ירושלים · שודר בלייב ברדיו גלי ישראל ובעל המשמעות</div>
     <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">כנס בחירות: רגע לפני הקלפי</div>
-    <img src="{{IMG_CONF}}" width="100%" alt="נציגי המפלגות על הבמה בכנס הבחירות" style="display:block;width:100%;max-width:100%;height:auto;">
+    <img src="{{IMG:images/conference.jpg}}" width="100%" alt="נציגי המפלגות על הבמה בכנס הבחירות" style="display:block;width:100%;max-width:100%;height:auto;">
     <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק הראשון</b> הצגנו את תוכנית העבודה שלנו לכנסת הקרובה. <b style="color:#1D2E67;">נגה ארבל</b>, ראש תחום חקיקה בכח התערבות וראש תחום מדיניות יישומית במרכז יכין, דיברה על ההשפעה של רוח צה״ל על החיילים, הפרוגרס במערכת החינוך, הגנה על הבית והמשפחה, ואיך ביטוח לאומי מתערב בביטחון של כולנו. מטעמנו דיברו גם <b style="color:#1D2E67;">אודליה קדמי</b>, על חוק ההגנה העצמית, ו<b style="color:#1D2E67;">אמיר רובין</b>, על חוק התרופות. את מרכז יכין ייצג המנכ״ל, <b style="color:#1D2E67;">אורן הניג</b>.</div>
     <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;"><b style="color:#1D2E67;">בחלק השני</b> עלו לבמה נציגים של חמש מפלגות לדיבייט על מדיניות, בהנחיית <b style="color:#1D2E67;">זיו מאור</b>.</div>
     <div style="margin-top:12px;background:#F2F4F8;border-right:4px solid #F0C000;padding:12px 14px;font-size:15px;line-height:25px;color:#141A2E;text-align:right;">
@@ -125,7 +121,7 @@
     <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">19.10</div>
     <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">הדרכה פרלמנטרית: מתכוננים לכנסת הבאה, מפגש ראשון</div>
     <div style="background:#1D2E67;">
-      <img src="{{IMG_TRAINING}}" width="100%" alt="פעילי כח התערבות בהדרכה הפרלמנטרית" style="display:block;width:100%;max-width:100%;height:auto;">
+      <img src="{{IMG:images/training.jpg}}" width="100%" alt="פעילי כח התערבות בהדרכה הפרלמנטרית" style="display:block;width:100%;max-width:100%;height:auto;">
       <div style="padding:18px 18px 22px;text-align:right;">
         <div style="font-size:16px;line-height:26px;color:#FFFFFF;">ביום שני פתחנו בירושלים את ההדרכה הפרלמנטרית לפעילי כח התערבות.</div>
         <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding-top:8px;"><b style="color:#F0C000;">נגה ארבל</b> דיברה על ההבדלים האמיתיים בין ימין לשמאל, על הרעיונות שעומדים מאחוריהם ועל כוחה של הרטוריקה בוויכוח פוליטי.</div>
@@ -141,14 +137,14 @@
   <div style="padding:28px 20px 34px;text-align:right;">
     <div style="font-size:13px;line-height:18px;font-weight:900;color:#1B3E7D;letter-spacing:1px;">11.10–15.10 · ירושלים</div>
     <div style="font-size:25px;line-height:32px;font-weight:900;color:#1D2E67;padding:4px 0 14px;">האקתון "אמנות כמחאה" בנושא בג״ץ</div>
-    <img src="{{IMG_HACKATHON}}" width="100%" alt="האקתון אמנות כמחאה בנושא בג״ץ" style="display:block;width:100%;max-width:100%;height:auto;">
+    <img src="{{IMG:images/hackathon.jpg}}" width="100%" alt="האקתון אמנות כמחאה בנושא בג״ץ" style="display:block;width:100%;max-width:100%;height:auto;">
     <div style="font-size:16px;line-height:26px;color:#141A2E;padding-top:14px;">השתתפנו בהאקתון שארגנו הקולגות שלנו מארגון <b style="color:#1D2E67;">"זה עלינו"</b>. יוצרים הגישו סרטונים, איורים, קריקטורות ושירים בדרישה לתיקון מערכת המשפט, ואנחנו שידרנו את האירוע בלייב בפודקאסט על המשמעות.</div>
   </div>
 
   <!-- ===== חלק 2: מה יהיה לנו ===== -->
   <div style="height:6px;line-height:6px;font-size:0;background:#F0C000;">&nbsp;</div>
   <div style="background:#0E1A45;padding:26px 20px 24px;text-align:center;">
-    <img src="{{IMG_PRESSURE}}" width="220" alt="כח התערבות · קבוצת לחץ" style="display:block;width:220px;max-width:70%;height:auto;margin:0 auto;font-size:22px;font-weight:bold;color:#F0C000;">
+    <img src="{{IMG:images/pressure-group.jpg}}" width="220" alt="כח התערבות · קבוצת לחץ" style="display:block;width:220px;max-width:70%;height:auto;margin:0 auto;font-size:22px;font-weight:bold;color:#F0C000;">
     <div style="font-size:15px;line-height:20px;font-weight:900;color:#F0C000;letter-spacing:2px;padding-top:16px;">בשבוע הבא</div>
     <div style="font-family:'Karantina','Heebo',Arial,sans-serif;font-size:50px;line-height:52px;font-weight:700;color:#FFFFFF;padding-top:4px;">מה יהיה לנו</div>
   </div>
@@ -183,7 +179,7 @@
   <div style="background:#0E1A45;padding:28px 20px 30px;text-align:right;">
     <div style="font-size:14px;line-height:20px;font-weight:900;color:#F0C000;letter-spacing:1px;">ביום ראשון · פרק חדש של "על האקטיביזם"</div>
     <div style="font-size:23px;line-height:31px;font-weight:900;color:#FFFFFF;padding:6px 0 14px;">המג״ד שנפצע בעזה, מסביר למה רוח צה״ל היא "רוח ריסון"</div>
-    <a href="{{T:podcast_img}}" style="display:block;text-decoration:none;"><img src="{{IMG_PODCAST}}" width="100%" alt="איתמר איתם בפרק של על האקטיביזם" style="display:block;width:100%;max-width:100%;height:auto;border:2px solid #F0C000;box-sizing:border-box;"></a>
+    <a href="{{T:podcast_img}}" style="display:block;text-decoration:none;"><img src="{{IMG:images/podcast.jpg}}" width="100%" alt="איתמר איתם בפרק של על האקטיביזם" style="display:block;width:100%;max-width:100%;height:auto;border:2px solid #F0C000;box-sizing:border-box;"></a>
     <div style="font-size:16px;line-height:26px;color:#FFFFFF;padding:14px 0 16px;">איתמר איתם, מועמד הציונות הדתית לכנסת ומג״ד שנפצע בעזה, מסביר ב"על האקטיביזם" למה לדעתו רוח צה״ל היא "רוח ריסון".<br><br>הפרק עולה ביום ראשון. הפעילו תזכורת ביוטיוב, ותקבלו התראה ברגע שהוא באוויר.</div>
     <div style="background:#F0C000;text-align:center;">
       <a href="{{T:podcast_btn}}" style="display:block;background:#F0C000;color:#1D2E67;text-decoration:none;text-align:center;font-family:'Heebo',Arial,sans-serif;font-size:17px;font-weight:900;line-height:22px;padding:13px 16px;">&#128276;&nbsp; הזכירו לי כשהפרק עולה</a>

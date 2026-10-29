@@ -31,11 +31,15 @@ def tracker_url():
     return f.read_text().strip() if f.exists() else ""
 
 
-def fill(html):
+def fill(html, issue=0):
     base = tracker_url()
 
     def sub(m):
         key = m.group(1)
-        return base + "?l=" + key if base else LINKS[key]
+        if key not in LINKS:
+            raise SystemExit("unknown link id: %s (add it to tracking/links.py and the sheet)" % key)
+        if not base:
+            return LINKS[key]
+        return base + "?l=" + key + ("&i=%d" % issue if issue else "")
 
     return re.sub(r"\{\{T:([a-z_]+)\}\}", sub, html)
