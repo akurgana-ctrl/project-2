@@ -23,7 +23,7 @@ def main(name, to, sender=None):
         "sender": {"name": "כח התערבות", "email": sender or to},
         "to": [{"email": to}],
         "subject": subject.group(1),
-        "htmlContent": publish.render(name, lambda p: publish.RAW + p, "{{ unsubscribe }}"),
+        "htmlContent": publish.render(name, lambda p: publish.RAW + p, "{{ unsubscribe }}", opens=True),
     }
     req = urllib.request.Request(
         "https://api.brevo.com/v3/smtp/email",

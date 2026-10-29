@@ -12,6 +12,7 @@ Placeholders in the source:
   {{IMG:images/x.jpg}}   an image, path relative to this folder (commit it before sending)
   {{T:id}}               a tracked link, id from tracking/links.py
   {{UNSUBSCRIBE_URL}}    unsubscribe link
+  {{OPEN_PIXEL}}         open-tracking image, required in every issue (only the email gets it)
   {{WEB_VERSION_URL}}    the "open in browser" row (removed from every output for now)
 Images and docs are served from the repo branch, so push before sending.
 """
@@ -40,8 +41,11 @@ def issue_number(name):
     return int(m.group(1)) if m else 0
 
 
-def render(name, images, unsubscribe=UNSUB):
+def render(name, images, unsubscribe=UNSUB, opens=False):
     src = re.sub(r"<!--(?!\[if).*?-->", "", (HERE / name).read_text(), flags=re.S)
+    if "{{OPEN_PIXEL}}" not in src:
+        sys.exit("missing {{OPEN_PIXEL}}: put it right before the closing </div></div></body>")
+    src = src.replace("{{OPEN_PIXEL}}", tracked.pixel(issue_number(name)) if opens else "")
     for path in IMG.findall(src):
         if not (HERE / path).exists():
             sys.exit("missing image: %s" % path)
@@ -68,7 +72,7 @@ def main(name):
     out.mkdir(parents=True, exist_ok=True)
 
     (out / "preview.html").write_text(render(name, lambda p: "../../" + p))
-    email = render(name, lambda p: RAW + p)
+    email = render(name, lambda p: RAW + p, opens=True)
     (out / "email.html").write_text(email)
 
     web = render(name, data_uri)
@@ -87,7 +91,7 @@ def main(name):
         page = page.replace("{{%s}}" % key, value)
     (out / "copy-page.html").write_text(page)
 
-    print("built", out, "| tracked links:", "on" if tracked.tracker_url() else "off (direct)")
+    print("built", out, "| clicks and opens tracking:", "on" if tracked.tracker_url() else "off (tracker not deployed)")
 
 
 if __name__ == "__main__":

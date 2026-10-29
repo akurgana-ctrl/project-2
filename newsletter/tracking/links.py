@@ -50,3 +50,12 @@ def fill(html, issue=0):
         return base + "?l=" + key + ("&i=%d" % issue if issue else "")
 
     return re.sub(r"\{\{T:([a-z_]+)\}\}", sub, html)
+
+
+def pixel(issue):
+    """The open-tracking image for the email, or nothing while the tracker is not deployed."""
+    base = tracker_url()
+    if not base:
+        return ""
+    return ('<img src="%s?o=%d" width="1" height="1" alt="" '
+            'style="display:block;width:1px;height:1px;border:0;overflow:hidden;">' % (base, issue))
