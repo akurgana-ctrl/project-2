@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:"RubikK";font-weight:900;src:url("assets/fonts/rubik-hebrew-900-normal.woff2") format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}
+@font-face{font-family:"RubikK";font-weight:900;src:url("assets/fonts/rubik-latin-900-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215;}
+@font-face{font-family:"RubikK";font-weight:800;src:url("assets/fonts/rubik-hebrew-800-normal.woff2") format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}
+@font-face{font-family:"RubikK";font-weight:800;src:url("assets/fonts/rubik-latin-800-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215;}
+:root{--navy:#0f2557;--navy2:#1b3a7a;--gold:#f6c21a;--gold2:#d79a00;--red:#e5484d;--cap:#FFE600;--white:#ffffff;--green:#2fbf71;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
+#cam{position:absolute;inset:0;transform-origin:50% 32%}
+#cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.layer{position:absolute;inset:0;pointer-events:none}
+/* captions */
+#captions{position:absolute;left:0;top:1130px;width:1080px;height:150px;overflow:visible;z-index:20}
+.capgrp{position:absolute;left:40px;right:40px;top:0;text-align:center;opacity:0;visibility:hidden;font-size:92px;line-height:1.1;direction:rtl;white-space:nowrap}
+.w{display:inline-block;color:#fff;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 6px 0 rgba(0,0,0,.55)}
+.w.key{color:var(--cap)}
+/* logo */
+#logo{position:absolute;top:36px;right:30px;width:200px;z-index:30}
+#logo img{width:100%;display:block}
+/* illustration panels */
+.panel{position:absolute;left:70px;top:1290px;width:940px;height:370px;z-index:15}
+.card{position:absolute;inset:0;border-radius:34px;background:rgba(15,37,87,.93);border:5px solid var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.45);overflow:hidden}
+.ptitle{position:absolute;top:24px;right:36px;left:36px;font-size:46px;color:var(--gold);text-align:right}
+.big{font-size:150px;line-height:1;color:#fff}
+.stamp{position:absolute;border:12px solid var(--red);color:var(--red);font-size:96px;padding:0 34px;border-radius:18px;transform:rotate(-12deg);background:rgba(255,255,255,.08);letter-spacing:2px}
+.chk{position:absolute;right:50px;font-size:44px;color:#fff;display:flex;gap:22px;align-items:center}
+.chk b{display:inline-flex;width:58px;height:58px;border-radius:50%;background:var(--green);color:#fff;align-items:center;justify-content:center;font-size:40px}
+.icon{position:absolute;top:70px;width:260px;text-align:center;font-size:44px;color:#fff}
+.icon svg{width:190px;height:190px;display:block;margin:0 auto 10px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:40}
+#qdim{position:absolute;inset:0;background:rgba(5,12,30,.78);z-index:25;display:flex;align-items:center;justify-content:center}
+#qtext{font-size:150px;color:var(--cap);-webkit-text-stroke:10px #000;paint-order:stroke fill;text-align:center;line-height:1.05}
+#endcard{position:absolute;inset:0;background:#ffffff;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px}
+#endcard img{width:560px}
+#endcard div{font-size:76px;color:var(--navy)}
+.cta-btn{display:inline-block;background:var(--gold);color:var(--navy);border-radius:999px;padding:18px 54px;font-size:76px}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+
+  <div id="cam">
+    <video id="a-roll" class="clip" src="assets/aroll.mp4" muted playsinline data-start="0" data-duration="58.87" data-track-index="0"></video>
+  </div>
+  <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9"></audio>
+
+  <!-- HOOK: license card + stamp "נשלל" -->
+  <div id="p-hook" class="panel clip" data-start="0" data-duration="3.17" data-track-index="2" data-track-kind="graphics">
+    <div class="card" id="hookcard">
+      <div class="ptitle">רישיון לנשק פרטי</div>
+      <svg style="position:absolute;right:46px;top:100px" width="200" height="230" viewBox="0 0 200 230"><rect x="0" y="0" width="200" height="230" rx="18" fill="#dfe6f5"/><circle cx="100" cy="85" r="46" fill="#8aa0c8"/><path d="M22 220 Q100 120 178 220Z" fill="#8aa0c8"/></svg>
+      <div style="position:absolute;right:290px;top:120px;left:40px">
+        <div style="height:26px;background:#ffffff33;border-radius:13px;margin-bottom:26px;width:90%"></div>
+        <div style="height:26px;background:#ffffff33;border-radius:13px;margin-bottom:26px;width:70%"></div>
+        <div style="height:26px;background:#ffffff33;border-radius:13px;width:80%"></div>
+      </div>
+      <div class="stamp" id="hookstamp" style="left:120px;top:150px">נשלל</div>
+    </div>
+  </div>
+
+  <!-- I1: armed citizens filling up, then drained -->
+  <div id="p-gauge" class="panel clip" data-start="3.25" data-duration="7.0" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="ptitle">אזרחים חמושים</div>
+      <div style="position:absolute;right:40px;left:40px;top:120px;height:110px;border-radius:55px;background:#ffffff22;overflow:hidden">
+        <div id="gfill" style="position:absolute;right:0;top:0;bottom:0;width:100%;background:var(--green);transform-origin:100% 50%"></div>
+        <div id="gdrain" style="position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--red);transform-origin:0% 50%"></div>
+      </div>
+      <div id="gtxt1" style="position:absolute;right:40px;top:262px;font-size:50px;color:#fff">₪ מכספי המסים שלכם ↑</div>
+      <div id="gtxt2" style="position:absolute;right:40px;top:262px;font-size:50px;color:var(--red)">↓ מרוקנים מהצד השני</div>
+    </div>
+  </div>
+
+  <!-- I2: counter 2,600 -->
+  <div id="p-count" class="panel clip" data-start="10.4" data-duration="4.55" data-track-index="2" data-track-kind="graphics">
+    <div class="card" style="text-align:center">
+      <div id="cnum" class="big" style="position:absolute;top:40px;left:0;right:0;color:var(--red);font-size:170px">0</div>
+      <div style="position:absolute;top:225px;left:0;right:0;font-size:52px">רישיונות נשק בוטלו ב־2025</div>
+      <div id="perday" style="position:absolute;top:24px;left:34px;background:var(--gold);color:var(--navy);border-radius:24px;padding:6px 22px;font-size:50px">+7 ביום</div>
+    </div>
+  </div>
+
+  <!-- I3: the ship and the anonymous clerk drilling a hole -->
+  <div id="p-ship" class="panel clip" data-start="18.12" data-duration="3.45" data-track-index="2" data-track-kind="graphics">
+    <div class="card" style="background:linear-gradient(#1b3a7a,#0f2557)">
+      <svg viewBox="0 0 940 370" width="940" height="370" style="position:absolute;inset:0">
+        <g id="shipg">
+          <path d="M210 210 L730 210 L670 300 L270 300 Z" fill="#e9eef8"/>
+          <rect x="330" y="150" width="240" height="60" rx="8" fill="#c9d4ea"/>
+          <rect x="455" y="40" width="8" height="112" fill="#e9eef8"/>
+          <g transform="translate(463 44)"><rect width="120" height="80" fill="#fff"/><rect y="10" width="120" height="10" fill="#1d4fd8"/><rect y="60" width="120" height="10" fill="#1d4fd8"/><polygon points="60,28 72,48 48,48" fill="none" stroke="#1d4fd8" stroke-width="4"/><polygon points="60,54 72,34 48,34" fill="none" stroke="#1d4fd8" stroke-width="4"/></g>
+          <g id="hole" opacity="0"><circle cx="420" cy="275" r="16" fill="#0a1430"/></g>
+          <g id="jets" opacity="0"><path d="M420 275 Q380 230 350 260" stroke="#5cc8f5" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M420 275 Q450 220 490 250" stroke="#5cc8f5" stroke-width="10" fill="none" stroke-linecap="round"/></g>
+        </g>
+        <path d="M0 300 Q60 280 120 300 T240 300 T360 300 T480 300 T600 300 T720 300 T840 300 T960 300 V370 H0Z" fill="#5cc8f5" opacity=".85"/>
+        <g id="clerk" transform="translate(150 150)">
+          <circle cx="40" cy="40" r="34" fill="#111"/><text x="40" y="58" text-anchor="middle" font-size="52" fill="#f6c21a" font-family="RubikK" font-weight="900">?</text>
+          <path d="M0 160 Q40 70 80 160Z" fill="#111"/><rect x="34" y="78" width="12" height="40" fill="#111"/>
+          <g id="drill"><rect x="70" y="110" width="110" height="22" rx="6" fill="#e5484d"/><rect x="180" y="116" width="70" height="10" fill="#bbb"/></g>
+        </g>
+      </svg>
+      <div style="position:absolute;top:22px;right:34px;font-size:46px;color:var(--gold)">פקידים בלי שם</div>
+    </div>
+  </div>
+
+  <!-- I4: checklist -> approved -->
+  <div id="p-check" class="panel clip" data-start="21.7" data-duration="4.65" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="ptitle">המדינה בדקה אותך</div>
+      <div class="chk" id="k1" style="top:100px"><b>✓</b>המשרד לביטחון לאומי</div>
+      <div class="chk" id="k2" style="top:180px"><b>✓</b>המשטרה</div>
+      <div class="chk" id="k3" style="top:260px"><b>✓</b>משרד הבריאות</div>
+      <div class="stamp" id="okstamp" style="left:60px;top:140px;border-color:var(--green);color:var(--green);font-size:80px">אושר</div>
+    </div>
+  </div>
+
+  <!-- I5: time / range / pistol -->
+  <div id="p-icons" class="panel clip" data-start="26.35" data-duration="2.1" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="icon" id="ic1" style="right:30px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#f6c21a" stroke-width="9"/><path d="M50 22 V50 L70 62" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/></svg>השקעת זמן</div>
+      <div class="icon" id="ic2" style="right:340px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#e5484d"/><circle cx="50" cy="50" r="29" fill="#fff"/><circle cx="50" cy="50" r="16" fill="#e5484d"/><circle cx="50" cy="50" r="5" fill="#fff"/></svg>מטווחים</div>
+      <div class="icon" id="ic3" style="right:650px"><svg viewBox="0 0 100 100"><path d="M10 30 H86 V46 H48 L40 82 H22 L28 46 H10 Z" fill="#f6c21a"/><rect x="58" y="46" width="14" height="10" fill="#f6c21a"/></svg>קנית אקדח</div>
+    </div>
+  </div>
+
+  <!-- I6: card + stamp again -->
+  <div id="p-revoke" class="panel clip" data-start="28.5" data-duration="3.15" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="ptitle">החלטה אישית של פקיד</div>
+      <svg style="position:absolute;right:46px;top:100px" width="200" height="230" viewBox="0 0 200 230"><rect width="200" height="230" rx="18" fill="#dfe6f5"/><circle cx="100" cy="85" r="46" fill="#8aa0c8"/><path d="M22 220 Q100 120 178 220Z" fill="#8aa0c8"/></svg>
+      <div style="position:absolute;right:290px;top:130px;font-size:56px;color:#fff">הרישיון שלך</div>
+      <div class="stamp" id="revstamp" style="left:110px;top:190px">נשלל</div>
+    </div>
+  </div>
+
+  <!-- I7: the question, music drops out -->
+  <div id="qdim" class="clip" data-start="35.7" data-duration="1.3" data-track-index="3" data-track-kind="graphics">
+    <div id="qtext">לפי מה<br>שוללים?</div>
+  </div>
+
+  <!-- I8: redacted document -->
+  <div id="p-redact" class="panel clip" data-start="37.0" data-duration="2.65" data-track-index="2" data-track-kind="graphics">
+    <div class="card" style="background:#f3f1ea;border-color:var(--red)">
+      <div class="ptitle" style="color:var(--navy)">תשובת המשטרה</div>
+      <div style="position:absolute;right:40px;left:40px;top:110px">
+        <div style="height:30px;margin-bottom:22px;position:relative;background:#00000018;border-radius:6px"><div class="bar" style="position:absolute;inset:0;background:#111;transform-origin:100% 50%"></div></div>
+        <div style="height:30px;margin-bottom:22px;position:relative;background:#00000018;border-radius:6px;width:80%"><div class="bar" style="position:absolute;inset:0;background:#111;transform-origin:100% 50%"></div></div>
+        <div style="height:30px;margin-bottom:22px;position:relative;background:#00000018;border-radius:6px;width:92%"><div class="bar" style="position:absolute;inset:0;background:#111;transform-origin:100% 50%"></div></div>
+      </div>
+      <div class="stamp" style="left:60px;top:220px;font-size:58px;padding:0 24px;border-width:8px">חסוי</div>
+    </div>
+  </div>
+
+  <!-- I9: four months of silence -->
+  <div id="p-wait" class="panel clip" data-start="39.7" data-duration="4.45" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="ptitle" style="left:auto">המשרד לביטחון לאומי</div>
+      <svg style="position:absolute;right:50px;top:95px" width="230" height="230" viewBox="0 0 100 100"><rect x="10" y="30" width="80" height="55" rx="8" fill="#c9d4ea"/><path d="M10 38 L50 62 L90 38" stroke="#0f2557" stroke-width="5" fill="none"/><g stroke="#ffffff99" stroke-width="1.2" fill="none"><path d="M10 30 L30 10 M10 30 L0 8 M10 30 L-2 32"/><path d="M10 30 Q18 22 24 18 M4 22 Q14 20 20 14"/></g></svg>
+      <div id="months" style="position:absolute;right:320px;top:100px;font-size:120px;color:#fff">0</div>
+      <div style="position:absolute;right:320px;top:230px;font-size:50px;color:var(--gold)">חודשים בלי תשובה</div>
+      <div id="quote" style="position:absolute;left:36px;top:26px;background:#fff;color:var(--navy);border-radius:24px;padding:12px 22px;font-size:44px;transform:rotate(-4deg)">"תיענה<br>בהקדם"</div>
+    </div>
+  </div>
+
+  <!-- I10: two petitions + gavel -->
+  <div id="p-court" class="panel clip" data-start="45.3" data-duration="4.7" data-track-index="2" data-track-kind="graphics">
+    <div class="card">
+      <div class="ptitle">הגשנו 2 עתירות</div>
+      <svg id="gavel" style="position:absolute;left:40px;top:90px" width="220" height="220" viewBox="0 0 100 100"><g id="gavelhead" transform="rotate(-30 70 30)"><rect x="40" y="18" width="50" height="24" rx="5" fill="#d79a00"/><rect x="12" y="27" width="34" height="7" fill="#8a5a00" transform="rotate(0)"/></g><rect x="20" y="80" width="62" height="12" rx="3" fill="#d79a00"/></svg>
+      <div class="chk" id="pt1" style="top:120px"><b style="background:var(--gold);color:var(--navy)">1</b>נגד משטרת ישראל</div>
+      <div class="chk" id="pt2" style="top:220px"><b style="background:var(--gold);color:var(--navy)">2</b>נגד המשרד לביטחון לאומי</div>
+    </div>
+  </div>
+
+  <!-- I11: how / why / how many -->
+  <div id="p-q3" class="panel clip" data-start="50.1" data-duration="3.0" data-track-index="2" data-track-kind="graphics">
+    <div class="card" style="display:flex;align-items:center;justify-content:space-around">
+      <div id="q1" class="big" style="font-size:120px;color:var(--gold)">איך?</div>
+      <div id="q2" class="big" style="font-size:120px;color:var(--gold)">למה?</div>
+      <div id="q3" class="big" style="font-size:120px;color:var(--gold)">כמה?</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div id="p-cta" class="panel clip" data-start="53.15" data-duration="5.7" data-track-index="2" data-track-kind="graphics">
+    <div class="card" style="text-align:center">
+      <div style="position:absolute;top:40px;left:0;right:0;font-size:56px">עקבו אחרי ההתפתחויות</div>
+      <div style="position:absolute;top:150px;left:0;right:0"><span class="cta-btn" id="ctabtn">תמכו בפעילות שלנו</span></div>
+      <div style="position:absolute;top:290px;left:0;right:0;font-size:40px;color:var(--gold)">#כח_התערבות</div>
+    </div>
+  </div>
+
+  <div id="captions" class="clip" data-start="0" data-duration="58.85" data-track-index="4" data-track-kind="captions">
+{{CAPTIONS}}
+  </div>
+
+  <div id="logo" class="clip" data-start="0" data-duration="58.85" data-track-index="5" data-track-kind="graphics"><img src="assets/logo.png" alt="כח התערבות"></div>
+  <div id="flash" class="clip" data-start="0" data-duration="58.85" data-track-index="6" data-layout-allow-overlap></div>
+
+  <div id="endcard" class="clip" data-start="58.85" data-duration="0.75" data-track-index="7" data-track-kind="graphics">
+    <img id="endlogo" src="assets/logo.png" alt="כח התערבות">
+    <div>תמכו בפעילות שלנו</div>
+  </div>
+</div>
+
+<script>
+const tl = gsap.timeline({ paused: true });
+const pop = (sel, at, extra) => tl.fromTo(sel, {scale:0.7, opacity:0, y:40}, Object.assign({scale:1, opacity:1, y:0, duration:0.3, ease:"back.out(1.8)"}, extra||{}), at);
+const slam = (sel, at) => tl.fromTo(sel, {scale:2.6, opacity:0}, {scale:1, opacity:1, duration:0.18, ease:"power4.in"}, at);
+const shake = (at) => tl.fromTo("#cam", {x:-14, y:8}, {x:0, y:0, duration:0.35, ease:"elastic.out(1,0.3)"}, at);
+const flash = (at) => { tl.fromTo("#flash", {opacity:0.75}, {opacity:0, duration:0.22, ease:"power2.out"}, at); };
+
+tl.set("#flash",{opacity:0},0);
+{{PUNCH_JS}}
+
+// hook
+flash(0.02); shake(0.02);
+pop("#hookcard", 0.05);
+tl.set("#hookstamp", {opacity:0}, 0); slam("#hookstamp", 2.62);
+// logo in
+tl.fromTo("#logo img", {opacity:0, scale:0.8}, {opacity:1, scale:1, duration:0.4, ease:"power2.out"}, 0.3);
+
+// I1 gauge
+pop("#p-gauge .card", 3.25);
+tl.fromTo("#gfill", {scaleX:0}, {scaleX:0.85, duration:3.6, ease:"power1.inOut"}, 3.5);
+tl.set("#gdrain", {scaleX:0}, 3.25); tl.to("#gdrain", {scaleX:0.7, duration:1.9, ease:"power2.in"}, 7.9);
+tl.set("#gtxt2", {opacity:0}, 3.25); tl.to("#gtxt1", {opacity:0, duration:0.15}, 7.85); tl.to("#gtxt2", {opacity:1, duration:0.2}, 7.95);
+
+// I2 counter
+pop("#p-count .card", 10.4);
+const ctr = {v:0};
+tl.to(ctr, {v:2600, duration:0.8, ease:"power3.out", onUpdate:()=>{document.getElementById("cnum").textContent = Math.round(ctr.v).toLocaleString("en-US");}}, 10.45);
+tl.fromTo("#cnum", {scale:1.25}, {scale:1, duration:0.3, ease:"power2.out"}, 11.25);
+tl.set("#perday", {opacity:0}, 10.4); pop("#perday", 13.15);
+
+// I3 ship
+pop("#p-ship .card", 18.12);
+tl.fromTo("#clerk", {x:-120}, {x:0, duration:0.5, ease:"power2.out"}, 18.3);
+tl.fromTo("#drill", {x:-6}, {x:6, duration:0.06, repeat:22, yoyo:true, ease:"none"}, 19.6);
+tl.to("#hole", {opacity:1, duration:0.1}, 20.75);
+tl.to("#jets", {opacity:1, duration:0.15}, 20.85);
+tl.to("#shipg", {rotation:6, y:22, transformOrigin:"50% 80%", duration:0.7, ease:"power2.in"}, 20.9);
+
+// I4 checklist
+pop("#p-check .card", 21.7);
+tl.set(["#k1","#k2","#k3","#okstamp"], {opacity:0}, 21.7);
+pop("#k1", 23.0); pop("#k2", 24.1); pop("#k3", 24.8); slam("#okstamp", 25.85);
+
+// I5 icons
+pop("#p-icons .card", 26.35);
+tl.set(["#ic1","#ic2","#ic3"], {opacity:0}, 26.35);
+pop("#ic1", 26.4); pop("#ic2", 27.0); pop("#ic3", 27.65);
+
+// I6 revoke
+flash(28.52); shake(28.52);
+pop("#p-revoke .card", 28.5);
+tl.set("#revstamp", {opacity:0}, 28.5); slam("#revstamp", 31.15);
+
+// I7 question
+tl.fromTo("#qdim", {opacity:0}, {opacity:1, duration:0.12}, 35.7); tl.set("#captions", {opacity:0}, 35.7); tl.set("#captions", {opacity:1}, 37.0);
+tl.fromTo("#qtext", {scale:0.8}, {scale:1, duration:0.5, ease:"power2.out"}, 35.7);
+
+// I8 redact
+pop("#p-redact .card", 37.0);
+tl.fromTo("#p-redact .bar", {scaleX:0}, {scaleX:1, duration:0.35, stagger:0.25, ease:"power2.inOut"}, 37.6);
+
+// I9 wait
+pop("#p-wait .card", 39.7);
+const mo = {v:0};
+tl.to(mo, {v:4, duration:1.2, ease:"steps(4)", onUpdate:()=>{document.getElementById("months").textContent = Math.round(mo.v);}}, 40.7);
+tl.set("#quote", {opacity:0}, 39.7); pop("#quote", 42.95);
+
+// I10 court
+pop("#p-court .card", 45.3);
+tl.fromTo("#gavelhead", {rotation:-30, transformOrigin:"20% 50%"}, {rotation:12, duration:0.16, ease:"power4.in"}, 45.3);
+tl.set(["#pt1","#pt2"], {opacity:0}, 45.3); pop("#pt1", 47.65); pop("#pt2", 48.35);
+
+// I11 questions
+tl.set(["#q1","#q2","#q3"], {opacity:0}, 50.1);
+pop("#q1", 51.25); pop("#q2", 51.75); pop("#q3", 52.15);
+
+// CTA
+pop("#p-cta .card", 53.15);
+tl.fromTo("#ctabtn", {scale:1}, {scale:1.08, duration:0.35, yoyo:true, repeat:5, ease:"sine.inOut"}, 54.2);
+
+// captions
+{{CAPTION_JS}}
+
+// end card
+flash(58.85);
+tl.fromTo("#endlogo", {scale:0.6, opacity:0}, {scale:1, opacity:1, duration:0.3, ease:"back.out(2)"}, 58.87);
+
+window.__timelines["main"] = tl;
+</script>
+</body>
+</html>
