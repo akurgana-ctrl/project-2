@@ -37,6 +37,12 @@ hit(boom, 1.0, 0.6)            # counter lands on 2,600
 hit(COCK, 3.18, 0.5)           # cock into the drop
 hit(boom, 10.68, 0.6)          # 2,600 (body)
 hit(COCK, 18.28, 0.45)         # ship scene
+# drill buzz (20.35-21.0) and water splash (21.0) for the ship scene
+_n = int(SR*0.65); _tt = np.arange(_n)/SR
+drill = (2*((_tt*140) % 1) - 1) * (0.6 + 0.4*np.sin(2*np.pi*23*_tt)) * np.minimum(1, _tt/0.03) * np.minimum(1, (0.65-_tt)/0.03)
+hit(B.bp(drill, 200, 4000) * 0.5, 20.35, 0.5)
+_n = int(SR*0.9); splash = B.bp(B.rng.standard_normal(_n), 300, 6000) * B.env(_n, 0.01, 0.25)
+hit(splash, 21.0, 0.45)
 hit(SHOT, 28.75, 0.5)          # "פוף!"
 hit(boom, 34.83, 0.55)         # back in after the question
 hit(boom, 42.98, 0.55)         # "והגשנו שתי עתירות" (gavel)
