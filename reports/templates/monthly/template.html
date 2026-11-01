@@ -28,6 +28,7 @@ h1, h2, h3, p, span, div { unicode-bidi: plaintext; }
 .side .by span { font-size: 20px; color: #9FAAC0; }
 
 .main { flex: 1; padding: 64px 72px 56px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: 30px 44px; align-content: space-between; }
+.cat:last-child:nth-child(odd) { grid-column: span 2; }
 .cat { display: flex; flex-direction: column; gap: 16px; }
 .cat .hd { display: flex; align-items: baseline; gap: 18px; padding-bottom: 14px; border-bottom: 3px solid var(--navy); }
 .cat .n { font-size: 30px; font-weight: 900; color: var(--gold); }
