@@ -1,7 +1,7 @@
 """Final mix: voice + weapon trap beat (ducked, automated) + weapon SFX hits. usage: mix.py <scratch> <total>"""
 import sys, os, json, wave, subprocess, numpy as np
 S, TOTAL = sys.argv[1], float(sys.argv[2])
-HOOK = 3.17                       # beat drops when the hook ends
+HOOK = 3.40                       # beat drops when the hook ends
 os.environ["BEAT_DUR"] = str(TOTAL - HOOK + 0.5)
 sys.path.insert(0, os.path.dirname(__file__))
 import beat as B
@@ -23,8 +23,8 @@ t = np.arange(N) / SR
 g = np.ones(N)
 def ramp(t0, t1, a, b):
     sel = (t >= t0) & (t < t1); g[sel] = a + (b - a) * (t[sel] - t0) / (t1 - t0)
-ramp(35.55, 35.75, 1, 0); g[(t >= 35.75) & (t < 36.95)] = 0; ramp(36.95, 37.0, 0, 1)
-ramp(58.9, TOTAL, 1, 0)
+ramp(33.30, 33.50, 1, 0); g[(t >= 33.50) & (t < 34.80)] = 0; ramp(34.80, 34.85, 0, 1)
+ramp(55.2, TOTAL, 1, 0)
 music *= g[:, None]
 
 sfx = np.zeros((N, 2))
@@ -32,15 +32,16 @@ def hit(sig, at, gain):
     j = int(at * SR); s = sig[: N - j] * gain; sfx[j:j + len(s)] += s[:, None]
 SHOT = B.shot(); COCK = B.gun_cock()
 _t = B.war_tom(55); _k = B.kick(); boom = _t.copy(); boom[:len(_k)] += _k * 0.8
-hit(SHOT, 0.02, 0.55)          # hook: "פוף!"
-hit(COCK, 2.95, 0.5)           # cock into the drop
-hit(boom, 10.45, 0.6)          # 2,600
-hit(COCK, 18.05, 0.45)         # ship scene
-hit(SHOT, 28.52, 0.5)          # "פוף!" in the body
-hit(boom, 36.95, 0.55)         # back in after the question
-hit(boom, 45.35, 0.55)         # "והגשנו שתי עתירות" (gavel)
-hit(COCK, 53.0, 0.4)           # CTA
-hit(SHOT, 58.85, 0.45)         # end card
+hit(SHOT, 0.03, 0.55)          # hook opens on a shot
+hit(boom, 1.0, 0.6)            # counter lands on 2,600
+hit(COCK, 3.18, 0.5)           # cock into the drop
+hit(boom, 10.68, 0.6)          # 2,600 (body)
+hit(COCK, 18.28, 0.45)         # ship scene
+hit(SHOT, 28.75, 0.5)          # "פוף!"
+hit(boom, 34.83, 0.55)         # back in after the question
+hit(boom, 42.98, 0.55)         # "והגשנו שתי עתירות" (gavel)
+hit(COCK, 49.4, 0.4)           # CTA
+hit(SHOT, 55.25, 0.45)         # end card
 sfx *= 0.12 * 10 ** (-9 / 20) / 0.3
 
 mix = voice + music + sfx

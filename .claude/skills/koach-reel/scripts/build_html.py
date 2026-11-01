@@ -22,7 +22,7 @@ cap_html, cap_js = [], []
 for gi, g in enumerate(groups):
     st = max(0.05, g[0]["start"] - 0.05)
     nxt_st = groups[gi + 1][0]["start"] - 0.05 if gi + 1 < len(groups) else TOTAL
-    en = min(max(g[-1]["end"] + 0.25, st + 0.5), nxt_st, 58.85)
+    en = min(max(g[-1]["end"] + 0.25, st + 0.5), nxt_st, 55.25)
     spans = []
     for wi, w in enumerate(g):
         cls = "w key" if w["text"] in KEY else "w"
@@ -36,7 +36,7 @@ for gi, g in enumerate(groups):
 SCALES = [1.14, 1.0, 1.1, 1.0, 1.12, 1.0, 1.08, 1.0, 1.12, 1.0, 1.06]
 punch_js = [f'tl.set("#cam",{{scale:{SCALES[k % len(SCALES)]}}},{c:.3f});' for k, c in enumerate(cuts)]
 # extra emphasis punches inside long takes
-for at, sc in [(15.05, 1.18), (17.0, 1.24), (31.65, 1.0), (33.65, 1.16), (44.2, 1.0), (50.05, 1.14), (53.15, 1.0)]:
+for at, sc in [(15.28, 1.18), (17.23, 1.24), (31.88, 1.0), (32.6, 1.16), (46.43, 1.14), (49.53, 1.0)]:
     punch_js.append(f'tl.to("#cam",{{scale:{sc},duration:0.25,ease:"power3.out"}},{at});')
 
 caps = "\n".join(cap_html)
