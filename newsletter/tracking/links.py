@@ -18,6 +18,7 @@ LINKS = {
     "bill_med": DOCS + "bill-medicine.pdf",
     "bill_net": DOCS + "bill-online-responsibility.pdf",
     "tz_position": DOCS + "tzalashim-position-yedidi.pdf",
+    "ohana_sms": "https://activism.mashma.net/ohana/",
     "andrey_page": "https://activism.mashma.net/andrei-x",
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
