@@ -10,6 +10,7 @@ Writes to out/<issue>/:
   mailchimp.html   for Mailchimp (Code your own): direct links, Mailchimp's own unsubscribe and
                    browser-version tags; Mailchimp counts opens and clicks itself
   mailchimp-copy.html  page with one button that copies mailchimp.html, and one for the subject
+  site.html        the issue as a block for a page on the website (site_copy.py makes a copy page)
 
 Placeholders in the source:
   {{IMG:images/x.jpg}}   an image, path relative to this folder (commit it before sending)
@@ -67,6 +68,15 @@ def render(name, images, unsubscribe=UNSUB, opens=False, direct=False, web_url=N
     return out
 
 
+def site_fragment(name):
+    """The issue as a block to paste into a page of the website: direct links, no unsubscribe row."""
+    doc = render(name, lambda p: RAW + p, "", direct=True)
+    doc = re.sub(r'\s*<div [^>]*>\s*<div [^>]*><a href="" [^>]*>הסרה מהתפוצה</a></div>\s*</div>', "", doc)
+    doc = re.sub(r'<div style="display:none;max-height:0;[^"]*">.*?</div>\s*', "", doc, count=1, flags=re.S)
+    fonts = re.search(r'<link href="https://fonts.googleapis.com[^>]*>', doc).group(0)
+    return fonts + "\n" + body_of(doc) + "\n"
+
+
 def body_of(doc):
     return re.search(r"<body[^>]*>(.*)</body>", doc, re.S).group(1).strip()
 
@@ -85,6 +95,7 @@ def main(name):
     mailchimp = render(name, lambda p: RAW + p, "*|UNSUB|*", direct=True, web_url="*|ARCHIVE|*")
     (out / "mailchimp.html").write_text(mailchimp)
     data = json.dumps({"html": mailchimp, "subject": subject}, ensure_ascii=False).replace("</", "<\\/")
+    (out / "site.html").write_text(site_fragment(name))
     copy_mc = (HERE / "mailchimp-copy-template.html").read_text()
     (out / "mailchimp-copy.html").write_text(copy_mc.replace("{{TITLE}}", title).replace("{{DATA}}", data))
 
