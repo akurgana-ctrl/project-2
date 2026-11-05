@@ -9,6 +9,7 @@ Writes to out/<issue>/:
   copy-page.html   page with "העתקה ל-Gmail": paste into a new Gmail message on a computer
   mailchimp.html   for Mailchimp (Code your own): direct links, Mailchimp's own unsubscribe and
                    browser-version tags; Mailchimp counts opens and clicks itself
+  mailchimp-copy.html  page with one button that copies mailchimp.html, and one for the subject
 
 Placeholders in the source:
   {{IMG:images/x.jpg}}   an image, path relative to this folder (commit it before sending)
@@ -20,6 +21,7 @@ Images and docs are served from the repo branch, so push before sending.
 """
 import base64
 import html as htmllib
+import json
 import re
 import sys
 from pathlib import Path
@@ -80,8 +82,11 @@ def main(name):
     (out / "preview.html").write_text(render(name, lambda p: "../../" + p))
     email = render(name, lambda p: RAW + p, opens=True)
     (out / "email.html").write_text(email)
-    (out / "mailchimp.html").write_text(
-        render(name, lambda p: RAW + p, "*|UNSUB|*", direct=True, web_url="*|ARCHIVE|*"))
+    mailchimp = render(name, lambda p: RAW + p, "*|UNSUB|*", direct=True, web_url="*|ARCHIVE|*")
+    (out / "mailchimp.html").write_text(mailchimp)
+    data = json.dumps({"html": mailchimp, "subject": subject}, ensure_ascii=False).replace("</", "<\\/")
+    copy_mc = (HERE / "mailchimp-copy-template.html").read_text()
+    (out / "mailchimp-copy.html").write_text(copy_mc.replace("{{TITLE}}", title).replace("{{DATA}}", data))
 
     web = render(name, data_uri)
     web = re.sub(r"<!DOCTYPE html>|<html[^>]*>|</html>|<head>|</head>|<meta[^>]*>", "", web)
