@@ -38,8 +38,9 @@ def tracker_url():
     return f.read_text().strip() if f.exists() else ""
 
 
-def fill(html, issue=0):
-    base = tracker_url()
+def fill(html, issue=0, direct=False):
+    """direct=True links straight to the destination, for senders that count clicks themselves (Mailchimp)."""
+    base = "" if direct else tracker_url()
 
     def sub(m):
         key = m.group(1)

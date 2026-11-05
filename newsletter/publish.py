@@ -7,6 +7,8 @@ Writes to out/<issue>/:
   web.html         browser version, images embedded (for the claude.ai page)
   email.html       the email itself, images served from the repo (Brevo or any sender)
   copy-page.html   page with "העתקה ל-Gmail": paste into a new Gmail message on a computer
+  mailchimp.html   for Mailchimp (Code your own): direct links, Mailchimp's own unsubscribe and
+                   browser-version tags; Mailchimp counts opens and clicks itself
 
 Placeholders in the source:
   {{IMG:images/x.jpg}}   an image, path relative to this folder (commit it before sending)
@@ -41,7 +43,7 @@ def issue_number(name):
     return int(m.group(1)) if m else 0
 
 
-def render(name, images, unsubscribe=UNSUB, opens=False):
+def render(name, images, unsubscribe=UNSUB, opens=False, direct=False, web_url=None):
     src = re.sub(r"<!--(?!\[if).*?-->", "", (HERE / name).read_text(), flags=re.S)
     if "{{OPEN_PIXEL}}" not in src:
         sys.exit("missing {{OPEN_PIXEL}}: put it right before the closing </div></div></body>")
@@ -50,8 +52,11 @@ def render(name, images, unsubscribe=UNSUB, opens=False):
         if not (HERE / path).exists():
             sys.exit("missing image: %s" % path)
     out = IMG.sub(lambda m: images(m.group(1)), src)
-    out = tracked.fill(out, issue_number(name))
-    out = re.sub(BROWSER_ROW, "", out, count=1, flags=re.S)
+    out = tracked.fill(out, issue_number(name), direct)
+    if web_url:
+        out = out.replace("{{WEB_VERSION_URL}}", web_url)
+    else:
+        out = re.sub(BROWSER_ROW, "", out, count=1, flags=re.S)
     out = out.replace("{{UNSUBSCRIBE_URL}}", unsubscribe)
     left = re.findall(r"\{\{[^}]+\}\}", out)
     if left and left != ["{{ unsubscribe }}"]:
@@ -74,6 +79,8 @@ def main(name):
     (out / "preview.html").write_text(render(name, lambda p: "../../" + p))
     email = render(name, lambda p: RAW + p, opens=True)
     (out / "email.html").write_text(email)
+    (out / "mailchimp.html").write_text(
+        render(name, lambda p: RAW + p, "*|UNSUB|*", direct=True, web_url="*|ARCHIVE|*"))
 
     web = render(name, data_uri)
     web = re.sub(r"<!DOCTYPE html>|<html[^>]*>|</html>|<head>|</head>|<meta[^>]*>", "", web)
