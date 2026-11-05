@@ -53,10 +53,11 @@ def render(name, images, unsubscribe=UNSUB, opens=False, direct=False, web_url=N
             sys.exit("missing image: %s" % path)
     out = IMG.sub(lambda m: images(m.group(1)), src)
     out = tracked.fill(out, issue_number(name), direct)
-    if web_url:
-        out = out.replace("{{WEB_VERSION_URL}}", web_url)
-    else:
-        out = re.sub(BROWSER_ROW, "", out, count=1, flags=re.S)
+    # the browser row is a fixed-width table in the source; it is rebuilt as a fluid div or dropped
+    row = ('<div dir="rtl" style="max-width:600px;margin:0 auto;padding:12px 18px 0;text-align:center;'
+           'font-family:\'Heebo\',Arial,sans-serif;font-size:12px;color:#6A7190;">לא מוצג טוב? '
+           '<a href="%s" style="color:#1D2E67;text-decoration:underline;">פתחו בדפדפן</a></div>\n' % web_url) if web_url else ""
+    out = re.sub(BROWSER_ROW, lambda m: row, out, count=1, flags=re.S)
     out = out.replace("{{UNSUBSCRIBE_URL}}", unsubscribe)
     left = re.findall(r"\{\{[^}]+\}\}", out)
     if left and left != ["{{ unsubscribe }}"]:

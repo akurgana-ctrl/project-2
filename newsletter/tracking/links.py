@@ -24,6 +24,8 @@ LINKS = {
     "ohana_page": "https://activism.mashma.net/hakika",
     "kanfo_episode": "https://youtu.be/UJh6zniXEnw",
     "debate_video": "https://youtu.be/yFkOOdQ4UXw",
+    "pesin_data": "https://www.michaelpesin.com/projects/twenty-fifth-knesset",
+    "podcast_channel": "https://www.youtube.com/@AlHamashmaut?sub_confirmation=1",
     "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
     "podcast_btn": "https://youtu.be/ZpHFRbkM4fM",
