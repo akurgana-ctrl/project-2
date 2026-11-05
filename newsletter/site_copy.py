@@ -17,7 +17,10 @@ def main(names):
         out = publish.HERE / "out" / publish.Path(name).stem
         src = (publish.HERE / name).read_text()
         title = re.search(r"<title>(.*?)</title>", src).group(1)
-        items.append({"title": title, "html": (out / "site.html").read_text()})
+        head = re.search(r"<!--\s*כותרת:\s*(.*?)\s*-->", src)
+        date = re.search(r"\d{1,2}\.\d{1,2}\.\d{4}", src)
+        items.append({"title": title, "headline": head.group(1) if head else "",
+                      "date": date.group(0) if date else "", "html": (out / "site.html").read_text()})
     data = json.dumps(items, ensure_ascii=False).replace("</", "<\\/")
     page = (publish.HERE / "site-copy-template.html").read_text().replace("{{DATA}}", data)
     (publish.HERE / "out" / "site-copy.html").write_text(page)

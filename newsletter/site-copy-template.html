@@ -14,7 +14,8 @@
   h1 { font-size:22px; margin:0 0 4px; }
   .sub { color:var(--muted); margin:0 0 22px; font-size:15px; }
   .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:14px; }
-  .name { font-weight:800; font-size:17px; margin-bottom:12px; }
+  .name { font-size:13px; color:var(--muted); margin-bottom:4px; }
+  .head { font-weight:800; font-size:18px; margin-bottom:12px; }
   button { width:100%; border:0; border-radius:10px; padding:16px; font-size:17px; font-weight:800; cursor:pointer; background:#F0C000; color:#1D2E67; }
   .done { background:var(--ok) !important; color:#fff !important; }
   ol { margin:0; padding-inline-start:20px; color:var(--muted); font-size:14px; line-height:1.7; }
@@ -48,11 +49,12 @@
   }
   items.forEach((it) => {
     const card = document.createElement('div'); card.className = 'card';
-    const name = document.createElement('div'); name.className = 'name'; name.textContent = it.title;
+    const name = document.createElement('div'); name.className = 'name'; name.textContent = it.title + (it.date ? ' · ' + it.date : '');
+    const head = document.createElement('div'); head.className = 'head'; head.textContent = it.headline;
     const label = 'העתקת ה-HTML לאתר';
     const btn = document.createElement('button'); btn.textContent = label;
     btn.onclick = () => copy(it.html, btn, label);
-    card.append(name, btn); list.append(card);
+    card.append(name, head, btn); list.append(card);
   });
 </script>
 </body>
