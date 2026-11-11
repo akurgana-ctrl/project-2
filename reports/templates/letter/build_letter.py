@@ -135,6 +135,13 @@ def build(content, logo, out):
     run(para(doc, jc="center", after=6.3), content["signer"])
     run(para(doc, jc="center", after=0), content["org"])
 
+    # Optional "cc" list, right-aligned under the signature
+    if content.get("cc"):
+        p = para(doc, before=10, after=0)
+        run(p, "העתק:", bold=True, underline=True, size=LAYOUT["size"] - 1)
+        for line in content["cc"]:
+            run(para(doc, after=0), line, size=LAYOUT["size"] - 1)
+
     doc.save(out)
 
 
