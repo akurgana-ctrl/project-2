@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:"RubikK";font-weight:900;src:url("assets/fonts/rubik-hebrew-900-normal.woff2") format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}
+@font-face{font-family:"RubikK";font-weight:900;src:url("assets/fonts/rubik-latin-900-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215;}
+@font-face{font-family:"RubikK";font-weight:800;src:url("assets/fonts/rubik-hebrew-800-normal.woff2") format("woff2");unicode-range:U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}
+@font-face{font-family:"RubikK";font-weight:800;src:url("assets/fonts/rubik-latin-800-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215;}
+:root{--navy:#0f2557;--gold:#f6c21a;--gold2:#d79a00;--red:#e5484d;--cap:#FFE600;--purple:#5b2a86}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
+#cam{position:absolute;inset:0;transform-origin:50% 38%}
+#cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#captions{position:absolute;left:0;top:1235px;width:1080px;height:150px;overflow:visible;z-index:20}
+.capgrp{position:absolute;left:40px;right:40px;top:0;text-align:center;opacity:0;visibility:hidden;font-size:92px;line-height:1.1;white-space:nowrap}
+.w{display:inline-block;color:#fff;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 6px 0 rgba(0,0,0,.55)}
+.w.key{color:var(--cap)}
+#logo{position:absolute;top:36px;right:30px;width:210px;z-index:30}
+#logo img{width:100%;display:block}
+.pop{position:absolute;z-index:15}
+.mcard{position:absolute;inset:0;border-radius:36px;background:rgba(10,20,48,.88);border:5px solid var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.5);overflow:hidden}
+.mlabel{position:absolute;left:0;right:0;text-align:center;color:#fff;font-size:46px}
+.msub{position:absolute;left:0;right:0;text-align:center;color:var(--gold);font-size:34px;font-weight:800;direction:ltr}
+.shine{position:absolute;top:-20%;left:-60%;width:40%;height:140%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:40}
+#endcard{position:absolute;inset:0;background:#fff;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+#endcard img{width:520px}
+#endcard .t1{font-size:58px;color:var(--navy);font-weight:800}
+#endcard .t2{font-size:76px;color:var(--navy)}
+.slot{position:absolute;top:0;width:195px;height:380px;text-align:center}
+.slot svg.medal{width:150px;height:225px;display:block;margin:0 auto}
+.slot .flag{width:76px;height:50px;display:block;margin:8px auto 6px;border-radius:5px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.slot .nm{font-size:30px;color:#fff}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1080" data-height="1920">
+
+  <div id="cam"><video id="a-roll" class="clip" src="assets/aroll.mp4" muted playsinline data-start="0" data-duration="{{TOTAL}}" data-track-index="0"></video></div>
+  <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="{{TOTAL}}" data-track-index="9"></audio>
+
+  <!-- reusable medal art -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".45" stop-color="#e2b33a"/><stop offset="1" stop-color="#9a6b10"/></linearGradient>
+      <linearGradient id="gSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c7ccd6"/><stop offset="1" stop-color="#7d8594"/></linearGradient>
+      <radialGradient id="gPurple" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#9b5fd6"/><stop offset="1" stop-color="#3f1663"/></radialGradient>
+      <radialGradient id="gRed" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#ff6b6b"/><stop offset="1" stop-color="#a0121b"/></radialGradient>
+      <!-- Purple Heart (USA) -->
+      <g id="mPH">
+        <rect x="55" y="0" width="90" height="92" fill="#5b2a86"/><rect x="55" y="0" width="9" height="92" fill="#fff"/><rect x="136" y="0" width="9" height="92" fill="#fff"/>
+        <rect x="88" y="92" width="24" height="16" rx="4" fill="url(#gGold)"/>
+        <path d="M70 128 Q80 106 100 118 Q120 106 130 128 L118 132 Q100 126 82 132 Z" fill="#2f7d32"/>
+        <path d="M86 108 H114 V124 Q100 134 86 124 Z" fill="url(#gGold)" stroke="#7a5208" stroke-width="2"/>
+        <path d="M100 290 C40 240 6 205 6 168 C6 138 30 120 54 120 C74 120 90 130 100 146 C110 130 126 120 146 120 C170 120 194 138 194 168 C194 205 160 240 100 290 Z" fill="url(#gGold)" stroke="#7a5208" stroke-width="3"/>
+        <path d="M100 270 C52 230 22 202 22 170 C22 148 40 135 57 135 C75 135 90 146 100 162 C110 146 125 135 143 135 C160 135 178 148 178 170 C178 202 148 230 100 270 Z" fill="url(#gPurple)"/>
+        <path d="M112 152 C100 150 92 160 92 172 L84 182 L91 186 L88 192 L93 196 L92 206 C98 212 108 212 114 206 L118 222 L136 222 C130 206 132 190 132 176 C132 160 124 153 112 152 Z" fill="url(#gGold)"/>
+      </g>
+      <!-- Sacrifice Medal (Canada) -->
+      <g id="mCA">
+        <rect x="55" y="0" width="90" height="92" fill="#c8102e"/><rect x="55" y="0" width="10" height="92" fill="#111"/><rect x="65" y="0" width="8" height="92" fill="#fff"/><rect x="135" y="0" width="10" height="92" fill="#111"/><rect x="127" y="0" width="8" height="92" fill="#fff"/>
+        <rect x="90" y="92" width="20" height="14" rx="4" fill="url(#gSilver)"/>
+        <path d="M80 108 L86 96 L93 104 L100 92 L107 104 L114 96 L120 108 Z" fill="url(#gSilver)" stroke="#555" stroke-width="1.5"/>
+        <circle cx="100" cy="190" r="82" fill="url(#gSilver)" stroke="#59606d" stroke-width="4"/>
+        <circle cx="100" cy="190" r="68" fill="none" stroke="#8a919e" stroke-width="3"/>
+        <path d="M112 140 C96 138 84 152 84 168 L76 180 L84 184 L80 192 L86 196 L84 210 C92 220 106 220 114 212 L118 236 L140 236 C132 214 136 196 136 178 C136 156 128 142 112 140 Z" fill="#aab0bb" stroke="#6d7482" stroke-width="2"/>
+      </g>
+      <!-- Wounded insignia (France): red enamel star -->
+      <g id="mFR">
+        <rect x="55" y="0" width="90" height="92" fill="#1f3c8a"/><rect x="85" y="0" width="30" height="92" fill="#fff"/><rect x="115" y="0" width="30" height="92" fill="#d61f2c"/>
+        <rect x="90" y="92" width="20" height="14" rx="4" fill="url(#gSilver)"/>
+        <polygon points="100,104 124,170 194,170 138,212 160,282 100,238 40,282 62,212 6,170 76,170" fill="url(#gSilver)" stroke="#59606d" stroke-width="3"/>
+        <polygon points="100,124 118,176 172,176 128,208 145,262 100,228 55,262 72,208 28,176 82,176" fill="url(#gRed)"/>
+      </g>
+      <!-- flags -->
+      <g id="fUS"><rect width="76" height="50" fill="#b22234"/><g fill="#fff"><rect y="7.7" width="76" height="3.85"/><rect y="15.4" width="76" height="3.85"/><rect y="23.1" width="76" height="3.85"/><rect y="30.8" width="76" height="3.85"/><rect y="38.5" width="76" height="3.85"/><rect y="46.2" width="76" height="3.8"/></g><rect width="32" height="27" fill="#3c3b6e"/></g>
+      <g id="fCA"><rect width="76" height="50" fill="#fff"/><rect width="19" height="50" fill="#d52b1e"/><rect x="57" width="19" height="50" fill="#d52b1e"/><path d="M38 9 L42 18 L48 15 L46 27 L52 24 L50 31 L41 31 L41 40 L35 40 L35 31 L26 31 L24 24 L30 27 L28 15 L34 18 Z" fill="#d52b1e"/></g>
+      <g id="fFR"><rect width="25.3" height="50" fill="#0055a4"/><rect x="25.3" width="25.4" height="50" fill="#fff"/><rect x="50.7" width="25.3" height="50" fill="#ef4135"/></g>
+      <g id="fIL"><rect width="76" height="50" fill="#fff"/><rect y="6" width="76" height="7" fill="#0038b8"/><rect y="37" width="76" height="7" fill="#0038b8"/><polygon points="38,15 46,29 30,29" fill="none" stroke="#0038b8" stroke-width="2.6"/><polygon points="38,34 46,20 30,20" fill="none" stroke="#0038b8" stroke-width="2.6"/></g>
+    </defs>
+  </svg>
+
+  <!-- HOOK: Purple Heart lands -->
+  <div id="p-ph" class="pop clip" data-start="0" data-duration="2.72" data-track-index="2" data-track-kind="graphics" style="left:250px;top:120px;width:540px;height:470px">
+    <div class="mcard" id="phcard">
+      <svg viewBox="0 0 200 300" style="position:absolute;left:185px;top:22px;width:170px;height:255px" id="phmedal"><use href="#mPH"/></svg>
+      <div class="mlabel" style="top:300px">עיטור הלב הסגול</div>
+      <div class="msub" style="top:372px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fUS"/></svg>PURPLE HEART · USA</div>
+      <div class="shine" id="phshine"></div>
+    </div>
+  </div>
+
+  <!-- name plate -->
+  <div id="p-name" class="pop clip" data-start="2.8" data-duration="3.9" data-track-index="2" data-track-kind="graphics" style="right:40px;top:1440px;width:640px;height:150px">
+    <div id="namebar" style="position:absolute;inset:0;background:var(--navy);border-right:14px solid var(--gold);border-radius:18px;padding:16px 30px">
+      <div style="font-size:58px;color:#fff;line-height:1.1">ח״כ איתמר איתם</div>
+      <div style="font-size:40px;color:var(--gold);font-weight:800">הציונות הדתית</div>
+    </div>
+  </div>
+
+  <!-- bill banner -->
+  <div id="p-bill" class="pop clip" data-start="6.55" data-duration="2.95" data-track-index="2" data-track-kind="graphics" style="left:90px;top:170px;width:720px;height:330px">
+    <div class="mcard" id="billcard" style="text-align:center">
+      <div style="position:absolute;top:30px;left:0;right:0;font-size:48px;color:var(--gold)">הצעת חוק</div>
+      <div style="position:absolute;top:100px;left:0;right:0;font-size:92px;color:#fff;line-height:1.05">עיטור הפציעה<br>הקרבית</div>
+      <div class="shine" id="billshine"></div>
+    </div>
+  </div>
+
+  <!-- not just benefits -> heroes -->
+  <div id="p-hero" class="pop clip" data-start="12.6" data-duration="5.6" data-track-index="2" data-track-kind="graphics" style="left:90px;top:150px;width:720px;height:380px">
+    <div class="mcard" style="text-align:center;background:rgba(10,20,48,.82)">
+      <div id="tagA" style="position:absolute;top:50px;right:70px;background:#5d6577;color:#e7e9ee;border-radius:16px;padding:8px 26px;font-size:54px">קצבאות</div>
+      <div id="tagB" style="position:absolute;top:50px;left:70px;background:#5d6577;color:#e7e9ee;border-radius:16px;padding:8px 26px;font-size:54px">תמיכות</div>
+      <div id="strike" style="position:absolute;top:84px;left:50px;right:50px;height:10px;background:var(--red);border-radius:5px;transform-origin:100% 50%"></div>
+      <div id="heroW" style="position:absolute;top:165px;left:0;right:0;font-size:150px;color:var(--gold);line-height:1">גיבורים</div>
+    </div>
+  </div>
+
+  <!-- Canada -->
+  <div id="p-ca" class="pop clip" data-start="29.55" data-duration="1.45" data-track-index="2" data-track-kind="graphics" style="left:60px;top:130px;width:420px;height:450px">
+    <div class="mcard" id="cacard">
+      <svg viewBox="0 0 200 300" style="position:absolute;left:120px;top:24px;width:200px;height:300px"><use href="#mCA"/></svg>
+      <div class="mlabel" style="top:330px;font-size:42px">מדליית ההקרבה</div>
+      <div class="msub" style="top:394px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fCA"/></svg>CANADA</div>
+    </div>
+  </div>
+  <!-- France -->
+  <div id="p-fr" class="pop clip" data-start="31.0" data-duration="1.5" data-track-index="2" data-track-kind="graphics" style="left:400px;top:130px;width:420px;height:450px">
+    <div class="mcard" id="frcard">
+      <svg viewBox="0 0 200 300" style="position:absolute;left:120px;top:24px;width:200px;height:300px"><use href="#mFR"/></svg>
+      <div class="mlabel" style="top:330px;font-size:42px">כוכב הפצועים</div>
+      <div class="msub" style="top:394px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fFR"/></svg>FRANCE</div>
+    </div>
+  </div>
+
+  <!-- the row: "כמו שנהוג בהרבה צבאות בעולם" -> Israel slot fills with the bill -->
+  <div id="p-row" class="pop clip" data-start="33.4" data-duration="{{ROWDUR}}" data-track-index="2" data-track-kind="graphics" style="left:24px;top:150px;width:820px;height:430px">
+    <div class="mcard" style="background:rgba(10,20,48,.86)"></div>
+    <div class="slot" id="s1" style="right:12px;top:22px"><svg class="medal" viewBox="0 0 200 300"><use href="#mPH"/></svg><svg class="flag" viewBox="0 0 76 50"><use href="#fUS"/></svg><div class="nm">ארה״ב</div></div>
+    <div class="slot" id="s2" style="right:212px;top:22px"><svg class="medal" viewBox="0 0 200 300"><use href="#mCA"/></svg><svg class="flag" viewBox="0 0 76 50"><use href="#fCA"/></svg><div class="nm">קנדה</div></div>
+    <div class="slot" id="s3" style="right:412px;top:22px"><svg class="medal" viewBox="0 0 200 300"><use href="#mFR"/></svg><svg class="flag" viewBox="0 0 76 50"><use href="#fFR"/></svg><div class="nm">צרפת</div></div>
+    <div class="slot" id="s4" style="right:612px;top:22px">
+      <div id="qslot" style="width:150px;height:225px;margin:0 auto;border:6px dashed #9aa6c2;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:130px;color:#9aa6c2">?</div>
+      <svg class="flag" viewBox="0 0 76 50"><use href="#fIL"/></svg><div class="nm">ישראל</div>
+    </div>
+    <div id="ilfill" style="position:absolute;right:612px;top:22px;width:195px;height:225px;display:flex;align-items:center;justify-content:center">
+      <div style="width:176px;border-radius:22px;background:var(--gold);color:var(--navy);text-align:center;padding:14px 6px;font-size:36px;line-height:1.1">הצעת<br>חוק<br>עיטור<br>הפציעה</div>
+    </div>
+  </div>
+
+  <div id="captions" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="4" data-track-kind="captions">
+{{CAPTIONS}}
+  </div>
+  <div id="logo" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="5" data-track-kind="graphics"><img src="assets/logo.png" alt="כח התערבות"></div>
+  <div id="flash" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="6" data-layout-allow-overlap></div>
+</div>
+
+<script>
+const tl = gsap.timeline({ paused: true });
+const pop = (sel, at, extra) => tl.fromTo(sel, {scale:0.6, opacity:0, y:40}, Object.assign({scale:1, opacity:1, y:0, duration:0.35, ease:"back.out(1.9)"}, extra||{}), at);
+const out = (sel, at) => tl.to(sel, {opacity:0, scale:0.92, duration:0.2, ease:"power2.in"}, at);
+const shine = (sel, at) => tl.fromTo(sel, {x:0}, {x:1500, duration:0.8, ease:"power2.inOut"}, at);
+const flash = (at, o) => tl.fromTo("#flash", {opacity:o||0.6}, {opacity:0, duration:0.25, ease:"power2.out"}, at);
+tl.set("#flash", {opacity:0}, 0);
+
+{{PUNCH_JS}}
+
+// logo
+tl.fromTo("#logo img", {opacity:0, scale:0.85}, {opacity:1, scale:1, duration:0.4, ease:"power2.out"}, 0.25);
+
+// hook: Purple Heart drops in
+flash(0.04, 0.55);
+tl.fromTo("#phcard", {scale:1.8, opacity:0, rotation:-8}, {scale:1, opacity:1, rotation:0, duration:0.45, ease:"power4.out"}, 0.05);
+shine("#phshine", 0.6);
+tl.fromTo("#phmedal", {rotation:-4, transformOrigin:"50% 0%"}, {rotation:4, duration:0.9, yoyo:true, repeat:1, ease:"sine.inOut"}, 0.5);
+out("#phcard", 2.5);
+
+tl.set("#namebar", {opacity:0}, 0);
+// name plate
+tl.fromTo("#namebar", {x:700, opacity:0}, {x:0, opacity:1, duration:0.45, ease:"power3.out"}, 2.82);
+tl.to("#namebar", {x:700, opacity:0, duration:0.35, ease:"power3.in"}, 6.3);
+
+// bill banner
+pop("#billcard", 6.6); shine("#billshine", 7.7); out("#billcard", 9.25);
+
+// benefits -> heroes
+tl.set(["#tagA","#tagB","#strike","#heroW"], {opacity:0}, 12.6);
+pop("#tagA", 13.45); pop("#tagB", 14.55);
+tl.fromTo("#strike", {scaleX:0, opacity:1}, {scaleX:1, opacity:1, duration:0.25, ease:"power2.out"}, 15.45);
+tl.fromTo("#heroW", {scale:2.2, opacity:0}, {scale:1, opacity:1, duration:0.35, ease:"power4.out"}, 16.75);
+flash(16.75, 0.35);
+out("#p-hero .mcard", 18.0);
+
+// Canada, France single pops
+pop("#cacard", 29.6); out("#cacard", 30.8);
+pop("#frcard", 31.0); out("#frcard", 32.3);
+
+// the row
+pop("#p-row .mcard", 33.4, {y:0});
+tl.set(["#s1","#s2","#s3","#s4","#ilfill"], {opacity:0}, 33.4);
+pop("#s1", 33.5); pop("#s2", 33.85); pop("#s3", 34.2); pop("#s4", 34.9);
+tl.to(["#s1","#s2","#s3"], {opacity:0.45, duration:0.3}, 36.25);
+tl.fromTo("#ilfill", {scale:2, opacity:0}, {scale:1, opacity:1, duration:0.35, ease:"power4.out"}, 36.25);
+tl.to("#qslot", {opacity:0, duration:0.1}, 36.25);
+flash(36.25, 0.4);
+
+// captions
+{{CAPTION_JS}}
+
+window.__timelines["main"] = tl;
+</script>
+</body>
+</html>
