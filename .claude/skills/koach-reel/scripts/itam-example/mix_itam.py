@@ -15,7 +15,7 @@ def fit(a):
     z = np.zeros((N, 2)); z[:min(N, len(a))] = a[:N]; return z
 
 voice = fit(load(f"{D}/voice.wav")); voice *= 0.12 / np.sqrt(np.mean(voice[np.abs(voice[:, 0]) > 1e-4] ** 2))
-music = fit(load(MUS)); music *= 0.12 / np.sqrt(np.mean(music ** 2) + 1e-9) * 10 ** (-16 / 20)   # bed ~16 dB under voice
+music = fit(load(MUS)); music *= 0.12 / np.sqrt(np.mean(music ** 2) + 1e-9) * 10 ** (-17 / 20)   # bed ~17 dB under voice
 t = np.arange(N) / SR; g = np.ones(N)
 g *= np.clip(t / 0.4, 0, 1)                                   # quick fade-in
 g[t >= 36.2] *= 1.0 + 0.6 * np.clip((t[t >= 36.2] - 36.2) / 0.4, 0, 1)   # swell into the climax
