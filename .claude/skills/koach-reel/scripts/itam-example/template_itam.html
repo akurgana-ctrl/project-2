@@ -76,6 +76,16 @@ body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
         <polygon points="100,104 124,170 194,170 138,212 160,282 100,238 40,282 62,212 6,170 76,170" fill="url(#gSilver)" stroke="#59606d" stroke-width="3"/>
         <polygon points="100,124 118,176 172,176 128,208 145,262 100,228 55,262 72,208 28,176 82,176" fill="url(#gRed)"/>
       </g>
+      <!-- Combat-wound decoration (Israel, concept for the bill) -->
+      <g id="mIL">
+        <rect x="55" y="0" width="90" height="92" fill="#fff"/><rect x="66" y="0" width="14" height="92" fill="#0038b8"/><rect x="120" y="0" width="14" height="92" fill="#0038b8"/>
+        <rect x="84" y="92" width="32" height="16" rx="4" fill="url(#gGold)"/>
+        <circle cx="100" cy="196" r="86" fill="url(#gGold)" stroke="#7a5208" stroke-width="3"/>
+        <circle cx="100" cy="196" r="70" fill="#0f2557"/>
+        <g fill="none" stroke="url(#gGold)" stroke-width="9" stroke-linejoin="round"><polygon points="100,140 148,224 52,224"/><polygon points="100,252 148,168 52,168"/></g>
+        <path d="M34 210 Q30 250 70 272 M166 210 Q170 250 130 272" stroke="#2f7d32" stroke-width="5" fill="none"/>
+        <g fill="#3a9a3e"><ellipse cx="36" cy="228" rx="9" ry="4" transform="rotate(-60 36 228)"/><ellipse cx="46" cy="250" rx="9" ry="4" transform="rotate(-35 46 250)"/><ellipse cx="62" cy="266" rx="9" ry="4" transform="rotate(-15 62 266)"/><ellipse cx="164" cy="228" rx="9" ry="4" transform="rotate(60 164 228)"/><ellipse cx="154" cy="250" rx="9" ry="4" transform="rotate(35 154 250)"/><ellipse cx="138" cy="266" rx="9" ry="4" transform="rotate(15 138 266)"/></g>
+      </g>
       <!-- flags -->
       <g id="fUS"><rect width="76" height="50" fill="#b22234"/><g fill="#fff"><rect y="7.7" width="76" height="3.85"/><rect y="15.4" width="76" height="3.85"/><rect y="23.1" width="76" height="3.85"/><rect y="30.8" width="76" height="3.85"/><rect y="38.5" width="76" height="3.85"/><rect y="46.2" width="76" height="3.8"/></g><rect width="32" height="27" fill="#3c3b6e"/></g>
       <g id="fCA"><rect width="76" height="50" fill="#fff"/><rect width="19" height="50" fill="#d52b1e"/><rect x="57" width="19" height="50" fill="#d52b1e"/><path d="M38 9 L42 18 L48 15 L46 27 L52 24 L50 31 L41 31 L41 40 L35 40 L35 31 L26 31 L24 24 L30 27 L28 15 L34 18 Z" fill="#d52b1e"/></g>
@@ -83,16 +93,6 @@ body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
       <g id="fIL"><rect width="76" height="50" fill="#fff"/><rect y="6" width="76" height="7" fill="#0038b8"/><rect y="37" width="76" height="7" fill="#0038b8"/><polygon points="38,15 46,29 30,29" fill="none" stroke="#0038b8" stroke-width="2.6"/><polygon points="38,34 46,20 30,20" fill="none" stroke="#0038b8" stroke-width="2.6"/></g>
     </defs>
   </svg>
-
-  <!-- HOOK: Purple Heart lands -->
-  <div id="p-ph" class="pop clip" data-start="0" data-duration="2.72" data-track-index="2" data-track-kind="graphics" style="left:250px;top:120px;width:540px;height:470px">
-    <div class="mcard" id="phcard">
-      <svg viewBox="0 0 200 300" style="position:absolute;left:185px;top:22px;width:170px;height:255px" id="phmedal"><use href="#mPH"/></svg>
-      <div class="mlabel" style="top:300px">עיטור הלב הסגול</div>
-      <div class="msub" style="top:372px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fUS"/></svg>PURPLE HEART · USA</div>
-      <div class="shine" id="phshine"></div>
-    </div>
-  </div>
 
   <!-- name plate -->
   <div id="p-name" class="pop clip" data-start="2.8" data-duration="3.9" data-track-index="2" data-track-kind="graphics" style="right:40px;top:1440px;width:640px;height:150px">
@@ -102,11 +102,12 @@ body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
     </div>
   </div>
 
-  <!-- bill banner -->
-  <div id="p-bill" class="pop clip" data-start="6.55" data-duration="2.95" data-track-index="2" data-track-kind="graphics" style="left:90px;top:170px;width:720px;height:330px">
-    <div class="mcard" id="billcard" style="text-align:center">
-      <div style="position:absolute;top:30px;left:0;right:0;font-size:48px;color:var(--gold)">הצעת חוק</div>
-      <div style="position:absolute;top:100px;left:0;right:0;font-size:92px;color:#fff;line-height:1.05">עיטור הפציעה<br>הקרבית</div>
+  <!-- the bill: concept Israeli medal -->
+  <div id="p-bill" class="pop clip" data-start="7.6" data-duration="2.0" data-track-index="2" data-track-kind="graphics" style="left:200px;top:120px;width:620px;height:470px">
+    <div class="mcard" id="billcard">
+      <svg viewBox="0 0 200 300" style="position:absolute;right:30px;top:40px;width:250px;height:375px;top:30px" id="ilmedal"><use href="#mIL"/></svg>
+      <div style="position:absolute;left:24px;top:110px;width:300px;text-align:center;font-size:40px;color:var(--gold)">הצעת חוק</div>
+      <div style="position:absolute;left:24px;top:170px;width:300px;text-align:center;font-size:64px;color:#fff;line-height:1.08">עיטור<br>הפציעה<br>הקרבית</div>
       <div class="shine" id="billshine"></div>
     </div>
   </div>
@@ -121,23 +122,6 @@ body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
     </div>
   </div>
 
-  <!-- Canada -->
-  <div id="p-ca" class="pop clip" data-start="29.55" data-duration="1.45" data-track-index="2" data-track-kind="graphics" style="left:60px;top:130px;width:420px;height:450px">
-    <div class="mcard" id="cacard">
-      <svg viewBox="0 0 200 300" style="position:absolute;left:120px;top:24px;width:200px;height:300px"><use href="#mCA"/></svg>
-      <div class="mlabel" style="top:330px;font-size:42px">מדליית ההקרבה</div>
-      <div class="msub" style="top:394px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fCA"/></svg>CANADA</div>
-    </div>
-  </div>
-  <!-- France -->
-  <div id="p-fr" class="pop clip" data-start="31.0" data-duration="1.5" data-track-index="2" data-track-kind="graphics" style="left:400px;top:130px;width:420px;height:450px">
-    <div class="mcard" id="frcard">
-      <svg viewBox="0 0 200 300" style="position:absolute;left:120px;top:24px;width:200px;height:300px"><use href="#mFR"/></svg>
-      <div class="mlabel" style="top:330px;font-size:42px">כוכב הפצועים</div>
-      <div class="msub" style="top:394px"><svg viewBox="0 0 76 50" width="46" height="30" style="vertical-align:-6px;margin-right:10px"><use href="#fFR"/></svg>FRANCE</div>
-    </div>
-  </div>
-
   <!-- the row: "כמו שנהוג בהרבה צבאות בעולם" -> Israel slot fills with the bill -->
   <div id="p-row" class="pop clip" data-start="33.4" data-duration="{{ROWDUR}}" data-track-index="2" data-track-kind="graphics" style="left:24px;top:150px;width:820px;height:430px">
     <div class="mcard" style="background:rgba(10,20,48,.86)"></div>
@@ -148,9 +132,7 @@ body{font-family:"RubikK",sans-serif;font-weight:900;color:#fff;direction:rtl}
       <div id="qslot" style="width:150px;height:225px;margin:0 auto;border:6px dashed #9aa6c2;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:130px;color:#9aa6c2">?</div>
       <svg class="flag" viewBox="0 0 76 50"><use href="#fIL"/></svg><div class="nm">ישראל</div>
     </div>
-    <div id="ilfill" style="position:absolute;right:612px;top:22px;width:195px;height:225px;display:flex;align-items:center;justify-content:center">
-      <div style="width:176px;border-radius:22px;background:var(--gold);color:var(--navy);text-align:center;padding:14px 6px;font-size:36px;line-height:1.1">הצעת<br>חוק<br>עיטור<br>הפציעה</div>
-    </div>
+    <div id="ilfill" style="position:absolute;right:612px;top:22px;width:195px;height:225px"><svg viewBox="0 0 200 300" style="width:150px;height:225px;display:block;margin:0 auto"><use href="#mIL"/></svg></div>
   </div>
 
   <div id="captions" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="4" data-track-kind="captions">
@@ -173,20 +155,18 @@ tl.set("#flash", {opacity:0}, 0);
 // logo
 tl.fromTo("#logo img", {opacity:0, scale:0.85}, {opacity:1, scale:1, duration:0.4, ease:"power2.out"}, 0.25);
 
-// hook: Purple Heart drops in
-flash(0.04, 0.55);
-tl.fromTo("#phcard", {scale:1.8, opacity:0, rotation:-8}, {scale:1, opacity:1, rotation:0, duration:0.45, ease:"power4.out"}, 0.05);
-shine("#phshine", 0.6);
-tl.fromTo("#phmedal", {rotation:-4, transformOrigin:"50% 0%"}, {rotation:4, duration:0.9, yoyo:true, repeat:1, ease:"sine.inOut"}, 0.5);
-out("#phcard", 2.5);
+flash(0.04, 0.35);
 
 tl.set("#namebar", {opacity:0}, 0);
 // name plate
 tl.fromTo("#namebar", {x:700, opacity:0}, {x:0, opacity:1, duration:0.45, ease:"power3.out"}, 2.82);
 tl.to("#namebar", {x:700, opacity:0, duration:0.35, ease:"power3.in"}, 6.3);
 
-// bill banner
-pop("#billcard", 6.6); shine("#billshine", 7.7); out("#billcard", 9.25);
+// the bill: Israeli medal
+tl.fromTo("#billcard", {scale:1.6, opacity:0}, {scale:1, opacity:1, duration:0.4, ease:"power4.out"}, 7.65);
+shine("#billshine", 8.2);
+tl.fromTo("#ilmedal", {rotation:-3, transformOrigin:"50% 0%"}, {rotation:3, duration:0.6, yoyo:true, repeat:1, ease:"sine.inOut"}, 8.0);
+out("#billcard", 9.4);
 
 // benefits -> heroes
 tl.set(["#tagA","#tagB","#strike","#heroW"], {opacity:0}, 12.6);
@@ -195,10 +175,6 @@ tl.fromTo("#strike", {scaleX:0, opacity:1}, {scaleX:1, opacity:1, duration:0.25,
 tl.fromTo("#heroW", {scale:2.2, opacity:0}, {scale:1, opacity:1, duration:0.35, ease:"power4.out"}, 16.75);
 flash(16.75, 0.35);
 out("#p-hero .mcard", 18.0);
-
-// Canada, France single pops
-pop("#cacard", 29.6); out("#cacard", 30.8);
-pop("#frcard", 31.0); out("#frcard", 32.3);
 
 // the row
 pop("#p-row .mcard", 33.4, {y:0});

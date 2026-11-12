@@ -29,10 +29,9 @@ def clink(f0):
     n = int(SR * 0.9); tt = np.arange(n) / SR
     return sum(np.sin(2 * np.pi * f0 * k * tt) * np.exp(-tt / (0.35 / k)) / k for k in (1, 2.76, 5.4)) * 0.5
 _t = B.war_tom(52); _k = B.kick(); boom = _t.copy(); boom[:len(_k)] += _k * 0.8
-hit(boom, 0.04, 0.7); hit(clink(1760), 0.1, 0.5)            # hook: Purple Heart lands
-hit(clink(1480), 6.62, 0.4)                                   # bill banner
+hit(boom, 0.04, 0.5)                                          # hook
+hit(clink(1480), 7.65, 0.45)                                  # Israeli medal (bill)
 hit(boom, 16.75, 0.45)                                        # "גיבורים"
-hit(clink(1320), 29.62, 0.45); hit(clink(1568), 31.02, 0.45)  # Canada, France
 for k, at in enumerate((33.5, 33.85, 34.2, 34.9)): hit(clink(1400 + 140 * k), at, 0.35)
 hit(boom, 36.25, 0.7)                                         # Israel slot fills
 sfx *= 0.12 * 10 ** (-10 / 20) / 0.3
