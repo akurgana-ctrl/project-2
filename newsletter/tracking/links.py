@@ -20,6 +20,7 @@ LINKS = {
     "tz_position": DOCS + "tzalashim-position-yedidi.pdf",
     "ohana_sms": "https://activism.mashma.net/ohana/",
     "bill_wound": DOCS + "bill-combat-wound.pdf",
+    "wound_reel": "https://www.instagram.com/reel/DfpOJNRhgu0/",
     "andrey_page": "https://activism.mashma.net/andrei-x",
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
