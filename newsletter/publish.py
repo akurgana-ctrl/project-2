@@ -30,7 +30,11 @@ from pathlib import Path
 from tracking import links as tracked
 
 HERE = Path(__file__).parent
-RAW = "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/"
+# Where images and docs are served from in the email. Override with assets-url.txt (one line, ending in /)
+# when the folder moves to another repository or host.
+_assets = HERE / "assets-url.txt"
+RAW = _assets.read_text().strip() if _assets.exists() else \
+    "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/"
 UNSUB = "mailto:akurgana@gmail.com?subject=%D7%94%D7%A1%D7%A8%D7%94%20%D7%9E%D7%94%D7%AA%D7%A4%D7%95%D7%A6%D7%94"
 BROWSER_ROW = r'<table role="presentation" class="container" width="600"[^>]*style="width:600px;">.*?</table>\s*'
 IMG = re.compile(r"\{\{IMG:([^}]+)\}\}")

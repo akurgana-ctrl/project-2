@@ -9,7 +9,9 @@ import re
 from pathlib import Path
 
 HERE = Path(__file__).parent
-DOCS = "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/"
+_assets = HERE.parent / "assets-url.txt"
+DOCS = (_assets.read_text().strip() if _assets.exists() else
+        "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/") + "docs/"
 LINKS = {
     "letter": DOCS + "tzalashim-letter-2026-09-07.pdf",
     "conf_video": "https://youtu.be/KvCN84yzbXA",
