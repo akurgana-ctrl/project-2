@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y", "@playwright/mcp@0.0.86",
+        "--headless", "--isolated", "--no-sandbox",
+        "--executable-path", "${PLAYWRIGHT_MCP_CHROME:-/opt/pw-browsers/chromium}"
+      ]
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp@3.41.0"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY:-fc-key-not-set}"
+      }
+    },
+    "posthog": {
+      "type": "http",
+      "url": "https://mcp.posthog.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${POSTHOG_API_KEY:-key-not-set}"
+      }
+    }
+  }
+}
