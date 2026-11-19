@@ -5,7 +5,7 @@ description: Build the weekly Hebrew newsletter of כח התערבות (Koach Hi
 
 # The כח התערבות weekly newsletter
 
-Everything lives in `newsletter/`. Read `newsletter/STYLE.md` first: it holds every rule the editor has set, and they are not optional. Talk to the user in Hebrew only.
+Everything lives in `newsletter/`. The human guide is `newsletter/מדריך-מלא.md` (point the user to it when they ask how to do something themselves). Read `newsletter/STYLE.md` first: it holds every rule the editor has set, and they are not optional. Talk to the user in Hebrew only.
 
 ## The weekly flow
 
