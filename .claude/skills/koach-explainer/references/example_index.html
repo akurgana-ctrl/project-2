@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<title>אזרחות זרה בכנסת</title>
+<style>
+  @font-face { font-family: "Heebo"; src: url("assets/fonts/Heebo.ttf") format("truetype"); font-weight: 100 900; font-display: block; }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #F6F1E4; }
+  svg, canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+</style>
+</head>
+<body>
+<svg id="stage" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="17" cy="17" r="2.2" fill="#E4DCC6"/></pattern>
+    <clipPath id="frameClip"><rect width="1080" height="1920"/></clipPath>
+  </defs>
+  <g clip-path="url(#frameClip)">
+    <rect id="bg" width="1080" height="1920" fill="#F6F1E4"/>
+    <rect width="1080" height="1920" fill="url(#dots)"/>
+    <g id="cam"><g id="world"></g></g>
+    <g id="hud"></g>
+    <g id="caps"></g>
+    <g id="wipe"></g>
+  </g>
+</svg>
+<script>
+const W = 1080, H = 1920, FPS = 30, DUR = 23.8;
+const NS = 'http://www.w3.org/2000/svg';
+const C = { cream: '#F6F1E4', card: '#FFFDF7', navy: '#16244A', navy2: '#2B3F7A', sky: '#6F93DB', pale: '#C9D6F2', yellow: '#F4C20D', gold: '#D9A50A', red: '#D7262E', ink: '#0F1830' };
+const F = 'Heebo';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const E = {
+  out: p => 1 - Math.pow(1 - p, 3), in: p => p * p * p,
+  io: p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2,
+  back: p => { const c = 1.7; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); },
+};
+const pop = (t, t0, d = 0.4) => t < t0 ? 0 : E.back(seg(t, t0, t0 + d));
+function el(tag, a = {}, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; }
+function txt(p, s, a) { const e = el('text', a, p); e.textContent = s; return e; }
+function tf(e, x = 0, y = 0, s = 1, r = 0, sy) { e.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${r.toFixed(2)}) scale(${Math.max(0.0001, s).toFixed(4)} ${Math.max(0.0001, sy ?? s).toFixed(4)})`); }
+function op(e, o) { e.setAttribute('opacity', clamp(o).toFixed(3)); }
+function show(e, v) { e.style.display = v ? '' : 'none'; }
+const mctx = document.createElement('canvas').getContext('2d');
+function measure(s, size, w = 900) { mctx.font = `${w} ${size}px ${F}`; return mctx.measureText(s).width; }
+function T(p, s, x, y, size, fill, w = 900, anchor = 'middle') { return txt(p, s, { x, y, 'font-size': size, 'font-family': F, 'font-weight': w, fill, 'text-anchor': anchor, direction: 'rtl' }); }
+function popIn(g, t, t0, x, y, r = 0, d = 0.4) { if (t < t0) { op(g, 0); return; } op(g, 1); tf(g, x, y, pop(t, t0, d), r); }
+function slideIn(g, t, t0, x, y, dx, dy, d = 0.45) { if (t < t0) { op(g, 0); return; } op(g, 1); const p = E.back(seg(t, t0, t0 + d)); tf(g, x + dx * (1 - p), y + dy * (1 - p)); }
+
+// ---------- the flat-explainer kit ----------
+// ribbon banner: a bold title on a band with folded tails and an offset shadow
+function ribbon(p, s, { size = 66, fill = C.navy, color = C.cream, tail = C.navy2 } = {}) {
+  const g = el('g', {}, p);
+  const w = measure(s, size) + 90, h = size * 1.55;
+  for (const sx of [-1, 1]) {
+    el('path', { d: `M${sx * (w / 2 - 30)} ${-h / 2 + 22} L${sx * (w / 2 + 60)} ${-h / 2 + 22} L${sx * (w / 2 + 30)} ${h / 2 / 1.2 + 10} L${sx * (w / 2 + 60)} ${h / 2 + 34} L${sx * (w / 2 - 30)} ${h / 2 + 34} Z`, fill: tail }, g);
+  }
+  el('rect', { x: -w / 2 + 8, y: -h / 2 + 10, width: w, height: h, rx: 10, fill: C.ink, opacity: 0.25 }, g);
+  el('rect', { x: -w / 2, y: -h / 2, width: w, height: h, rx: 10, fill }, g);
+  el('rect', { x: -w / 2 + 10, y: -h / 2 + 10, width: w - 20, height: h - 20, rx: 6, fill: 'none', stroke: color, 'stroke-width': 3, opacity: 0.35 }, g);
+  T(g, s, 0, size * 0.36, size, color);
+  return g;
+}
+// a pill label
+function chip(p, s, { size = 40, fill = C.navy, color = C.cream } = {}) {
+  const g = el('g', {}, p);
+  const w = measure(s, size) + 64, h = size * 1.6;
+  el('rect', { x: -w / 2 + 6, y: -h / 2 + 7, width: w, height: h, rx: h / 2, fill: C.ink, opacity: 0.22 }, g);
+  el('rect', { x: -w / 2, y: -h / 2, width: w, height: h, rx: h / 2, fill }, g);
+  T(g, s, 0, size * 0.36, size, color);
+  return g;
+}
+// a pictogram person, feet at (0,0), height ~ 120*s
+function person(p, color, s = 1) {
+  const g = el('g', {}, p);
+  const i = el('g', {}, g);
+  el('circle', { cx: 0, cy: -96, r: 19, fill: color }, i);
+  el('path', { d: 'M-28 -70 Q0 -80 28 -70 Q34 -66 34 -56 L30 -10 Q30 -4 24 -4 L20 0 L6 0 L4 -26 L-4 -26 L-6 0 L-20 0 L-24 -4 Q-30 -4 -30 -10 L-34 -56 Q-34 -66 -28 -70 Z', fill: color }, i);
+  tf(i, 0, 0, s);
+  return { g, i };
+}
+// a crowd laid out on a grid, with a stable seed per person
+function crowd(p, { x0, y0, cols, rows, dx = 72, dy = 96, s = 0.7, skip = [] }) {
+  const g = el('g', {}, p), people = [];
+  const cols3 = [C.navy, C.sky, C.navy2, C.pale, C.navy];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    if (skip.includes(r * cols + c)) continue;
+    const k = r * cols + c, col = cols3[(k * 7 + r) % cols3.length];
+    const pp = person(g, col, s * (0.9 + ((k * 37) % 10) / 50));
+    const x = x0 + c * dx + (r % 2) * dx / 2, y = y0 + r * dy;
+    people.push({ ...pp, x, y, k });
+    tf(pp.g, x, y);
+  }
+  return { g, people };
+}
+function crowdLife(cr, t, t0, stagger = 0.012) {
+  cr.people.forEach(pp => {
+    const s0 = t0 + pp.k * stagger;
+    if (t < s0) { op(pp.g, 0); return; }
+    op(pp.g, 1);
+    const p = E.back(seg(t, s0, s0 + 0.35));
+    const bob = Math.abs(Math.sin((t * 4.2 + pp.k * 0.7))) * 4;
+    tf(pp.g, pp.x, pp.y + 60 * (1 - p) - bob, 1, 0, 0.6 + 0.4 * p);
+  });
+}
+// the Knesset, flat: a long box with tall columns on a podium
+function knesset(p, w = 640) {
+  const g = el('g', {}, p);
+  const h = w * 0.42;
+  el('rect', { x: -w / 2 - 40 + 10, y: 10, width: w + 80, height: 40, fill: C.ink, opacity: 0.2 }, g);
+  el('rect', { x: -w / 2 - 40, y: 0, width: w + 80, height: 40, rx: 4, fill: C.pale }, g);
+  el('rect', { x: -w / 2, y: -h, width: w, height: h, fill: C.card, stroke: C.navy, 'stroke-width': 7 }, g);
+  el('rect', { x: -w / 2 - 20, y: -h - 34, width: w + 40, height: 38, rx: 4, fill: C.navy }, g);
+  const n = 10;
+  for (let i = 0; i < n; i++) el('rect', { x: -w / 2 + 26 + i * (w - 52) / (n - 1) - 11, y: -h + 22, width: 22, height: h - 22, fill: C.sky }, g);
+  return g;
+}
+// a passport
+function passport(p, label, fill, mark) {
+  const g = el('g', {}, p);
+  el('rect', { x: -66 + 7, y: -92 + 8, width: 132, height: 184, rx: 12, fill: C.ink, opacity: 0.22 }, g);
+  el('rect', { x: -66, y: -92, width: 132, height: 184, rx: 12, fill }, g);
+  el('rect', { x: -66, y: -92, width: 18, height: 184, rx: 8, fill: C.ink, opacity: 0.18 }, g);
+  mark(g);
+  T(g, label, 4, 62, 26, C.yellow, 800);
+  return g;
+}
+// a ballot box
+function ballotBox(p, s = 1) {
+  const g = el('g', {}, p);
+  const i = el('g', {}, g);
+  el('rect', { x: -70 + 8, y: -110 + 8, width: 140, height: 110, rx: 8, fill: C.ink, opacity: 0.2 }, i);
+  el('rect', { x: -70, y: -110, width: 140, height: 110, rx: 8, fill: C.navy }, i);
+  el('rect', { x: -80, y: -124, width: 160, height: 22, rx: 6, fill: C.navy2 }, i);
+  el('rect', { x: -36, y: -117, width: 72, height: 8, rx: 4, fill: C.ink }, i);
+  T(i, 'קלפי', 0, -42, 34, C.yellow);
+  tf(i, 0, 0, s);
+  return g;
+}
+function ballot(p) {
+  const g = el('g', {}, p);
+  el('rect', { x: -26, y: -34, width: 52, height: 68, rx: 4, fill: C.card, stroke: C.navy, 'stroke-width': 4 }, g);
+  el('path', { d: 'M-12 0 L-3 10 L14 -12', fill: 'none', stroke: C.navy, 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+  return g;
+}
+// a big cartoon hand (glove), pointing down
+function hand(p, color = C.card) {
+  const g = el('g', {}, p);
+  el('rect', { x: -60, y: -420, width: 120, height: 300, fill: C.navy }, g);
+  el('rect', { x: -70, y: -150, width: 140, height: 40, rx: 14, fill: C.cream, stroke: C.navy, 'stroke-width': 6 }, g);
+  el('path', { d: 'M-70 -112 Q-90 -40 -60 0 L60 0 Q86 -40 70 -112 Z', fill: color, stroke: C.navy, 'stroke-width': 6, 'stroke-linejoin': 'round' }, g);
+  for (const x of [-38, -12, 14, 40]) el('path', { d: `M${x} -4 L${x} 36`, stroke: C.navy, 'stroke-width': 26, 'stroke-linecap': 'round' }, g), el('path', { d: `M${x} -4 L${x} 36`, stroke: color, 'stroke-width': 14, 'stroke-linecap': 'round' }, g);
+  return g;
+}
+function checkRow(p, s, w = 760) {
+  const g = el('g', {}, p);
+  el('rect', { x: -w / 2, y: -46, width: w, height: 92, rx: 16, fill: C.card, stroke: C.navy, 'stroke-width': 5 }, g);
+  const box = el('rect', { x: w / 2 - 82, y: -26, width: 52, height: 52, rx: 8, fill: C.card, stroke: C.navy, 'stroke-width': 5 }, g);
+  T(g, s, w / 2 - 110, 14, 40, C.navy, 800, 'start');
+  const q = T(g, '?', w / 2 - 56, 18, 44, C.red, 900);
+  return { g, q };
+}
+
+// ---------- scenes ----------
+const world = document.getElementById('world');
+const scenes = [];
+function scene(t0, t1, build) { const g = el('g', {}, world); const s = { t0, t1, g }; s.update = build(g) || (() => {}); scenes.push(s); return s; }
+
+function buildAll() {
+  const aud = el('g', {}, world);
+  el('rect', { x: 0, y: 1430, width: W, height: 490, fill: '#ECE4CF' }, aud);
+  el('rect', { x: 0, y: 1430, width: W, height: 10, fill: C.navy, opacity: 0.12 }, aud);
+  const audC = crowd(aud, { x0: 40, y0: 1640, cols: 14, rows: 3, dx: 80, dy: 115, s: 0.95 });
+  audience = { g: aud, cr: audC };
+  // 1. the urgent appeal flies to the Knesset (0 – 2.40)
+  scene(0, 2.40, (g) => {
+    const rb = ribbon(g, 'פנייה דחופה', { size: 92, fill: C.yellow, color: C.navy, tail: C.gold });
+    const k = knesset(g, 700);
+    const lab = chip(g, 'יו״ר הכנסת · אמיר אוחנה', { size: 44 });
+    const env = el('g', {}, g);
+    el('rect', { x: -90, y: -58, width: 180, height: 116, rx: 8, fill: C.card, stroke: C.navy, 'stroke-width': 6 }, env);
+    el('path', { d: 'M-90 -58 L0 12 L90 -58', fill: 'none', stroke: C.navy, 'stroke-width': 6 }, env);
+    el('circle', { cx: 0, cy: 12, r: 18, fill: C.red }, env);
+    return (t) => {
+      tf(rb, 540, 420, Math.max(0.01, pop(t, -0.15, 0.45)), -2);
+      slideIn(k, t, 0.10, 540, 1080, 0, 500, 0.5);
+      // the envelope arcs from the bottom into the building
+      const p = E.io(seg(t, 0.35, 1.25));
+      if (t < 0.35 || p >= 1) op(env, 0); else { op(env, 1); tf(env, lerp(140, 540, p), lerp(1500, 900, p) - 380 * Math.sin(p * Math.PI), lerp(1, 0.45, p), lerp(-20, 8, p)); }
+      popIn(lab, t, 1.62, 540, 1180, 0);
+    };
+  });
+
+  // 2. one MK, two passports (2.40 – 4.87)
+  scene(2.40, 4.87, (g) => {
+    const hero = person(g, C.yellow, 2.4);
+    const halo = el('circle', { cx: 0, cy: 0, r: 190, fill: C.yellow, opacity: 0.2 }, g);
+    g.insertBefore(halo, hero.g);
+    const name = chip(g, 'יונתן שלו', { size: 56, fill: C.navy, color: C.yellow });
+    const il = passport(g, 'ISRAEL', C.navy2, (q) => { el('path', { d: 'M0 -46 L20 -12 L-20 -12 Z M0 -2 L-20 -36 L20 -36 Z', fill: 'none', stroke: C.yellow, 'stroke-width': 5 }, q); });
+    const us = passport(g, 'USA', '#24314F', (q) => { for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + i * 4 * Math.PI / 5, b = a + 2 * Math.PI / 5; } el('path', { d: 'M0 -58 L9 -32 L37 -32 L15 -16 L23 10 L0 -6 L-23 10 L-15 -16 L-37 -32 L-9 -32 Z', fill: C.yellow }, q); });
+    const pin = el('g', {}, g);
+    el('path', { d: 'M0 0 C-40 -50 -40 -110 0 -110 C40 -110 40 -50 0 0 Z', fill: C.red }, pin);
+    el('circle', { cx: 0, cy: -72, r: 15, fill: C.card }, pin);
+    const bal = chip(g, 'נולד בבולטימור, ארה״ב', { size: 40, fill: C.card, color: C.navy });
+    return (t) => {
+      if (t >= 2.4) { const p = E.back(seg(t, 2.42, 2.85)); op(hero.g, 1); tf(hero.g, 540, 960 + 400 * (1 - p)); op(halo, 0.2); tf(halo, 540, 820, p); }
+      popIn(name, t, 2.55, 540, 1035, -1.5);
+      popIn(pin, t, 3.00, 800, 560, 0);
+      popIn(bal, t, 3.25, 700, 640, -2);
+      slideIn(il, t, 4.05, 300, 700, -400, 0); if (t > 4.5) tf(il, 300, 700, 1, -8);
+      slideIn(us, t, 4.30, 780, 820, 400, 0); if (t > 4.75) tf(us, 780, 820, 1, 8);
+    };
+  });
+
+  // 3. the law: what an MK with a second citizenship must do (4.87 – 11.08)
+  scene(4.87, 11.08, (g) => {
+    const rb = ribbon(g, 'חוק-יסוד: הכנסת · 16א', { size: 62 });
+    const sub = T(g, 'לפני הצהרת האמונים, חובה:', 540, 600, 50, C.navy, 800);
+    const rows = ['להתייצב בשגרירות ארה״ב', 'לחתום על ויתור על האזרחות', 'להשלים את כל הטפסים'].map(s => checkRow(g, s));
+    const seat = el('g', {}, g);
+    el('path', { d: 'M-90 0 L-90 -150 Q-90 -190 -50 -190 L50 -190 Q90 -190 90 -150 L90 0 Z', fill: C.sky, stroke: C.navy, 'stroke-width': 7 }, seat);
+    el('rect', { x: -110, y: -60, width: 220, height: 50, rx: 12, fill: C.navy2, stroke: C.navy, 'stroke-width': 7 }, seat);
+    el('rect', { x: -96, y: -10, width: 16, height: 70, fill: C.navy }, seat); el('rect', { x: 80, y: -10, width: 16, height: 70, fill: C.navy }, seat);
+    const sl = chip(g, 'מושב בכנסת', { size: 36, fill: C.card, color: C.navy });
+    const X = el('g', {}, g);
+    el('path', { d: 'M-150 -150 L150 150 M150 -150 L-150 150', stroke: C.red, 'stroke-width': 40, 'stroke-linecap': 'round' }, X);
+    const verdict = ribbon(g, 'לא יכול לתפקד', { size: 80, fill: C.red, color: C.cream, tail: '#9E1B22' });
+    return (t) => {
+      tf(rb, 540, 450, Math.max(0.01, pop(t, 4.90, 0.45)), -1.5);
+      op(sub, t >= 5.55 ? 1 : 0);
+      // the checklist hangs on to 8.9, then gives way to the seat
+      const out = E.in(seg(t, 8.75, 9.05));
+      rows.forEach((r, i) => { slideIn(r.g, t, 5.95 + i * 0.45, 540, 760 + i * 128, 900, 0); if (t > 5.95 + i * 0.45 + 0.45) tf(r.g, 540 - 1100 * out, 760 + i * 128); op(r.q, t >= 7.45 + i * 0.18 ? 1 : 0); });
+      op(sub, (t >= 5.55 ? 1 : 0) * (1 - out));
+      slideIn(seat, t, 9.00, 540, 1080, 0, 600, 0.4);
+      popIn(sl, t, 9.15, 540, 1120, 0);
+      if (t < 9.15) op(X, 0); else { op(X, 1); const p = seg(t, 9.15, 9.27); tf(X, 540, 960, lerp(2.2, 1, E.in(p))); }
+      tf(verdict, 540, 700, Math.max(0.01, pop(t, 9.10, 0.45)), -3); op(verdict, t >= 9.10 ? 1 : 0);
+    };
+  });
+
+  // 4. everyone votes; his ballot bounces back (11.08 – 12.95)
+  scene(11.08, 12.95, (g) => {
+    const rb = ribbon(g, 'הצבעה במליאה', { size: 70 });
+    const boxes = [], voters = [], ballots = [];
+    for (let i = 0; i < 4; i++) {
+      const x = 170 + i * 250;
+      boxes.push(ballotBox(g, 1.4));
+      const v = person(g, i === 2 ? C.yellow : [C.navy, C.sky, C.yellow, C.navy2][i], 1.5);
+      voters.push(v); ballots.push(ballot(g));
+      boxes[i].x = x;
+    }
+    const nope = chip(g, 'הקול לא נספר', { size: 60, fill: C.red, color: C.cream });
+    return (t) => {
+      tf(rb, 540, 450, Math.max(0.01, pop(t, 11.10, 0.4)), -1.5);
+      boxes.forEach((b, i) => {
+        const x = b.x;
+        slideIn(b, t, 11.15 + i * 0.07, x, 1150, 0, 500, 0.4);
+        slideIn(voters[i].g, t, 11.25 + i * 0.07, x, 880, 0, 400, 0.4);
+        const b0 = 11.65 + i * 0.12, p = E.io(seg(t, b0, b0 + 0.35));
+        if (t < b0) op(ballots[i], 0);
+        else if (i !== 2) { op(ballots[i], p >= 1 ? 0 : 1); tf(ballots[i], x, lerp(700, 1010, p)); }
+        else { // his ballot hits the slot and is thrown back
+          const q = seg(t, b0 + 0.35, b0 + 0.9);
+          op(ballots[i], 1); tf(ballots[i], x + 220 * E.out(q), lerp(700, 990, p) - 320 * Math.sin(q * Math.PI * 0.9), 1, 380 * q);
+        }
+      });
+      popIn(nope, t, 12.30, 540, 610, -3);
+    };
+  });
+
+  // 5. the cover: a giant hand drops a sheet over him (12.95 – 15.67)
+  scene(12.95, 15.67, (g) => {
+    const lbl = chip(g, 'הייעוץ המשפטי לכנסת', { size: 50, fill: C.navy, color: C.cream });
+    const hero = person(g, C.yellow, 2.6);
+    const sheet = el('g', {}, g);
+    el('path', { d: 'M-230 0 Q-250 -200 -150 -330 Q0 -420 150 -330 Q250 -200 230 0 Q170 -20 115 0 Q60 -22 0 0 Q-60 -22 -115 0 Q-170 -20 -230 0 Z', fill: C.navy2 }, sheet);
+    el('path', { d: 'M-120 -300 Q-60 -170 -80 -10 M60 -330 Q120 -180 90 -10', fill: 'none', stroke: C.navy, 'stroke-width': 8, opacity: 0.6 }, sheet);
+    const hd = hand(g);
+    hd.appendChild(lbl); tf(lbl, 0, -250, 1, -90);
+    const q = ribbon(g, 'מחפה?', { size: 110, fill: C.red, color: C.cream, tail: '#9E1B22' });
+    return (t) => {
+      op(hero.g, 1); tf(hero.g, 540, 1180);
+      const d = E.io(seg(t, 13.55, 14.20));
+      tf(hd, 540, lerp(-200, 650, d)); op(hd, 1);
+      // the sheet hangs from the hand, then drops over the figure at 14.2
+      const f = E.out(seg(t, 14.20, 14.45));
+      tf(sheet, 540, lerp(lerp(-140, 700, d), 1188, f), 1, 0, lerp(0.85, 1.05, f));
+      if (t > 14.45) tf(hd, 540, lerp(650, -200, E.io(seg(t, 14.45, 15.0))));
+      tf(q, 540, 760, Math.max(0.01, pop(t, 14.22, 0.4)), -4); op(q, t >= 14.22 ? 1 : 0);
+      if (t >= 14.77) { const s = 1 + 0.06 * Math.sin((t - 14.77) * 18) * Math.exp(-(t - 14.77) * 4); tf(sheet, 540, 1188, s, 0, 1.05 * s); }
+    };
+  });
+
+  // 6. where is the proof? the crowd demands it (15.67 – 17.98)
+  scene(15.67, 17.98, (g) => {
+    const doc = el('g', {}, g);
+    el('rect', { x: -230 + 12, y: -300 + 12, width: 460, height: 600, rx: 14, fill: C.ink, opacity: 0.2 }, doc);
+    el('rect', { x: -230, y: -300, width: 460, height: 600, rx: 14, fill: C.card, stroke: C.navy, 'stroke-width': 7, 'stroke-dasharray': '26 16' }, doc);
+    T(doc, 'אסמכתא', 0, -200, 54, C.navy, 900);
+    T(doc, '?', 0, 150, 300, C.pale, 900);
+    const lens = el('g', {}, g);
+    el('line', { x1: 70, y1: 70, x2: 170, y2: 170, stroke: C.navy, 'stroke-width': 30, 'stroke-linecap': 'round' }, lens);
+    el('circle', { cx: 0, cy: 0, r: 100, fill: C.sky, opacity: 0.25, stroke: C.navy, 'stroke-width': 18 }, lens);
+    const signs = [];
+    for (let i = 0; i < 3; i++) {
+      const s = el('g', {}, g);
+      el('rect', { x: -6, y: -40, width: 12, height: 200, fill: C.navy }, s);
+      el('rect', { x: -130, y: -150, width: 260, height: 120, rx: 10, fill: i === 1 ? C.yellow : C.card, stroke: C.navy, 'stroke-width': 6 }, s);
+      T(s, i === 1 ? 'אסמכתא!' : 'הוכחה!', 0, -72, 50, C.navy, 900);
+      signs.push(s);
+    }
+    return (t) => {
+      tf(doc, 540, 730, Math.max(0.01, pop(t, 15.70, 0.45))); op(doc, t >= 15.7 ? 1 : 0);
+      const lt = seg(t, 15.95, 16.9);
+      popIn(lens, t, 15.95, 0, 0);
+      if (t >= 15.95) tf(lens, 540 + 170 * Math.sin(lt * Math.PI * 2.2), 700 + 120 * Math.sin(lt * Math.PI * 1.4 + 1), pop(t, 15.95, 0.3));
+      signs.forEach((s, i) => { const t0 = 16.85 + i * 0.12; slideIn(s, t, t0, 220 + i * 320, 1150, 0, 500, 0.4); if (t > t0 + 0.4) tf(s, 220 + i * 320, 1150 - Math.abs(Math.sin((t - t0) * 6 + i)) * 18, 1, Math.sin((t - t0) * 5 + i) * 4); });
+    };
+  });
+
+  // 7. no proof, no vote (17.98 – 20.30)
+  scene(17.98, 20.30, (g) => {
+    const a = ribbon(g, 'אין אסמכתא', { size: 104 });
+    const b = ribbon(g, 'אין הצבעה', { size: 120, fill: C.red, color: C.cream, tail: '#9E1B22' });
+    const bx = ballotBox(g, 2.4);
+    const lock = el('g', {}, g);
+    el('path', { d: 'M-46 -10 L-46 -60 Q-46 -110 0 -110 Q46 -110 46 -60 L46 -10', fill: 'none', stroke: C.navy, 'stroke-width': 18 }, lock);
+    el('rect', { x: -70, y: -20, width: 140, height: 110, rx: 14, fill: C.yellow, stroke: C.navy, 'stroke-width': 7 }, lock);
+    el('circle', { cx: 0, cy: 30, r: 14, fill: C.navy }, lock);
+    return (t) => {
+      tf(a, 540, 470, Math.max(0.01, pop(t, 18.00, 0.45)), -2); op(a, t >= 18 ? 1 : 0);
+      slideIn(bx, t, 18.20, 540, 1220, 0, 700, 0.5);
+      if (t < 19.36) op(lock, 0); else { op(lock, 1); const p = seg(t, 19.36, 19.48); tf(lock, 540, 1000, lerp(2.6, 1, E.in(p))); }
+      tf(b, 540, 700, Math.max(0.01, pop(t, 19.30, 0.4)), 2); op(b, t >= 19.30 ? 1 : 0);
+    };
+  });
+
+  // 8. end card (20.30 – end)
+  scene(20.30, 99, (g) => {
+    el('rect', { width: W, height: H, fill: C.navy }, g);
+    for (let i = 0; i < 26; i++) el('circle', { cx: (i * 173) % W, cy: 200 + (i * 331) % 1500, r: 3 + (i % 3), fill: C.navy2 }, g);
+    const logo = el('image', { href: 'assets/logo-white.png', x: -280, y: -257, width: 560, height: 514 }, g);
+    const line = T(g, 'מחזירים את הכוח לעם', 0, 0, 92, C.yellow, 900);
+    const lg = el('g', {}, g); lg.appendChild(line);
+    const cta = el('g', {}, g);
+    const w = measure('תמכו בפעילות שלנו', 50) + 140;
+    el('rect', { x: -w / 2, y: -50, width: w, height: 100, rx: 50, fill: C.yellow }, cta);
+    T(cta, 'תמכו בפעילות שלנו', -18, 18, 50, C.navy, 900);
+    el('path', { d: 'M0 8 C-14 -6 -30 -2 -30 12 C-30 26 -10 36 0 46 C10 36 30 26 30 12 C30 -2 14 -6 0 8 Z', fill: C.red, transform: `translate(${w / 2 - 62} -28) scale(0.9)` }, cta);
+    const cr = crowd(g, { x0: 110, y0: 1560, cols: 12, rows: 1, dx: 76, s: 0.6 });
+    cr.people.forEach(pp => pp.i.querySelectorAll('*').forEach(n => n.setAttribute('fill', pp.k % 4 === 1 ? C.yellow : C.pale)));
+    return (t) => {
+      popIn(logo, t, 20.42, 540, 680, 0, 0.45);
+      popIn(lg, t, 20.85, 540, 1140, 0, 0.4);
+      if (t >= 21.65) { op(cta, 1); tf(cta, 540, 1310, pop(t, 21.65, 0.4) * (1 + 0.03 * Math.sin((t - 21.65) * 7)), -1.5); } else op(cta, 0);
+      crowdLife(cr, t, 21.0, 0.03);
+    };
+  });
+
+  // org logo (top right, no frame) on 1–7
+  const hud = document.getElementById('hud');
+  const logo = el('image', { href: 'assets/logo.png', x: 754, y: 70, width: 300, height: 252 }, hud);
+  hudUpdate = (t) => show(logo, t < 20.30);
+
+  // captions: white rounded card, navy text, keyword on yellow
+  const caps = document.getElementById('caps');
+  CAPS.forEach(c => {
+    const g = el('g', {}, caps), size = 48, maxW = 900;
+    const words = c.text.split(' '), lines = [[]]; let cur = 0;
+    words.forEach(wd => { const ww = measure(wd + ' ', size); if (cur + ww > maxW && lines[lines.length - 1].length) { lines.push([]); cur = 0; } lines[lines.length - 1].push(wd); cur += ww; });
+    const lh = size * 1.3, padY = 24, padX = 34;
+    const lw = Math.max(...lines.map(l => measure(l.join(' '), size)));
+    const bh = lines.length * lh + padY * 2;
+    el('rect', { x: -lw / 2 - padX + 6, y: -bh / 2 + 8, width: lw + padX * 2, height: bh, rx: 22, fill: C.ink, opacity: 0.25 }, g);
+    el('rect', { x: -lw / 2 - padX, y: -bh / 2, width: lw + padX * 2, height: bh, rx: 22, fill: C.card, stroke: C.navy, 'stroke-width': 4 }, g);
+    lines.forEach((l, i) => {
+      const tx = el('text', { x: 0, y: -bh / 2 + padY + lh * i + size * 0.95, 'font-size': size, 'font-family': F, 'font-weight': 900, 'text-anchor': 'middle', direction: 'rtl' }, g);
+      l.forEach((wd, k) => { const hl = c.kw.some(K => wd.replace(/[,.?:]/g, '').includes(K)); const sp = el('tspan', { fill: hl ? C.red : C.navy }, tx); sp.textContent = wd + (k < l.length - 1 ? ' ' : ''); });
+    });
+    c.g = g; c.bh = bh; c.lw = lw + padX * 2;
+  });
+  capUpdate = (t) => CAPS.forEach(c => {
+    const on = t >= c.t0 && t < c.t1; show(c.g, on); if (!on) return;
+    const p = seg(t, c.t0, c.t0 + 0.35);
+    tf(c.g, 540, 1290 - c.bh / 2 + 40 * (1 - E.out(p)), lerp(0.85, 1, E.back(p)));
+  });
+
+  // scene transitions: a flat colour sweep (diagonal band) at each cut
+  const wipe = document.getElementById('wipe');
+  const band = el('path', { d: `M0 0 L${W + 900} 0 L${W} ${H} L-900 ${H} Z`, fill: C.yellow }, wipe);
+  wipeUpdate = (t) => {
+    const w = WIPES.find(([b]) => Math.abs(t - b) < 0.22);
+    show(band, !!w); if (!w) return;
+    band.setAttribute('fill', w[1]);
+    const u = (t - w[0] + 0.22) / 0.44;
+    tf(band, lerp(W + 100, -W - 1100, E.io(u)), 0);
+  };
+}
+let hudUpdate = () => {}, capUpdate = () => {}, wipeUpdate = () => {}, audience = null;
+const WIPES = [[2.40, C.yellow], [4.87, C.navy], [11.08, C.sky], [12.95, C.navy], [15.67, C.yellow], [17.98, C.sky], [20.30, C.navy]];
+const CAPS = [
+  { t0: 0.05, t1: 2.40, text: 'הגשנו פנייה דחופה ליו״ר הכנסת אמיר אוחנה', kw: ['דחופה'] },
+  { t0: 2.40, t1: 4.87, text: 'יונתן שלו נולד בארצות הברית והוא אזרח אמריקאי', kw: ['אזרח', 'אמריקאי'] },
+  { t0: 4.87, t1: 7.42, text: 'חוק-יסוד: הכנסת אומר: מי שלא עשה את כל הנדרש', kw: ['הנדרש'] },
+  { t0: 7.42, t1: 11.07, text: 'כדי לוותר על אזרחות זרה, לא יכול לתפקד כחבר כנסת', kw: ['לתפקד'] },
+  { t0: 11.07, t1: 12.95, text: 'וזה אומר שהוא לא יכול להצביע', kw: ['להצביע'] },
+  { t0: 12.95, t1: 15.67, text: 'הייעוץ המשפטי לכנסת מחפה על יונתן שלו', kw: ['מחפה'] },
+  { t0: 15.67, t1: 17.98, text: 'איפה ההוכחה? אנחנו רוצים אסמכתא', kw: ['אסמכתא'] },
+  { t0: 17.98, t1: 20.30, text: 'אין אסמכתא, אין הצבעה.', kw: ['הצבעה'] },
+];
+
+const SHAKES = [[1.25, 8, 0.25], [9.15, 14, 0.3], [12.30, 8, 0.2], [14.45, 12, 0.3], [19.36, 22, 0.4]];
+const cam = document.getElementById('cam');
+function render(t) {
+  show(audience.g, t < 20.30);
+  // the audience bobs; it cheers (bigger bounce) on the demand for proof
+  const cheer = t >= 16.3 && t < 18.0 ? 1 : 0;
+  audience.cr.people.forEach(pp => { const b = Math.abs(Math.sin(t * (3.6 + cheer * 3) + pp.k * 0.9)) * (4 + cheer * 22); tf(pp.g, pp.x, pp.y - b); });
+  for (const s of scenes) { const on = t >= s.t0 && t < s.t1; show(s.g, on); if (on) s.update(t); }
+  let dx = 0, dy = 0;
+  for (const [t0, a, d] of SHAKES) if (t >= t0 && t < t0 + d) { const k = 1 - (t - t0) / d; dx += a * k * k * Math.sin(t * 91 + t0); dy += a * k * k * Math.cos(t * 77 + t0 * 3); }
+  const z = 1 + 0.025 * Math.sin(t * 0.35);   // gentle constant drift
+  cam.setAttribute('transform', `translate(${(dx + 540 * (1 - z)).toFixed(2)} ${(dy + 900 * (1 - z)).toFixed(2)}) scale(${z.toFixed(4)})`);
+  hudUpdate(t); capUpdate(t); wipeUpdate(t);
+}
+window.EV = [
+  { t: 0.00, type: 'popBig' }, { t: 0.35, type: 'zoom' }, { t: 1.25, type: 'thump' }, { t: 1.62, type: 'pop' },
+  { t: 2.40, type: 'wipe' }, { t: 2.45, type: 'popBig' }, { t: 2.55, type: 'pop' }, { t: 3.00, type: 'pop' }, { t: 3.25, type: 'pop' }, { t: 4.05, type: 'paper' }, { t: 4.30, type: 'paper' },
+  { t: 4.87, type: 'wipe' }, { t: 4.90, type: 'popBig' }, { t: 5.95, type: 'key' }, { t: 6.40, type: 'key' }, { t: 6.85, type: 'key' }, { t: 7.45, type: 'pop' }, { t: 7.63, type: 'pop' }, { t: 7.81, type: 'pop' },
+  { t: 8.75, type: 'zoom' }, { t: 9.00, type: 'thump' }, { t: 9.15, type: 'stamp' },
+  { t: 11.08, type: 'wipe' }, { t: 11.10, type: 'popBig' }, { t: 11.65, type: 'key' }, { t: 11.77, type: 'key' }, { t: 12.01, type: 'key' }, { t: 12.24, type: 'boing' }, { t: 12.30, type: 'pop' },
+  { t: 12.95, type: 'wipe' }, { t: 12.98, type: 'pop' }, { t: 13.55, type: 'zoom' }, { t: 14.22, type: 'stamp' }, { t: 14.45, type: 'thump' },
+  { t: 15.67, type: 'wipe' }, { t: 15.70, type: 'popBig' }, { t: 15.95, type: 'zoom' }, { t: 16.85, type: 'pop' }, { t: 16.97, type: 'pop' }, { t: 17.09, type: 'pop' },
+  { t: 17.98, type: 'wipe' }, { t: 18.00, type: 'popBig' }, { t: 18.20, type: 'thump' }, { t: 19.30, type: 'popBig' }, { t: 19.36, type: 'stampBig' },
+  { t: 20.30, type: 'wipe' }, { t: 20.42, type: 'pop' }, { t: 21.65, type: 'pop' },
+];
+window.DUR = DUR;
+window.TEXTS = (t) => CAPS.filter(c => t >= c.t0 && t < c.t1).map(c => ({ id: 'cap' + CAPS.indexOf(c), text: c.text, x0: 540 - c.lw / 2, y0: 1150, x1: 540 + c.lw / 2, y1: 1330, pass: true }));
+async function init() {
+  const sample = document.documentElement.innerHTML.replace(/[\x00-\x2f]/g, '') + 'אבגדהוזחטיכלמנסעפצקרשתךםןףץ״׳0123456789?!,.:ISRAELUSA';
+  await Promise.all(['900 50px Heebo', '800 50px Heebo'].map(f => document.fonts.load(f, sample)));
+  await document.fonts.ready;
+  for (const src of ['assets/logo.png', 'assets/logo-white.png']) { const i = new Image(); i.src = src; await i.decode(); }
+  buildAll();
+  render(parseFloat(new URLSearchParams(location.search).get('t') || '0'));
+  window.READY = true;
+}
+window.render = render;
+init();
+</script>
+</body>
+</html>
