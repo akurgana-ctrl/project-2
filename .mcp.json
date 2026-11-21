@@ -36,6 +36,13 @@
         "git+https://github.com/matanmill304/knesset-mcp@f97c474",
         "knesset-mcp"
       ]
+    },
+    "better-icons": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "better-icons@1.0.5"
+      ]
     }
   }
 }

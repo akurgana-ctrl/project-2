@@ -3,6 +3,7 @@
     "playwright",
     "firecrawl",
     "posthog",
-    "knesset"
+    "knesset",
+    "better-icons"
   ]
 }
