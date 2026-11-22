@@ -111,7 +111,8 @@ def build(content, logo, out):
     run(p, "הנדון: ", bold=True, underline=True)
     run(p, content["subject"], bold=True, underline=True)
     if content.get("subtitle"):
-        run(para(doc, jc="center", after=9.3), content["subtitle"], bold=True)
+        run(para(doc, jc="center", after=9.3), content["subtitle"], bold=True,
+            underline=content.get("subtitle_underline", False))
 
     n = 0
     for sec_ in content["sections"]:
