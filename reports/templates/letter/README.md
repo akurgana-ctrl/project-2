@@ -17,11 +17,13 @@
 
 ## שימוש
 ```
-python3 build_letter.py content.json logo.png out.docx
+python3 build_letter.py content.json logo.png out.docx [signature.png]
 soffice --headless --convert-to pdf out.docx
 ```
+**חתימה בכתב יד:** הפרמטר הרביעי, שאינו חובה, הוא קובץ PNG שקוף של החתימה. היא משובצת בין "בברכה," לשם החותם. **החתימה לא נשמרת בריפו, כי הוא ציבורי.** אדם שומר אותה אצלו ומעלה אותה לשיחה כשצריך. כדי להפיק אותה מצילום של חתימה על דף לבן: לחסר רקע מטושטש, לסנן לפי סף, לצבוע בכחול כהה ולשמור כ-PNG שקוף.
+גופן: בסביבה בלי David מתקינים את David Libre (Google Fonts, OFL) ומגדירים alias ב-fontconfig מ-David ל-David Libre, כדי שה-PDF ייצא בדוד.
 `content.json` מכיל את השדות: date_hebrew, date_gregorian, to[], subject, subtitle, sections[{title, paragraphs[]}], signer, org.
-להכנסת טקסט ארוך לעמוד אחד: `"layout": {"size": 10.5, "pitch": 13.0, "gap": 0.3, "top": 116, "sig_gap": 22}` (sig_gap = רווח לפני החתימה). בלי השדה הזה המסמך נבנה במידות התבנית המקורית.
+להכנסת טקסט ארוך לעמוד אחד: `"layout": {"size": 10.5, "pitch": 13.0, "gap": 0.3, "top": 116, "sig_gap": 22}` (sig_gap = רווח לפני החתימה; `"bottom": 72` מרחיב את השוליים התחתונים, ברירת המחדל 42). בלי השדה הזה המסמך נבנה במידות התבנית המקורית.
 בתוך פסקה, טקסט בין `**…**` יודגש.
 פריט ב-paragraphs שהוא `{"items": [...]}` הופך לרשימה מוזחת.
 לתאריך העברי: `https://www.hebcal.com/converter?cfg=json&gy=YYYY&gm=M&gd=D&g2h=1`.

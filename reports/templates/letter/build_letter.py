@@ -83,13 +83,13 @@ def para(doc, jc=None, **kw):
     return p
 
 
-def build(content, logo, out):
+def build(content, logo, out, signature=None):
     LAYOUT.update(content.get("layout", {}))
     doc = Document()
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Pt(595.3), Pt(841.9)
     sec.right_margin, sec.left_margin = Pt(50), Pt(45)
-    sec.top_margin, sec.bottom_margin = Pt(LAYOUT["top"]), Pt(42)
+    sec.top_margin, sec.bottom_margin = Pt(LAYOUT["top"]), Pt(LAYOUT.get("bottom", 42))
     sec.header_distance, sec.footer_distance = Pt(9), Pt(30)
     sec._sectPr.append(OxmlElement("w:bidi"))
 
@@ -132,6 +132,9 @@ def build(content, logo, out):
     sig = para(doc, jc="center", after=0.3)
     sig.paragraph_format.space_before = Pt(LAYOUT.get("sig_gap", 0))
     run(sig, "בברכה,", bold=True)
+    if signature:  # handwritten signature image (transparent PNG), kept outside the repo
+        img = para(doc, jc="center", after=0)
+        img.add_run().add_picture(signature, height=Pt(46))
     run(para(doc, jc="center", after=6.3), content["signer"])
     run(para(doc, jc="center", after=0), content["org"])
 
@@ -140,4 +143,5 @@ def build(content, logo, out):
 
 if __name__ == "__main__":
     with open(sys.argv[1], encoding="utf-8") as f:
-        build(json.load(f), sys.argv[2], sys.argv[3])
+        build(json.load(f), sys.argv[2], sys.argv[3],
+              sys.argv[4] if len(sys.argv) > 4 else None)
