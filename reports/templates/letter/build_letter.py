@@ -133,8 +133,14 @@ def build(content, logo, out):
     sig = para(doc, jc="center", after=0.3)
     sig.paragraph_format.space_before = Pt(LAYOUT.get("sig_gap", 0))
     run(sig, "בברכה,", bold=True)
+    # optional handwritten signature image (kept outside the public repo)
+    if content.get("signature"):
+        sp = para(doc, jc="center", after=0)
+        sp.paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
+        sp.add_run().add_picture(content["signature"], height=Pt(content.get("signature_height", 42)))
     run(para(doc, jc="center", after=6.3), content["signer"])
-    run(para(doc, jc="center", after=0), content["org"])
+    if content.get("org"):
+        run(para(doc, jc="center", after=0), content["org"])
 
     # optional copies list ("העתק:"), right-aligned under the signature
     if content.get("cc"):
