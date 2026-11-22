@@ -134,6 +134,8 @@ def build(content, logo, out, signature=None):
     run(sig, "בברכה,", bold=True)
     if signature:  # handwritten signature image (transparent PNG), kept outside the repo
         img = para(doc, jc="center", after=0)
+        # the image needs auto line height; the template's exact pitch would clip it
+        img.paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
         img.add_run().add_picture(signature, height=Pt(46))
     run(para(doc, jc="center", after=6.3), content["signer"])
     run(para(doc, jc="center", after=0), content["org"])
