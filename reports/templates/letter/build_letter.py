@@ -89,7 +89,7 @@ def build(content, logo, out):
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Pt(595.3), Pt(841.9)
     sec.right_margin, sec.left_margin = Pt(50), Pt(45)
-    sec.top_margin, sec.bottom_margin = Pt(LAYOUT["top"]), Pt(42)
+    sec.top_margin, sec.bottom_margin = Pt(LAYOUT["top"]), Pt(LAYOUT.get("bottom", 42))
     sec.header_distance, sec.footer_distance = Pt(9), Pt(30)
     sec._sectPr.append(OxmlElement("w:bidi"))
 
