@@ -25,6 +25,7 @@ LINKS = {
     "wound_reel": "https://www.instagram.com/reel/DfpOJNRhgu0/",
     "knesset_watch_form": "https://forms.gle/p5vjr56T6hsz3QFKA",
     "kan11_article": "https://www.israelhayom.co.il/israelnow/article/21923843",
+    "shdula_video": "https://akurgana-ctrl.github.io/project-2/video/shdula/",
     "andrey_page": "https://activism.mashma.net/andrei-x",
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
