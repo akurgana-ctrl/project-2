@@ -38,7 +38,7 @@ LINKS = {
     "debate_video": "https://youtu.be/yFkOOdQ4UXw",
     "pesin_data": "https://www.michaelpesin.com/projects/twenty-fifth-knesset",
     "podcast_channel": "https://www.youtube.com/@AlHamashmaut?sub_confirmation=1",
-    "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi",
+    "join_group": "https://chat.whatsapp.com/Cxw30pP21S34YVVI3dAeJi?s=cl&p=i&iam=2",
     "podcast_img": "https://youtu.be/ZpHFRbkM4fM",
     "podcast_btn": "https://youtu.be/ZpHFRbkM4fM",
     "updates_group": "https://chat.whatsapp.com/BYfqjCBe5pzHtWZ1tzIb83",
