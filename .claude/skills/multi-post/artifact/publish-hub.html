@@ -1,0 +1,401 @@
+<title>מרכז הפרסום</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: one narrow column, a broadcast "control desk": compose → adapt per network → approve → queue */
+:root{
+  --bg:#F3F5FA; --panel:#FFFFFF; --ink:#0D1B33; --muted:#5B6782; --line:#DCE2EE;
+  --navy:#0B2A5B; --gold:#FFC20E; --gold-ink:#3A2C00; --blue:#2F6FD6;
+  --ok:#14804A; --ok-bg:#E3F4EA; --warn:#9A5B00; --warn-bg:#FFF2D6; --bad:#C62828; --bad-bg:#FCE6E6;
+  --f-display:"Heebo",system-ui,sans-serif; --f-body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08111F; --panel:#0F1C31; --ink:#E8EEF9; --muted:#97A5C0; --line:#22324F;
+  --navy:#9CC3FF; --gold:#FFC20E; --gold-ink:#2A1F00; --blue:#7FB0FF;
+  --ok:#5DD39A; --ok-bg:#0E2A1D; --warn:#FFC965; --warn-bg:#2E2208; --bad:#FF8A8A; --bad-bg:#341414; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08111F; --panel:#0F1C31; --ink:#E8EEF9; --muted:#97A5C0; --line:#22324F;
+  --navy:#9CC3FF; --gold:#FFC20E; --gold-ink:#2A1F00; --blue:#7FB0FF;
+  --ok:#5DD39A; --ok-bg:#0E2A1D; --warn:#FFC965; --warn-bg:#2E2208; --bad:#FF8A8A; --bad-bg:#341414; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;direction:rtl;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:680px;margin:0 auto;display:grid;gap:18px}
+header{padding-block:22px 4px;display:grid;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:700}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,7vw,38px);line-height:1.1;margin:0;text-wrap:balance}
+h1 span{background:linear-gradient(transparent 62%,var(--gold) 62%);padding-inline:2px;color:var(--ink)}
+.lede{color:var(--muted);margin:0}
+section.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:12px}
+.step h2{margin:0;font-size:18px;font-weight:800;display:flex;gap:10px;align-items:center}
+.num{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--bg);font-size:14px;font-weight:900;flex:none}
+label.f{display:grid;gap:6px;font-weight:600;font-size:14px}
+textarea,input[type=text],input[type=url],input[type=datetime-local]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:110px;resize:vertical}
+textarea:focus,input:focus,button:focus-visible,.chip:focus-within{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);outline-offset:1px}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;justify-items:center;text-align:center;color:var(--muted);cursor:pointer}
+.drop.has{border-style:solid;border-color:var(--navy)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+.preview{max-height:260px;border-radius:8px;max-width:100%}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:14px;background:var(--bg);user-select:none}
+.chip input{accent-color:var(--navy);margin:0}
+.chip:has(input:checked){background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.chip small{font-weight:500;opacity:.75}
+button{font:inherit;font-weight:700;border-radius:10px;border:1px solid transparent;padding:11px 16px;cursor:pointer}
+.primary{background:var(--gold);color:var(--gold-ink)}
+.secondary{background:transparent;color:var(--ink);border-color:var(--line)}
+.ghost{background:transparent;color:var(--blue);padding:6px 8px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:13px;color:var(--muted);margin:0}
+.msg{font-size:14px;border-radius:10px;padding:10px 12px;margin:0}
+.msg.bad{background:var(--bad-bg);color:var(--bad)} .msg.ok{background:var(--ok-bg);color:var(--ok)} .msg.warn{background:var(--warn-bg);color:var(--warn)}
+.cards{display:grid;gap:12px}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:8px;background:var(--bg)}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-h b{font-size:15px}
+.count{font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted);direction:ltr}
+.count.over{color:var(--bad);font-weight:700}
+.card.wa{border-color:color-mix(in srgb,var(--ok) 50%,var(--line))}
+.queue{display:grid;gap:10px}
+.job{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:6px;background:var(--bg)}
+.job-h{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}
+.pill.approved{background:var(--warn-bg);color:var(--warn)} .pill.published{background:var(--ok-bg);color:var(--ok)} .pill.error{background:var(--bad-bg);color:var(--bad)} .pill.publishing{background:var(--warn-bg);color:var(--warn)}
+.job p{margin:0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.job ul{margin:0;padding-inline-start:18px;font-size:14px}
+.job a{color:var(--blue)}
+.empty{color:var(--muted);font-size:14px;text-align:center;padding:14px;border:1px dashed var(--line);border-radius:10px}
+.handoff{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg);border-radius:10px;padding:10px 12px}
+.handoff code{font-family:inherit;font-weight:700}
+details summary{cursor:pointer;font-weight:700}
+@media (prefers-reduced-motion:no-preference){.card,.job{animation:in .25s ease-out both}@keyframes in{from{transform:translateY(4px);opacity:.6}to{transform:none;opacity:1}}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">כח התערבות · רשתות</div>
+    <h1>פוסט אחד, <span>כל הרשתות</span></h1>
+    <p class="lede">מעלים קובץ, כותבים פעם אחת, ו-Claude מתאים את הנוסח לכל רשת. אחרי האישור שלך הפוסט נכנס לתור ועולה דרך Postiz.</p>
+  </header>
+
+  <section class="step" aria-labelledby="s1">
+    <h2 id="s1"><span class="num">1</span>התוכן</h2>
+    <label class="drop" id="drop" for="file">
+      <input type="file" id="file" accept="video/mp4,video/quicktime,video/webm,image/jpeg,image/png,image/webp">
+      <div id="dropText"><b>בחר סרטון או תמונה</b><br><span class="note">ריל 9:16, עד 20MB בדף הזה. קובץ גדול יותר שולחים ל-Claude ישירות.</span></div>
+      <div id="previewBox"></div>
+    </label>
+    <label class="f" for="base">מה רוצים להגיד?
+      <textarea id="base" placeholder="למשל: היום בוועדת החוקה עבר בקריאה ראשונה… אנחנו דורשים…"></textarea>
+    </label>
+    <label class="f" for="link">קישור (לא חובה)
+      <input type="url" id="link" inputmode="url" placeholder="https://" dir="ltr">
+    </label>
+    <div class="row" role="radiogroup" aria-label="מתי לפרסם">
+      <label class="chip"><input type="radio" name="when" id="whenNow" value="now" checked> עכשיו</label>
+      <label class="chip"><input type="radio" name="when" id="whenLater" value="later"> לתזמן</label>
+      <input type="datetime-local" id="whenAt" hidden style="max-width:260px">
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s2">
+    <h2 id="s2"><span class="num">2</span>לאן</h2>
+    <div class="row" id="nets"></div>
+    <p class="note">טיקטוק ויוטיוב מקבלים רק וידאו. ערוץ הוואטסאפ מקבל נוסח מוכן ושולחים אותו ידנית, כי לערוצים אין API.</p>
+  </section>
+
+  <section class="step" aria-labelledby="s3">
+    <h2 id="s3"><span class="num">3</span>נוסח לכל רשת</h2>
+    <div class="row">
+      <button class="primary" id="adapt">התאם לכל רשת</button>
+      <button class="secondary" id="manual">אכתוב בעצמי</button>
+    </div>
+    <p class="msg" id="adaptMsg" hidden></p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="step" aria-labelledby="s4">
+    <h2 id="s4"><span class="num">4</span>אישור</h2>
+    <p class="note">"אשר" שומר את הנוסחים בדיוק כפי שהם, ואת הקובץ, בתור. שום דבר לא עולה לרשתות לפני זה.</p>
+    <button class="primary" id="approve" disabled>אשר ושלח לתור</button>
+    <p class="msg" id="approveMsg" hidden></p>
+  </section>
+
+  <section class="step" aria-labelledby="s5">
+    <h2 id="s5">התור</h2>
+    <div class="handoff">
+      <span>כדי לפרסם את מה שממתין, כתוב ל-Claude:</span>
+      <code id="cmd">פרסם את מה שבתור</code>
+      <button class="ghost" id="copyCmd">העתק</button>
+    </div>
+    <div class="queue" id="queue"><div class="empty">התור ריק. פוסט שתאשר יופיע כאן, עם קישור לכל רשת אחרי שהוא עולה.</div></div>
+  </section>
+
+  <section class="step">
+    <details>
+      <summary>הגדרות</summary>
+      <div style="display:grid;gap:10px;margin-top:10px">
+        <label class="f" for="waUrl">קישור לערוץ הוואטסאפ של הארגון
+          <input type="url" id="waUrl" dir="ltr" placeholder="https://whatsapp.com/channel/…">
+        </label>
+        <div class="row"><button class="secondary" id="saveCfg">שמור</button><span class="note" id="cfgMsg"></span></div>
+      </div>
+    </details>
+  </section>
+</div>
+
+<script>
+const NETS = [
+  {k:'instagram', name:'אינסטגרם', limit:2200},
+  {k:'facebook',  name:'פייסבוק',  limit:5000},
+  {k:'tiktok',    name:'טיקטוק',   limit:2200, video:true, title:90},
+  {k:'x',         name:'X',        limit:280, weighted:true},
+  {k:'youtube',   name:'יוטיוב שורטס', limit:5000, video:true, title:100, titleMin:2},
+  {k:'linkedin',  name:'לינקדאין', limit:3000},
+  {k:'telegram',  name:'טלגרם',    limit:1024},
+  {k:'whatsapp',  name:'ערוץ וואטסאפ', limit:1024, manual:true},
+];
+const RULES = `כללי ניסוח (כח התערבות, ארגון אזרחי. האיות: "כח התערבות" בלי ו'):
+- instagram: שורה ראשונה = הוק (עד 125 תווים). פסקאות קצרות. קריאה לפעולה. 3–5 האשטגים בסוף. קישור לא לחיץ, אז "לינק בביו".
+- facebook: יותר הקשר והסבר. קישור מלא. 0–2 האשטגים. עד ~500 תווים.
+- tiktok: קצר ומדובר, הוק. 3–5 האשטגים. בנוסף title: עד 90 תווים.
+- x: עד 280 תווים כולל קישור (קישור = 23). משפט חד אחד ו-1–2 האשטגים לכל היותר.
+- youtube: תיאור של 2–3 משפטים + קישור + #Shorts. בנוסף title חובה: 2–100 תווים, עם מילות חיפוש.
+- linkedin: מקצועי: מה קרה, למה זה חשוב, מה הלאה. הוק ב-210 התווים הראשונים. 3 האשטגים.
+- telegram: ישיר, קישור לחיץ, בלי האשטגים. עד 1,000 תווים.
+- whatsapp: קצר ואישי, *מודגש* בסגנון וואטסאפ, קישור בסוף. עד 600 תווים.
+חובה: לא להמציא עובדות, מספרים, ציטוטים או שמות שלא מופיעים בטקסט הבסיס. אותו מסר בכל רשת; משתנים האורך, הטון והמבנה. עברית תקנית.`;
+
+const $ = (id) => document.getElementById(id);
+const state = { file:null, isVideo:false, drafts:{}, cfg:{} };
+let db=null, assets=null, sample=null, user=null;
+
+function store(k,v){try{localStorage.setItem('mp:'+k,JSON.stringify(v))}catch{}}
+function load(k,d){try{const v=localStorage.getItem('mp:'+k);return v?JSON.parse(v):d}catch{return d}}
+
+// ---------- networks ----------
+const chosen = new Set(load('nets', NETS.map(n=>n.k)));
+function renderNets(){
+  const box=$('nets'); box.textContent='';
+  for(const n of NETS){
+    const l=document.createElement('label'); l.className='chip';
+    const i=document.createElement('input'); i.type='checkbox'; i.id='net-'+n.k; i.checked=chosen.has(n.k);
+    const blocked = n.video && state.file && !state.isVideo;
+    i.disabled = blocked;
+    i.addEventListener('change',()=>{i.checked?chosen.add(n.k):chosen.delete(n.k);store('nets',[...chosen]);renderCards()});
+    l.append(i,document.createTextNode(n.name));
+    if(blocked){const s=document.createElement('small');s.textContent='(רק וידאו)';l.append(s)}
+    box.append(l);
+  }
+}
+const activeNets = () => NETS.filter(n=>chosen.has(n.k) && !(n.video && state.file && !state.isVideo));
+
+// ---------- file ----------
+$('file').addEventListener('change',()=>{
+  const f=$('file').files[0]; const box=$('previewBox'); box.textContent='';
+  state.file=null;
+  if(!f) return;
+  if(f.size>20*1024*1024){ showMsg('adaptMsg','bad',`הקובץ ${(f.size/1048576).toFixed(0)}MB, והדף מקבל עד 20MB. שלח את הקובץ ל-Claude בצ'אט וכתוב "תעלה את זה לכל הרשתות".`); $('file').value=''; return; }
+  state.file=f; state.isVideo=f.type.startsWith('video/');
+  const url=URL.createObjectURL(f);
+  const el=document.createElement(state.isVideo?'video':'img'); el.className='preview'; el.src=url;
+  if(state.isVideo){el.controls=true;el.muted=true;el.playsInline=true}
+  box.append(el); $('drop').classList.add('has');
+  $('dropText').querySelector('b').textContent=f.name;
+  renderNets(); renderCards();
+});
+
+// ---------- when ----------
+for(const r of document.querySelectorAll('input[name=when]')) r.addEventListener('change',()=>{$('whenAt').hidden=!$('whenLater').checked});
+
+// ---------- counting ----------
+function count(n,text){
+  if(n.weighted) return [...text.replace(/https?:\/\/\S+/g,'x'.repeat(23))].length;
+  return [...text].length;
+}
+
+// ---------- cards ----------
+function renderCards(){
+  const box=$('cards'); box.textContent='';
+  const nets=activeNets();
+  if(!Object.keys(state.drafts).length){ updateApprove(); return; }
+  for(const n of nets){
+    const d=state.drafts[n.k] ||= {text:''};
+    const c=document.createElement('div'); c.className='card'+(n.manual?' wa':'');
+    const h=document.createElement('div'); h.className='card-h';
+    const b=document.createElement('b'); b.textContent=n.name;
+    const cnt=document.createElement('span'); cnt.className='count';
+    h.append(b,cnt); c.append(h);
+    if(n.title){
+      const ti=document.createElement('input'); ti.type='text'; ti.id='title-'+n.k; ti.placeholder='כותרת'+(n.titleMin?' (חובה)':''); ti.value=d.title||'';
+      ti.maxLength=n.title; ti.addEventListener('input',()=>{d.title=ti.value;store('drafts',state.drafts);updateApprove()});
+      c.append(ti);
+    }
+    const ta=document.createElement('textarea'); ta.id='text-'+n.k; ta.value=d.text||'';
+    const upd=()=>{const k=count(n,ta.value);cnt.textContent=`${k} / ${n.limit}`;cnt.classList.toggle('over',k>n.limit)};
+    ta.addEventListener('input',()=>{d.text=ta.value;upd();store('drafts',state.drafts);updateApprove()});
+    upd(); c.append(ta);
+    if(n.manual){
+      const r=document.createElement('div'); r.className='row';
+      const cp=document.createElement('button'); cp.className='secondary'; cp.textContent='העתק נוסח';
+      cp.addEventListener('click',()=>copy(ta.value,cp));
+      r.append(cp);
+      const u=state.cfg.whatsappChannelUrl;
+      if(u && /^https:\/\//.test(u)){const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';a.className='secondary';a.textContent='פתח את הערוץ';a.style.cssText='padding:11px 16px;border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none;font-weight:700';r.append(a)}
+      const p=document.createElement('p'); p.className='note'; p.textContent='בערוץ: 📎 ← בוחרים את אותו קובץ מהגלריה ← מדביקים ← שלח.';
+      c.append(r,p);
+    }
+    box.append(c);
+  }
+  updateApprove();
+}
+
+function problems(){
+  const out=[];
+  if(!Object.keys(state.drafts).length) out.push('קודם צריך נוסח לכל רשת (שלב 3).');
+  for(const n of activeNets()){
+    if(n.manual) continue;
+    const d=state.drafts[n.k]||{};
+    if(n.video && !state.isVideo) out.push(`${n.name}: צריך סרטון.`);
+    if(!(d.text||'').trim() && !n.video) out.push(`${n.name}: אין נוסח.`);
+    if(count(n,d.text||'')>n.limit) out.push(`${n.name}: ארוך מדי.`);
+    if(n.titleMin && ((d.title||'').trim().length<n.titleMin)) out.push(`${n.name}: חסרה כותרת.`);
+  }
+  if(!activeNets().some(n=>!n.manual)) out.push('לא נבחרה אף רשת.');
+  if($('whenLater').checked && !$('whenAt').value) out.push('לא נבחרה שעה לתזמון.');
+  return out;
+}
+function updateApprove(){ $('approve').disabled = !db || problems().length>0; }
+
+function showMsg(id,kind,text){const m=$(id);m.className='msg '+kind;m.textContent=text;m.hidden=!text}
+async function copy(text,btn){
+  try{await navigator.clipboard.writeText(text);const o=btn.textContent;btn.textContent='הועתק';setTimeout(()=>btn.textContent=o,1500)}
+  catch{const t=document.createElement('textarea');t.value=text;document.body.append(t);t.select();try{document.execCommand('copy');btn.textContent='הועתק'}catch{btn.textContent='סמן והעתק ידנית'}t.remove()}
+}
+$('copyCmd').addEventListener('click',()=>copy($('cmd').textContent,$('copyCmd')));
+
+// ---------- adapt with Claude ----------
+$('manual').addEventListener('click',()=>{
+  const base=$('base').value.trim(), link=$('link').value.trim();
+  for(const n of activeNets()) state.drafts[n.k] ||= {text: base+(link?'\n'+link:''), title:''};
+  store('drafts',state.drafts); renderCards();
+});
+$('adapt').addEventListener('click',async()=>{
+  const base=$('base').value.trim(); const link=$('link').value.trim();
+  if(!base){showMsg('adaptMsg','bad','כתוב קודם מה רוצים להגיד (שלב 1).');return}
+  if(!sample){showMsg('adaptMsg','warn','ההתאמה האוטומטית לא זמינה בתצוגה הזו. אפשר ללחוץ "אכתוב בעצמי", או לבקש מ-Claude בצ\'אט.');return}
+  const nets=activeNets().map(n=>n.k);
+  const btn=$('adapt'); btn.disabled=true; btn.textContent='מתאים…'; showMsg('adaptMsg','ok','Claude מנסח גרסה לכל רשת…');
+  try{
+    const prompt=`${RULES}
+
+סוג המדיה: ${state.file?(state.isVideo?'סרטון (ריל)':'תמונה'):'טקסט בלבד'}
+קישור: ${link||'אין'}
+טקסט הבסיס (מהמשתמש, זה המקור היחיד לעובדות):
+<<<
+${base}
+>>>
+
+החזר JSON בלבד, אובייקט שהמפתחות שלו בדיוק: ${nets.join(', ')}.
+כל ערך: {"text": "..."}; ל-tiktok ול-youtube גם "title".`;
+    const out=await sample.json(prompt,{modelTier:'default',cache:false});
+    for(const k of nets){ if(out && out[k] && typeof out[k].text==='string') state.drafts[k]={text:String(out[k].text),title:String(out[k].title||'')} }
+    store('drafts',state.drafts); renderCards(); showMsg('adaptMsg','ok','מוכן. עבור על כל נוסח, תקן מה שצריך, ואשר.');
+  }catch(e){
+    showMsg('adaptMsg','bad', e&&e.code==='not_granted' ? 'לא ניתנה הרשאה ל-Claude בדף. אפשר "אכתוב בעצמי".' : e&&e.code==='rate_limited' ? 'יותר מדי בקשות. נסה שוב בעוד דקה.' : 'ההתאמה נכשלה. נסה שוב, או "אכתוב בעצמי".');
+  }finally{btn.disabled=false;btn.textContent='התאם לכל רשת'}
+});
+
+// ---------- approve ----------
+$('approve').addEventListener('click',async()=>{
+  const p=problems(); if(p.length){showMsg('approveMsg','bad',p.join(' '));return}
+  const btn=$('approve'); btn.disabled=true; btn.textContent='שומר…';
+  try{
+    let media=null;
+    if(state.file){
+      if(!assets) throw {msg:'אין הרשאה להעלאת קבצים בדף. שלח את הקובץ ל-Claude בצ\'אט.'};
+      const up=await assets.upload(state.file);
+      media={id:up.id,url:up.url,contentType:up.contentType,name:state.file.name,sizeBytes:up.sizeBytes};
+    }
+    const posts={}; let whatsapp=null;
+    for(const n of activeNets()){
+      const d=state.drafts[n.k]||{};
+      if(n.manual){whatsapp={text:d.text||''};continue}
+      posts[n.k]={text:d.text||''}; if(n.title) posts[n.k].title=d.title||'';
+    }
+    const when=$('whenLater').checked? new Date($('whenAt').value).toISOString() : 'now';
+    const me = user ? await user.id() : null;
+    await db.collection('jobs').add({status:'approved',createdAt:new Date().toISOString(),createdBy:me,when,base:$('base').value.trim(),link:$('link').value.trim(),media,posts,whatsapp,results:{}});
+    state.drafts={}; store('drafts',{}); $('base').value=''; $('link').value=''; $('file').value=''; state.file=null;
+    $('previewBox').textContent=''; $('drop').classList.remove('has'); $('dropText').querySelector('b').textContent='בחר סרטון או תמונה';
+    renderNets(); renderCards();
+    showMsg('approveMsg','ok','נשמר בתור. כתוב ל-Claude "פרסם את מה שבתור" והוא יעלה את זה לכל הרשתות.');
+  }catch(e){
+    showMsg('approveMsg','bad', e&&e.msg ? e.msg : e&&e.code==='too_large' ? 'הקובץ גדול מדי לדף. שלח אותו ל-Claude בצ\'אט.' : 'השמירה נכשלה. נסה שוב.');
+  }finally{btn.textContent='אשר ושלח לתור';updateApprove()}
+});
+
+// ---------- queue ----------
+const ST={approved:'ממתין לפרסום',publishing:'עולה עכשיו',published:'פורסם',error:'שגיאה'};
+const NAME=Object.fromEntries(NETS.map(n=>[n.k,n.name]));
+function renderQueue(docs){
+  const box=$('queue'); box.textContent='';
+  if(!docs.length){const e=document.createElement('div');e.className='empty';e.textContent='התור ריק. פוסט שתאשר יופיע כאן, עם קישור לכל רשת אחרי שהוא עולה.';box.append(e);return}
+  for(const s of docs){
+    const j=s.data()||{}; const el=document.createElement('div'); el.className='job';
+    const h=document.createElement('div'); h.className='job-h';
+    const t=document.createElement('b'); const dt=new Date(j.createdAt||Date.now());
+    t.textContent=dt.toLocaleString('he-IL',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'})+(j.when&&j.when!=='now'?' · מתוזמן ל-'+new Date(j.when).toLocaleString('he-IL',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}):'');
+    const pill=document.createElement('span'); const st=String(j.status||'approved'); pill.className='pill '+(ST[st]?st:'approved'); pill.textContent=ST[st]||st;
+    h.append(t,pill); el.append(h);
+    const p=document.createElement('p'); p.textContent=(j.base||'').slice(0,140)+((j.base||'').length>140?'…':''); el.append(p);
+    const nets=Object.keys(j.posts||{}).map(k=>NAME[k]||k).join(' · '); const p2=document.createElement('p'); p2.textContent=(j.media?(j.media.contentType||'').startsWith('video')?'🎬 ':'🖼 ':'')+nets+(j.whatsapp?' · ערוץ וואטסאפ (ידני)':''); el.append(p2);
+    const res=j.results||{};
+    if(Object.keys(res).length){
+      const ul=document.createElement('ul');
+      for(const [k,v] of Object.entries(res)){
+        const li=document.createElement('li'); li.append(document.createTextNode((NAME[k]||k)+': '));
+        const url=v&&v.url, err=v&&v.error;
+        if(url && /^https:\/\//.test(url)){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.textContent='לפוסט';li.append(a)}
+        else li.append(document.createTextNode(err?('⚠ '+err):(v&&v.state)||'—'));
+        ul.append(li);
+      }
+      el.append(ul);
+    }
+    if(j.error){const e=document.createElement('p');e.style.color='var(--bad)';e.textContent=String(j.error);el.append(e)}
+    if(st==='approved'){
+      const del=document.createElement('button'); del.className='ghost'; del.textContent='בטל';
+      let armed=false;
+      del.addEventListener('click',async()=>{
+        if(!armed){armed=true;del.textContent='לחץ שוב לביטול';setTimeout(()=>{armed=false;del.textContent='בטל'},3000);return}
+        try{await db.doc('jobs/'+s.id).delete(); if(j.media&&j.media.id&&assets) assets.delete(j.media.id).catch(()=>{})}catch{del.textContent='לא בוטל'}
+      });
+      el.append(del);
+    }
+    box.append(el);
+  }
+}
+
+// ---------- config ----------
+$('saveCfg').addEventListener('click',async()=>{
+  const u=$('waUrl').value.trim();
+  if(u && !/^https:\/\//.test(u)){$('cfgMsg').textContent='הקישור צריך להתחיל ב-https://';return}
+  try{await db.doc('config/main').set({whatsappChannelUrl:u});$('cfgMsg').textContent='נשמר'}catch{$('cfgMsg').textContent='לא נשמר'}
+});
+
+// ---------- boot ----------
+state.drafts=load('drafts',{});
+renderNets(); renderCards();
+(async()=>{
+  const c=window.claude; if(!c||!c.use) return;
+  [db,assets,sample,user]=await Promise.all(['db','assets','sample','user'].map(n=>c.use(n).catch(()=>null)));
+  if(!db){showMsg('approveMsg','warn','התור לא זמין בתצוגה הזו. פתח את הדף כשאתה מחובר ל-claude.ai.');return}
+  const timer=setTimeout(()=>{},10000);
+  db.collection('jobs').orderBy('createdAt','desc').limit(20).onSnapshot(q=>{clearTimeout(timer);renderQueue(q.docs)},()=>{clearTimeout(timer)});
+  db.doc('config/main').onSnapshot(s=>{const d=s.data()||{};state.cfg=d;if(document.activeElement!==$('waUrl'))$('waUrl').value=d.whatsappChannelUrl||'';renderCards()});
+  updateApprove();
+})();
+</script>

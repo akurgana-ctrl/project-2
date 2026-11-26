@@ -1,0 +1,15 @@
+{
+  "media": ["reel.mp4"],
+  "when": "now",
+  "made_with_ai": false,
+  "posts": {
+    "instagram": { "text": "הוק חזק בשורה הראשונה…\n\nגוף קצר.\n\n👇 לינק בביו\n#כח_התערבות #ישראל", "post_type": "post" },
+    "facebook":  { "text": "הסבר מלא יותר עם הקשר.\n\nלפרטים: https://example.org", "url": "https://example.org" },
+    "tiktok":    { "text": "הוק קצר #כח_התערבות #חדשות", "title": "כותרת עד 90 תווים" },
+    "x":         { "text": "משפט חד אחד. https://example.org", "who_can_reply_post": "everyone" },
+    "youtube":   { "text": "שניים-שלושה משפטים.\nhttps://example.org\n#Shorts", "title": "כותרת עם מילות חיפוש (2–100 תווים)", "visibility": "public", "tags": ["כח התערבות"] },
+    "linkedin":  { "text": "מה קרה. למה זה חשוב. מה הלאה.\n#מדיניות #ישראל" },
+    "telegram":  { "text": "נוסח ישיר עם קישור: https://example.org" }
+  },
+  "whatsapp_channel": { "text": "*כותרת מודגשת*\nשני משפטים.\nhttps://example.org" }
+}
