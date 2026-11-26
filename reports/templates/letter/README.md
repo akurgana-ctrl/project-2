@@ -16,7 +16,9 @@
 - חותם ברירת מחדל: אדם קורגן, מנכ"ל.
 
 ## שימוש
+**כל מכתב רשמי בגופן David, גם ב-PDF.** לפני ההמרה ל-PDF להריץ `sh install_fonts.sh` (מתקין את David של Culmus וממפה אליו את "David"), ואחרי ההמרה לוודא ב-`pdffonts out.pdf` שמופיע רק DavidCLM. בלי זה soffice מחליף בשקט לגופן אחר.
 ```
+sh install_fonts.sh
 python3 build_letter.py content.json logo.png out.docx
 soffice --headless --convert-to pdf out.docx
 ```
