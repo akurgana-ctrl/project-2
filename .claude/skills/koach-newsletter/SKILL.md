@@ -14,7 +14,7 @@ Everything lives in `newsletter/`. The human guide is `newsletter/מדריך-מ�
 3. **Write.** Short, direct Hebrew. Credit the lobby for what it did. Never invent facts, quotes, numbers or bill texts: what you don't have yet goes in as a yellow placeholder `<span style="background:#FFE27A;color:#1D2E67;padding:0 4px;">[מה חסר]</span>` and you list it for the user.
 4. **Build.** `cd newsletter && python3 publish.py issue-NN.html`. It stops on a missing image, an unknown link id or an unfilled `{{...}}`. Outputs go to `newsletter/out/issue-NN/`.
 5. **Check at phone width** before showing it: `node tools/preview_mobile.js out/issue-NN/preview.html shot.png` and look at the screenshot.
-6. **Push** the branch: the email loads images and PDFs from the repository (see "Assets" below). Then give the user `out/issue-NN/mailchimp-copy.html` (one button copies the whole Mailchimp HTML, one copies the subject line) and `out/issue-NN/web.html` to view it.
+6. **Push** the branch: the email loads images and PDFs from the repository (see "Assets" below). Then publish and give the user BOTH links in every reply about the issue, every time: `out/issue-NN/pulseem-copy.html` (the newsletter is sent with Pulseem; one button copies the whole HTML, one copies the subject line) and `out/issue-NN/web.html` to view it. Republish both after every change.
 7. **Send (the user does this):** Mailchimp → Create → Email → Code your own → Paste in code; paste the subject in "Subject line".
 
 ## Files
@@ -30,7 +30,7 @@ Everything lives in `newsletter/`. The human guide is `newsletter/מדריך-מ�
 | `tools/frame_photo.py` | Puts a photo in the brand frame: `python3 tools/frame_photo.py in.jpg images/out.jpg "כותרת" "שורה משנית"` |
 | `site_copy.py` | One page with a copy button per issue, for the website: `python3 site_copy.py issue-01.html issue-02.html ...` |
 
-Outputs of `publish.py` (in `out/issue-NN/`): `mailchimp.html` (what goes to Mailchimp), `mailchimp-copy.html` (copy buttons), `web.html` (to view), `site.html` (block for the website), `email.html` and `copy-page.html` (sending from Gmail, a fallback).
+Outputs of `publish.py` (in `out/issue-NN/`): `pulseem.html` (what goes to Pulseem: direct links, no unsubscribe row, Pulseem adds its own; check its preview shows one), `pulseem-copy.html` (copy buttons), `mailchimp.html` (older Mailchimp version), `mailchimp-copy.html` (copy buttons), `web.html` (to view), `site.html` (block for the website), `email.html` and `copy-page.html` (sending from Gmail, a fallback).
 
 ## Things that went wrong before, and the fix
 
