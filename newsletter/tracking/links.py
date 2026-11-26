@@ -27,6 +27,7 @@ LINKS = {
     "kan11_article": "https://www.israelhayom.co.il/israelnow/article/21923843",
     "shdula_video": "https://akurgana-ctrl.github.io/project-2/video/shdula/",
     "shalev_letter": "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/letter-shalev-2026-11-17.pdf",
+    "yatush_video": "https://youtu.be/szdhU_tVtHA",
     "position_judiciary": "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/position-judiciary.pdf",
     "position_media": "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/position-media.pdf",
     "andrey_page": "https://activism.mashma.net/andrei-x",
