@@ -103,6 +103,14 @@ def main(name):
     copy_mc = (HERE / "mailchimp-copy-template.html").read_text()
     (out / "mailchimp-copy.html").write_text(copy_mc.replace("{{TITLE}}", title).replace("{{DATA}}", data))
 
+    # Pulseem: direct links; Pulseem adds its own unsubscribe footer, so our row and the browser row are dropped
+    pulseem = render(name, lambda p: RAW + p, "", direct=True)
+    pulseem = re.sub(r'\s*<div [^>]*>\s*<div [^>]*><a href="" [^>]*>הסרה מהתפוצה</a></div>\s*</div>', "", pulseem)
+    (out / "pulseem.html").write_text(pulseem)
+    pdata = json.dumps({"html": pulseem, "subject": subject}, ensure_ascii=False).replace("</", "<\\/")
+    copy_p = (HERE / "pulseem-copy-template.html").read_text()
+    (out / "pulseem-copy.html").write_text(copy_p.replace("{{TITLE}}", title).replace("{{DATA}}", pdata))
+
     web = render(name, data_uri)
     web = re.sub(r"<!DOCTYPE html>|<html[^>]*>|</html>|<head>|</head>|<meta[^>]*>", "", web)
     web = re.sub(r"<body[^>]*>", '<div dir="rtl" style="background:#E9ECF3;min-height:100%;">', web).replace("</body>", "</div>")
