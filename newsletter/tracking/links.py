@@ -24,6 +24,7 @@ LINKS = {
     "bill_wound": DOCS + "bill-combat-wound.pdf",
     "wound_reel": "https://www.instagram.com/reel/DfpOJNRhgu0/",
     "knesset_watch_form": "https://forms.gle/p5vjr56T6hsz3QFKA",
+    "kan11_article": "https://www.israelhayom.co.il/israelnow/article/21923843",
     "andrey_page": "https://activism.mashma.net/andrei-x",
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
@@ -58,7 +59,7 @@ def fill(html, issue=0, direct=False):
             return LINKS[key]
         return base + "?l=" + key + ("&i=%d" % issue if issue else "")
 
-    return re.sub(r"\{\{T:([a-z_]+)\}\}", sub, html)
+    return re.sub(r"\{\{T:([a-z0-9_]+)\}\}", sub, html)
 
 
 def pixel(issue):
