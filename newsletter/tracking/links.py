@@ -26,6 +26,7 @@ LINKS = {
     "knesset_watch_form": "https://forms.gle/p5vjr56T6hsz3QFKA",
     "kan11_article": "https://www.israelhayom.co.il/israelnow/article/21923843",
     "shdula_video": "https://akurgana-ctrl.github.io/project-2/video/shdula/",
+    "shalev_letter": "https://raw.githubusercontent.com/akurgana-ctrl/project-2/newsletter-template/newsletter/docs/letter-shalev-2026-11-17.pdf",
     "andrey_page": "https://activism.mashma.net/andrei-x",
     "andrey_video": "https://activism.mashma.net/andrei-x/assets/andrei.mp4",
     "noga_video": "https://activism.mashma.net/hakika/assets/noga.mp4",
