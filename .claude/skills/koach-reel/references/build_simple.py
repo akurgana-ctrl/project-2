@@ -6,7 +6,7 @@ Usage: python3 -I build_simple.py <project-dir> <edit.json>
 edit.json:
 {
   "speech_end": 79.88,                 # length of assets/tamir.mp4 (the cut, graded base)
-  "music_volume": 0.14,                 # optional, default 0.13 (see the rotation table in simple_edit.md)
+  "music_volume": 0.08,                 # optional, default 0.08 (user: music quieter, voice louder) (see the rotation table in simple_edit.md)
   "name": "תמיר דורטל", "title": "מייסד כח התערבות",
   "caps": [["text", start, end, {"word": "gold|red|blue|gold big"}], ...],   # times on the CUT timeline
   "sfx":  [["whoosh", 0.25, 1.5, 0.35], ["pop", 0.42, 0.2, 0.45], ...]       # file, start, dur, volume
@@ -118,12 +118,12 @@ index = f"""<!doctype html>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL}" data-width="1080" data-height="1920">
       <div id="cam">
-        <video id="tamir" class="clip" src="assets/tamir.mp4" data-start="0" data-duration="{SPEECH_END}" data-media-start="0" data-has-audio="true" data-volume="1" playsinline data-track-index="0"></video>
+        <video id="tamir" class="clip" src="assets/tamir.mp4" data-start="0" data-duration="{SPEECH_END}" data-media-start="0" data-has-audio="true" data-volume="1.2" playsinline data-track-index="0"></video>
       </div>
       <img id="logo" class="clip" src="assets/logo-blue.png" alt="" data-start="0" data-duration="{TOTAL}" data-track-index="2" />
       <div id="overlays" data-composition-id="overlays" data-composition-src="compositions/overlays.html" data-start="0" data-duration="{TOTAL}" data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
       <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="{TOTAL}" data-track-index="4" data-track-kind="captions" data-width="1080" data-height="1920"></div>
-      <audio id="music" class="clip" src="assets/music.mp3" data-start="0" data-duration="{TOTAL}" data-media-start="0" data-volume="{E.get('music_volume', 0.13)}" data-fade-in="1.0" data-fade-out="2.0" data-track-index="5"></audio>
+      <audio id="music" class="clip" src="assets/music.mp3" data-start="0" data-duration="{TOTAL}" data-media-start="0" data-volume="{E.get('music_volume', 0.08)}" data-fade-in="1.0" data-fade-out="2.0" data-track-index="5"></audio>
 {sfx_html}
     </div>
     <script>
